@@ -1,13 +1,15 @@
 "use strict";
 
 /* TO DO LIST:
+- Add reject ability for algorithm 0
 - Show what people voted for after decision
-- Show the Random Number (Algorithm 0 & 1)
-- Ranking Feature (Algorithm 2)
-- Remove ideas from list before Voting starts
 - Reset Voting w/ same algorithm
+- Ranking Feature (Algorithm 2)
+// Begin User Testng Here
+- Basic CSS styling
 - Reset Voting w/ different algorithm
 - Remove ability to rank same option in Alg 2
+- Show the Random Number (Algorithm 0 & 1)
 
 BUG LIST:
 - Cannot hit enter to finish an input. Leads to an error.
@@ -133,6 +135,12 @@ function finishIdeation(){
       document.getElementById("secondVoteLabel").setAttribute("hidden", "");
       document.getElementById("voteThirdSelection").setAttribute("hidden", "");
       document.getElementById("thirdVoteLabel").setAttribute("hidden", "");
+      if (allowRejects != 1) {
+        voteNoSpace[0].setAttribute("hidden", "");
+        voteNoSpace[1].setAttribute("hidden", "");
+        document.getElementById("voteNoLabel").setAttribute("hidden", "");
+        document.getElementById("voteNo").setAttribute("hidden", "");
+      }
       for (let brInd = 0; brInd < algorithmTwoBreaks.length; brInd++){
         algorithmTwoBreaks[brInd].setAttribute("hidden","");
       }
@@ -277,6 +285,6 @@ function assignRandomChoice(ideas, noVote) {
   return remainingIdeas[Math.floor(Math.random() * ideas.length)];
 }
 
-function showVotes() {
-  
-}
+// function showVotes() {
+//
+// }
