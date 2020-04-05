@@ -3,9 +3,6 @@
 // Everyone put the same effort of coming up with ideas and ranking
 // No one has to be the bad guy when it comes to ruling things out
 
-
-/* Store Everyone's Vote*/
-function getUserVote(decisionOption){
   /* Decision options are:
   0 = Random decision of user generated ideas
   1 = Random decision of user generated picks
@@ -17,9 +14,3 @@ function getUserVote(decisionOption){
   */
 
   // this function won't be called if decisionOption === 0
-  if (decisionOption === 1) {
-    return [name, voteOne, 0, 0, voteNo]
-  } else if (decisionOption === 2) {
-    return [name, voteOne, voteTwo, voteThree, voteNo]
-  };
-};
