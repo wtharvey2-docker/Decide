@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>decideMain</title>
+    <script type='text/javascript'
+            src='decideMain.js'></script>
+            <!-- script not being used currently, but there as a placeholder -->
+  </head>
+  <body>
+    <form id="groupForm" action="decideQuestion.html" method="get">
+      <label for="groupQuestion">What are you trying to decide?</label>
+      <input type="text" id="groupQuestion" name="groupQuestion" required><br><br>
+      <label for="decisionAlgorithm">How would you like to decide?</label><br>
+      <input type="radio" id="randomIdea" name="decisionAlgorithm" value="0">
+      <label for="randomIdea">Decide Between Ideas Randomly</label><br>
+      <input type="radio" id="randomVote" name="decisionAlgorithm" value="1" checked>
+      <label for="randomVote">Decide Between Votes Randomly</label><br>
+      <input type="radio" id="rankedVote" name="decisionAlgorithm" value="2">
+      <label for="rankedVote">Decide Between Ranked Votes</label><br><br>
+      <input type="checkbox" id="showVotes" name="showVotes" value="1" checked>
+      <label for="showVotes"> Do you want to see what everyone voted for?</label><br><br>
+      <input type="checkbox" id="allowRejects" name="allowRejects" value="1" checked>
+      <label for="allowRejects"> Allow voters to reject a single idea?</label><br><br>
+      <input type="submit" value="Let's Decide!">
+      <input type="reset">
+    </form>
+  </body>
+</html>

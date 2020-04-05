@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>decideQuestion</title>
+    <script type='text/javascript'
+            src='decideQuestion.js'></script>
+  </head>
+  <body onload="processURL()">
+    <h1 id="questionHeading">Your question did not load.
+      Please contact wtharvey2@gmail.com</h1>
+    <h1 id="answerHeading" hidden>It looks like the program can't decide. Please contact wtharvey2@gmail.com</h1>
+    <h3 id="questionExplanation">Let's decide! Answer the question or give
+      input to the line above this </h3>
+    <form id="ideaForm" method="post">
+      <label for="ideaFormIdea">What would you choose if you had to decide?</label>
+      <br>
+      <input type="text" id="ideaFormIdea" name="userIdea" required>
+      <br>
+      <button type="button" onclick="addIdea()">Add Idea</button>
+      <br>
+      <button type="button" id="ideaButton1" onclick="finishIdeation()" hidden> Finish Adding Ideas </button>
+    </form>
+    <br>
+    <form id="voteForm" method="post" hidden>
+      <label for="voteFormName">What's your name?</label>
+      <input type="text" id="voteFormName" name="userName"><br><br>
+      <label for="voteFirstSelection">What's your top pick?</label>
+      <select id="voteFirstSelection">
+        <option value="random">I'm happy with all of these!</option>
+      </select>
+      <br><br>
+      <label for="voteSecondSelection" id="secondVoteLabel">What's your 2nd pick?</label>
+      <select id="voteSecondSelection">
+        <option value="random">The rest are equally good</option>
+      </select><br id="algorithmTwoBreaks"><br id="algorithmTwoBreaks">
+      <label for="voteThirdSelection" id="thirdVoteLabel">What's your 3rd pick?</label>
+      <select id="voteThirdSelection">
+        <option value="random">The rest are equally good</option>
+      </select><br id="algorithmTwoBreaks"><br id="algorithmTwoBreaks">
+      <label for="voteNo">Is there one choice you object to?</label>
+      <select id="voteNo">
+        <option value="No">Nope, all of these will be ok!</option>
+      </select><br><br>
+      <button type="button" id="voteButton" onclick="enterVote()" hidden>Add Your Vote</button>
+      <br><br>
+    </form>
+    <button type="button" id="endVoteButton" onclick="endVoting()" hidden> Conclude Voting</button>
+    <br>
+    <h3 id="listHeader" hidden>Here's what we have come up with so far:</h3>
+    <ul id="currentIdeas">
+    </ul>
+    <button type="button" id="decisionButton" onclick="calculateDecision()" hidden> Let's Decide! </button>
+    <h3 id="voterListHeader" hidden>These people have voted:</h3>
+    <ul id="currentVoters" hidden>
+    </ul>
+    <br><br><br><br><br><br><br><br><br>
+    <button type="button" id="resetButton" onclick="resetIdeas()" hidden>Clear Ideas & Reset</button>
+  </body>
+
+</html>
