@@ -1,16 +1,17 @@
 "use strict";
 
 /* TO DO LIST:
-- Add reject ability for algorithm 0
 - Show what people voted for after decision
 - Reset Voting w/ same algorithm
 - Ranking Feature (Algorithm 2)
-- Figure out how to make it acessible online 
+- Figure out how to make it acessible online
+- Make ReadMe with directions
 // Begin User Testng Here
 - Basic CSS styling
 - Reset Voting w/ different algorithm
 - Remove ability to rank same option in Alg 2
 - Show the Random Number (Algorithm 0 & 1)
+- Add reject ability for algorithm 0 ?
 
 BUG LIST:
 - Cannot hit enter to finish an input. Leads to an error.
@@ -21,7 +22,6 @@ BUG LIST:
 WISH LIST:
 - Easier to Use/Navigate/Understand
 - Aesthetic UI
-
 */
 
 
@@ -203,11 +203,9 @@ function enterVote(){
     newVote.noVote = document.getElementById("voteNo").value;
     document.getElementById("voteNo").value="No";
     voteArray.push(newVote);
-
     let currentVoterList = document.getElementById("currentVoters").innerHTML;
     let newVoter = "<li>" + newVote.name + "</li>";
     document.getElementById("currentVoters").innerHTML= currentVoterList + newVoter;
-
     numberOfVotes++;
   }
 }
@@ -217,6 +215,9 @@ function endVoting() {
     document.getElementById("endVoteButton").setAttribute("hidden", "");
     document.getElementById("voteForm").setAttribute("hidden", "");
     document.getElementById("decisionButton").removeAttribute("hidden");
+    if (showVotes == 1) {
+      revealVotes();
+    }
   };
 }
 
@@ -279,13 +280,20 @@ function parseVotes(options, allVotes){
 function assignRandomChoice(ideas, noVote) {
   let remainingIdeas = [];
   if (noVote != "No") {
-    let noIndex = ideas.indexOf("noVote");
-    remainingIdeas += ideas.slice(0,noIndex);
-    remainingIdeas = remainingIdeas.concat(ideas.slice(noIndex,))
+    let noIndex = ideas.indexOf(noVote);
+    if (noIndex != 0) {
+      remainingIdeas = remainingIdeas.concat(ideas.slice(0,noIndex));
+    }
+    remainingIdeas = remainingIdeas.concat(ideas.slice(noIndex+1))
   }
   return remainingIdeas[Math.floor(Math.random() * ideas.length)];
 }
 
-// function showVotes() {
-//
-// }
+function revealVotes() {
+  document.getElementById("currentVoters").innerHTML=""; //clears list
+  for (let voteInd = 0; voteInd < voteArray.length; voteInd++){
+    let currentVoteDisplay = document.getElementById("currentVoters").innerHTML;
+    let newVote = "<li>" + voteArray[voteInd].name + ": " + voteArray[voteInd].firstVote + "</li>";
+    document.getElementById("currentVoters").innerHTML= currentVoteDisplay + newVote;
+  }
+}
