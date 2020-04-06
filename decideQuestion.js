@@ -1,9 +1,9 @@
 "use strict";
 
 /* TO DO LIST:
+- Fix Enter Button Bug
 - Ranking Feature (Algorithm 2)
-- Figure out how to make it acessible online
-- Make ReadMe with directions
+- Update ReadMe with description and directions
 // Begin User Testng Here
 - Basic CSS styling
 - Reset Voting w/ different algorithm
