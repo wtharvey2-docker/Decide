@@ -236,7 +236,8 @@ function calculateDecision(){
         then removes all votes for rejects and decides between the rest.
         TO DO: - Re-Work algorithm to make random choices among
         non-rejected options */
-      [options, allVotes] = parseVotes(options, allVotes, voteArray);
+      [options, allVotes] = parseVotes(allVotes, voteArray);
+      console.log(options);
       if (options[0] == undefined) {
         //allVotes[0] will not be undefined as long as more than one option is available
         // all votes were rejected by someone else
@@ -255,27 +256,29 @@ function calculateDecision(){
   }
 }
 
-function parseVotes(options, allVotes, voteArray){
+function parseVotes(allVotes, voteArray){
   let noArray = [];
+  let newOptions  =[];
+  let initialOptions = [];
   for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
     if (voteArray[voteInd].noVote != "No") {
       noArray.push(voteArray[voteInd].noVote);
     }
     if (voteArray[voteInd].firstVote == "random") {
-      options.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+      initialOptions.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
     } else {
-      options.push(voteArray[voteInd].firstVote);
+      initialOptions.push(voteArray[voteInd].firstVote);
     }
   }
-  allVotes = allVotes.concat(options); //in case all values are vetoed once
+  allVotes = allVotes.concat(initialOptions); //in case all values are vetoed once
   //loop removing all rejected choices
-  for (let noInd = 0; noInd < options.length; noInd++) {
-    if (noArray.indexOf(options[noInd]) != -1) {
-      options.splice(noInd,1);
+  for (let noInd = 0; noInd < initialOptions.length; noInd++) {
+    if (noArray.indexOf(initialOptions[noInd]) == -1) {
+      newOptions = newOptions.concat(initialOptions[noInd]);
     }
   }
-  console.log(options);
-  return [options, allVotes];
+  console.log(newOptions)
+  return [newOptions, allVotes];
 }
 
 function assignRandomChoice(ideas, noVote) {
@@ -286,6 +289,8 @@ function assignRandomChoice(ideas, noVote) {
       remainingIdeas = remainingIdeas.concat(ideas.slice(0,noIndex));
     }
     remainingIdeas = remainingIdeas.concat(ideas.slice(noIndex+1))
+  } else {
+    remainingIdeas = remainingIdeas.concat(ideas);
   }
   return remainingIdeas[Math.floor(Math.random() * remainingIdeas.length)];
 }
