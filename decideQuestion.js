@@ -1,7 +1,6 @@
 "use strict";
 
 /* TO DO LIST:
-- Show what people voted for after decision
 - Reset Voting w/ same algorithm
 - Ranking Feature (Algorithm 2)
 - Figure out how to make it acessible online
