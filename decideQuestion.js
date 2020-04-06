@@ -1,7 +1,6 @@
 "use strict";
 
 /* TO DO LIST:
-- Reset Voting w/ same algorithm
 - Ranking Feature (Algorithm 2)
 - Figure out how to make it acessible online
 - Make ReadMe with directions
@@ -129,7 +128,7 @@ function finishIdeation(){
       document.getElementById("voteForm").removeAttribute("hidden");
       document.getElementById("voteButton").removeAttribute("hidden");
       document.getElementById("endVoteButton").removeAttribute("hidden");
-      document.getElementById("voterListHeader").removeAttribute("hidden");
+      document.getElementById("restartVotingButton").removeAttribute("hidden");
       document.getElementById("currentVoters").removeAttribute("hidden");
       document.getElementById("voteSecondSelection").setAttribute("hidden", "");
       document.getElementById("secondVoteLabel").setAttribute("hidden", "");
@@ -202,6 +201,7 @@ function enterVote(){
     newVote.noVote = document.getElementById("voteNo").value;
     document.getElementById("voteNo").value="No";
     voteArray.push(newVote);
+    document.getElementById("voterListHeader").removeAttribute("hidden");
     let currentVoterList = document.getElementById("currentVoters").innerHTML;
     let newVoter = "<li>" + newVote.name + "</li>";
     document.getElementById("currentVoters").innerHTML= currentVoterList + newVoter;
@@ -214,6 +214,7 @@ function endVoting() {
     document.getElementById("endVoteButton").setAttribute("hidden", "");
     document.getElementById("voteForm").setAttribute("hidden", "");
     document.getElementById("decisionButton").removeAttribute("hidden");
+    document.getElementById("restartVotingButton").setAttribute("hidden","");
     if (showVotes == 1) {
       revealVotes();
     }
@@ -235,25 +236,26 @@ function calculateDecision(){
         then removes all votes for rejects and decides between the rest.
         TO DO: - Re-Work algorithm to make random choices among
         non-rejected options */
-      [options, allVotes] = parseVotes(options, allVotes);
+      [options, allVotes] = parseVotes(options, allVotes, voteArray);
       if (options[0] == undefined) {
         //allVotes[0] will not be undefined as long as more than one option is available
         // all votes were rejected by someone else
         /* TO DO: display message saying all options were vetoed
          so vetoes were disregarded.*/
+         console.log("All options were rejected, so original ideaArray used.")
          options = ideaArray;
       }
     } else { // Algorithm 2
       options = ideaArray;
     }
-    let decision = options[Math.floor(Math.random() * numberOfOptions)];
+    let decision = options[Math.floor(Math.random() * options.length)];
     document.getElementById("answerHeading").innerHTML = "The decision is: " + decision;
     document.getElementById("answerHeading").removeAttribute("hidden");
     document.getElementById("decisionButton").setAttribute("hidden", "");
   }
 }
 
-function parseVotes(options, allVotes){
+function parseVotes(options, allVotes, voteArray){
   let noArray = [];
   for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
     if (voteArray[voteInd].noVote != "No") {
@@ -266,13 +268,13 @@ function parseVotes(options, allVotes){
     }
   }
   allVotes = allVotes.concat(options); //in case all values are vetoed once
-
   //loop removing all rejected choices
   for (let noInd = 0; noInd < options.length; noInd++) {
     if (noArray.indexOf(options[noInd]) != -1) {
       options.splice(noInd,1);
     }
   }
+  console.log(options);
   return [options, allVotes];
 }
 
@@ -285,7 +287,7 @@ function assignRandomChoice(ideas, noVote) {
     }
     remainingIdeas = remainingIdeas.concat(ideas.slice(noIndex+1))
   }
-  return remainingIdeas[Math.floor(Math.random() * ideas.length)];
+  return remainingIdeas[Math.floor(Math.random() * remainingIdeas.length)];
 }
 
 function revealVotes() {
@@ -295,4 +297,10 @@ function revealVotes() {
     let newVote = "<li>" + voteArray[voteInd].name + ": " + voteArray[voteInd].firstVote + "</li>";
     document.getElementById("currentVoters").innerHTML= currentVoteDisplay + newVote;
   }
+}
+
+function restartVoting(){
+  voteArray = [];
+  document.getElementById("voterListHeader").setAttribute("hidden","");
+  document.getElementById("currentVoters").innerHTML="";
 }
