@@ -13,4 +13,23 @@
   5 = Program-ranked decision on external choices based on external ratings
   */
 
-  // this function won't be called if decisionOption === 0
+function algorithmZeroOptions() {
+  document.getElementById("allowRejects").removeAttribute("checked");
+  document.getElementById("showVotes").removeAttribute("checked");
+  document.getElementById("allowRejects").setAttribute("disabled","");
+  document.getElementById("showVotes").setAttribute("disabled","");
+}
+
+function algorithmOneOptions() {
+  document.getElementById("allowRejects").removeAttribute("disabled");
+  document.getElementById("showVotes").removeAttribute("disabled");
+  document.getElementById("allowRejects").setAttribute("checked","");
+  document.getElementById("showVotes").setAttribute("checked","");
+}
+
+function algorithmTwoOptions() {
+  document.getElementById("allowRejects").removeAttribute("disabled");
+  document.getElementById("showVotes").removeAttribute("disabled");
+  document.getElementById("allowRejects").setAttribute("checked","");
+  document.getElementById("showVotes").setAttribute("checked","");
+}
