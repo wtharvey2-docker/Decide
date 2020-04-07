@@ -36,6 +36,8 @@ let minimumOptionQuantity = 2; // 1 for testing, 2 for operations
 let minimumVoteQuantity = 1; // not currently used
 
 function processURL() {
+  setEnterFunction("ideaFormIdea","ideaButton0");
+  setEnterFunction("voteFormName", 0);
   // defining indices
   let groupQuestionIndex = document.URL.indexOf("groupQuestion=")
     + ("groupQuestion=").length;
@@ -308,4 +310,15 @@ function restartVoting(){
   voteArray = [];
   document.getElementById("voterListHeader").setAttribute("hidden","");
   document.getElementById("currentVoters").innerHTML="";
+}
+
+function setEnterFunction(inputID, buttonID){
+document.getElementById(inputID).addEventListener("keypress", function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    if (buttonID !=0) {
+      document.getElementById(buttonID).click();
+    }
+  }
+});
 }
