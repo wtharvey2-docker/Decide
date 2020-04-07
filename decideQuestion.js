@@ -1,7 +1,6 @@
 "use strict";
 
 /* TO DO LIST:
-- Fix Enter Button Bug
 - Ranking Feature (Algorithm 2)
 - Update ReadMe with description and directions
 // Begin User Testng Here
@@ -12,7 +11,6 @@
 - Add reject ability for algorithm 0 ?
 
 BUG LIST:
-- Cannot hit enter to finish an input. Leads to an error.
 - Duplicates remain for voting if cases are different (i.e. "A" and "a" do not
   get sorted into the same vote option)
 -
