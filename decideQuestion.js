@@ -238,12 +238,13 @@ function calculateDecision(){
       [options, allVotes] = parseTopVotes(allVotes, voteArray);
       console.log(options);
       if (options[0] == undefined) {
-        //allVotes[0] will not be undefined as long as more than one option is available
-        // all votes were rejected by someone else
-        /* TO DO: display message saying all options were vetoed
-         so vetoes were disregarded.*/
-         console.log("All options were rejected, so original ideaArray used.")
-         options = ideaArray;
+        /*allVotes[0] will not be undefined as long as
+          one or more votes weren't rejected.
+        TO DO: - display message saying all options were vetoed
+         so vetoes were disregarded.
+         - should allVotes or ideaArray be used? */
+         console.log("All options were rejected, so allVotes was used.")
+         options = allVotes;
       }
     } else { // Algorithm 0
       options = ideaArray;
