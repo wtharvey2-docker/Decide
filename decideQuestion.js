@@ -9,6 +9,7 @@
 - Remove ability to rank same option in Alg 2
 - Show the Random Number (Algorithm 0 & 1)
 - Add reject ability for algorithm 0 ?
+- Add unit tests
 
 BUG LIST:
 - Duplicates remain for voting if cases are different (i.e. "A" and "a" do not
@@ -124,29 +125,27 @@ function finishIdeation(){
     document.getElementById("questionExplanation").setAttribute("hidden", 1);
     if (decisionAlgorithm == 0) {
       document.getElementById("decisionButton").removeAttribute("hidden");
-    } else if (decisionAlgorithm == 1){
+    } else {
       document.getElementById("voteForm").removeAttribute("hidden");
       document.getElementById("voteButton").removeAttribute("hidden");
       document.getElementById("endVoteButton").removeAttribute("hidden");
       document.getElementById("restartVotingButton").removeAttribute("hidden");
       document.getElementById("currentVoters").removeAttribute("hidden");
-      document.getElementById("voteSecondSelection").setAttribute("hidden", "");
-      document.getElementById("secondVoteLabel").setAttribute("hidden", "");
-      document.getElementById("voteThirdSelection").setAttribute("hidden", "");
-      document.getElementById("thirdVoteLabel").setAttribute("hidden", "");
+      if (decisionAlgorithm == 1) {
+        document.getElementById("voteSecondSelection").setAttribute("hidden", "");
+        document.getElementById("secondVoteLabel").setAttribute("hidden", "");
+        document.getElementById("voteThirdSelection").setAttribute("hidden", "");
+        document.getElementById("thirdVoteLabel").setAttribute("hidden", "");
+        for (let brInd = 0; brInd < algorithmTwoBreaks.length; brInd++){
+          algorithmTwoBreaks[brInd].setAttribute("hidden","");
+        }
+      }
       if (allowRejects != 1) {
         voteNoSpace[0].setAttribute("hidden", "");
         voteNoSpace[1].setAttribute("hidden", "");
         document.getElementById("voteNoLabel").setAttribute("hidden", "");
         document.getElementById("voteNo").setAttribute("hidden", "");
       }
-      for (let brInd = 0; brInd < algorithmTwoBreaks.length; brInd++){
-        algorithmTwoBreaks[brInd].setAttribute("hidden","");
-      }
-      prepareVoting();
-    } else { // decisionAlgorithm == 2
-      document.getElementById("voteForm").removeAttribute("hidden");
-      document.getElementById("endVoteButton").removeAttribute("hidden");
       prepareVoting();
     };
   };
@@ -155,14 +154,13 @@ function finishIdeation(){
 function prepareVoting(){
   if (decisionAlgorithm == 0) {
     console.log("This decision Algorithm should not have called this function.")
-  } else if (decisionAlgorithm == 1) {
+  } else {
+      // decisionAlgorithm == 1 or 2
       ideaArray = removeDuplicates(ideaArray);
       addDropDownOptions(document.getElementById("voteFirstSelection"));
       addDropDownOptions(document.getElementById("voteSecondSelection"));
       addDropDownOptions(document.getElementById("voteThirdSelection"));
       addDropDownOptions(document.getElementById("voteNo"));
-  } else {
-      console.log("This decision Algorithm has not been implemented yet")
   };
 }
 
@@ -225,6 +223,7 @@ function calculateDecision(){
   /* TO DO:
   - case 2 where it calculates the highest ranking option
   */
+  let decision ="";
   if (decisionAlgorithm == 2) {
     // TO DO
   } else {
@@ -236,7 +235,7 @@ function calculateDecision(){
         then removes all votes for rejects and decides between the rest.
         TO DO: - Re-Work algorithm to make random choices among
         non-rejected options */
-      [options, allVotes] = parseVotes(allVotes, voteArray);
+      [options, allVotes] = parseTopVotes(allVotes, voteArray);
       console.log(options);
       if (options[0] == undefined) {
         //allVotes[0] will not be undefined as long as more than one option is available
@@ -246,17 +245,17 @@ function calculateDecision(){
          console.log("All options were rejected, so original ideaArray used.")
          options = ideaArray;
       }
-    } else { // Algorithm 2
+    } else { // Algorithm 0
       options = ideaArray;
     }
-    let decision = options[Math.floor(Math.random() * options.length)];
-    document.getElementById("answerHeading").innerHTML = "The decision is: " + decision;
-    document.getElementById("answerHeading").removeAttribute("hidden");
-    document.getElementById("decisionButton").setAttribute("hidden", "");
+    decision = options[Math.floor(Math.random() * options.length)];
   }
+  document.getElementById("answerHeading").innerHTML = "The decision is: " + decision;
+  document.getElementById("answerHeading").removeAttribute("hidden");
+  document.getElementById("decisionButton").setAttribute("hidden", "");
 }
 
-function parseVotes(allVotes, voteArray){
+function parseTopVotes(allVotes, voteArray){
   let noArray = [];
   let newOptions  =[];
   let initialOptions = [];
@@ -270,14 +269,14 @@ function parseVotes(allVotes, voteArray){
       initialOptions.push(voteArray[voteInd].firstVote);
     }
   }
-  allVotes = allVotes.concat(initialOptions); //in case all values are vetoed once
+  // allVotes is an array of all the top votes
+  allVotes = allVotes.concat(initialOptions);
   //loop removing all rejected choices
   for (let noInd = 0; noInd < initialOptions.length; noInd++) {
     if (noArray.indexOf(initialOptions[noInd]) == -1) {
       newOptions = newOptions.concat(initialOptions[noInd]);
     }
   }
-  console.log(newOptions)
   return [newOptions, allVotes];
 }
 
