@@ -2,11 +2,25 @@
 
 /* TO DO LIST:
 - Ranking Feature (Algorithm 2)
+  - finish showVotes 
+    - need to perform the ordering
+    - need to make div items for the rankings text in the html file
+    - need to update the div text
+    - need to unhide the div items
+  - make sure 2nd vote random and 3rd vote random don't repeat previous votes in parseVotes()
+- Update revealVotes for Algorithm 2
 - Update ReadMe with description and directions
 // Begin User Testng Here
 - Basic CSS styling
 - Reset Voting w/ different algorithm
 - Remove ability to rank same option in Alg 2
+- Allow revote if tie for first in Alg 2
+- Algorithm 1 & 2 better mitigation for when all votes are rejected
+  - list all votes and all no's
+  - check ideas remaining after all rejects removed
+    - if no ideas remaining, TBD
+    - if some remain, assign one of the remaining to each random vote
+  - output final array
 - Show the Random Number (Algorithm 0 & 1)
 - Add reject ability for algorithm 0 ?
 - Add unit tests
@@ -14,7 +28,7 @@
 BUG LIST:
 - Duplicates remain for voting if cases are different (i.e. "A" and "a" do not
   get sorted into the same vote option)
--
+- Checking/Unchecking not consistent on decideMain
 
 WISH LIST:
 - Easier to Use/Navigate/Understand
@@ -225,7 +239,12 @@ function calculateDecision(){
   */
   let decision ="";
   if (decisionAlgorithm == 2) {
-    // TO DO
+    // TO DO: IN PROGRESS
+    let parsedVotes = parseVotes(voteArray);
+    console.log(parsedVotes);
+    let voteScores = scoreVotes(parsedVotes, ideaArray);
+    console.log(voteScores);
+    showScores(voteScores);
   } else {
     // decisionAlgorithm == 0 || decisionAlgorithm == 1
     let options = [];
@@ -241,8 +260,7 @@ function calculateDecision(){
         /*allVotes[0] will not be undefined as long as
           one or more votes weren't rejected.
         TO DO: - display message saying all options were vetoed
-         so vetoes were disregarded.
-         - should allVotes or ideaArray be used? */
+         so vetoes were disregarded. */
          console.log("All options were rejected, so allVotes was used.")
          options = allVotes;
       }
@@ -250,10 +268,58 @@ function calculateDecision(){
       options = ideaArray;
     }
     decision = options[Math.floor(Math.random() * options.length)];
+    document.getElementById("answerHeading").innerHTML = "The decision is: " + decision;
+    document.getElementById("answerHeading").removeAttribute("hidden");
   }
-  document.getElementById("answerHeading").innerHTML = "The decision is: " + decision;
-  document.getElementById("answerHeading").removeAttribute("hidden");
   document.getElementById("decisionButton").setAttribute("hidden", "");
+}
+
+function parseVotes(voteArray) {
+  // TO DO: make sure random 2nd and random 3rd don't repeat previous vote
+  let noArray = [];
+  let firstVotes = [];
+  let secondVotes = [];
+  let thirdVotes = [];
+  // for loop populating the arrays above
+  for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
+    if (voteArray[voteInd].noVote != "No") {
+      noArray.push(voteArray[voteInd].noVote);
+    }
+    if (voteArray[voteInd].firstVote == "random") {
+      firstVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+    } else {
+      firstVotes.push(voteArray[voteInd].firstVote);
+    }
+    if (voteArray[voteInd].secondVote == "random") {
+      secondVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+    } else {
+      secondVotes.push(voteArray[voteInd].secondVote);
+    }
+    if (voteArray[voteInd].thirdVote == "random") {
+      thirdVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+    } else {
+      thirdVotes.push(voteArray[voteInd].thirdVote);
+    }
+  }
+  return [firstVotes, secondVotes, thirdVotes, noArray];
+}
+
+function scoreVotes(fullVotesArray, allIdeas) {
+  let scores = {};
+  for (let ideaInd = 0; ideaInd < allIdeas.length; ideaInd++) {
+    scores[allIdeas[ideaInd]] = 0;
+  }
+  for (let scoreInd = 0; scoreInd < fullVotesArray[0].length; scoreInd++) {
+    scores[fullVotesArray[0][scoreInd]] += 4;
+    scores[fullVotesArray[1][scoreInd]] += 2;
+    scores[fullVotesArray[2][scoreInd]] += 1;
+  }
+  return scores;
+}
+
+function showScores(voteScores) {
+  document.getElementById("answerHeading").innerHTML = "The voting results are in:"";
+  document.getElementById("answerHeading").removeAttribute("hidden");
 }
 
 function parseTopVotes(allVotes, voteArray){
