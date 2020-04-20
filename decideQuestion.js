@@ -45,6 +45,7 @@ let numberOfOptions = 0; // initializing for decisionAlgorithm
 let numberOfVotes = 0;
 let ideaArray = [];
 let voteArray = [];
+let scores = {};
 let minimumOptionQuantity = 2; // 1 for testing, 2 for operations
 let minimumVoteQuantity = 1; // not currently used
 
@@ -242,9 +243,9 @@ function calculateDecision(){
     // TO DO: IN PROGRESS
     let parsedVotes = parseVotes(voteArray);
     console.log(parsedVotes);
-    let voteScores = scoreVotes(parsedVotes, ideaArray);
-    console.log(voteScores);
-    showScores(voteScores);
+    scoreVotes(parsedVotes, ideaArray);
+    console.log(scores);
+    showScores(scores);
   } else {
     // decisionAlgorithm == 0 || decisionAlgorithm == 1
     let options = [];
@@ -305,10 +306,11 @@ function parseVotes(voteArray) {
 }
 
 function scoreVotes(fullVotesArray, allIdeas) {
-  let scores = {};
+  // populates scores with all the possible options
   for (let ideaInd = 0; ideaInd < allIdeas.length; ideaInd++) {
     scores[allIdeas[ideaInd]] = 0;
   }
+  // Sum the scores from the first, second and third votes in scores
   for (let scoreInd = 0; scoreInd < fullVotesArray[0].length; scoreInd++) {
     scores[fullVotesArray[0][scoreInd]] += 4;
     scores[fullVotesArray[1][scoreInd]] += 2;
@@ -320,6 +322,19 @@ function scoreVotes(fullVotesArray, allIdeas) {
 function showScores(voteScores) {
   document.getElementById("answerHeading").innerHTML = "The voting results are in:";
   document.getElementById("answerHeading").removeAttribute("hidden");
+  let scoreSumsArray = [];
+  // populates the score sums array for ordering in result publishing
+  for (let key in scores) {
+    scoreSumsArray.push(scores[key]);
+  }
+  // orders the score
+  scoreSumsArray.sort(function(a, b) {
+  return a - b;
+  });
+  // gets the names of the associated keys (the things voted on)
+  // TO DO
+  // updates the html
+  // TO DO 
 }
 
 function parseTopVotes(allVotes, voteArray){
