@@ -2,7 +2,7 @@
 
 /* TO DO LIST:
 - Ranking Feature (Algorithm 2)
-  - finish showVotes 
+  - finish showVotes
     - need to perform the ordering
     - need to make div items for the rankings text in the html file
     - need to update the div text
@@ -318,7 +318,7 @@ function scoreVotes(fullVotesArray, allIdeas) {
 }
 
 function showScores(voteScores) {
-  document.getElementById("answerHeading").innerHTML = "The voting results are in:"";
+  document.getElementById("answerHeading").innerHTML = "The voting results are in:";
   document.getElementById("answerHeading").removeAttribute("hidden");
 }
 
