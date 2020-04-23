@@ -329,12 +329,33 @@ function showScores(voteScores) {
   }
   // orders the score
   scoreSumsArray.sort(function(a, b) {
-  return a - b;
+  return b-a;
   });
+  console.log("The score ordering array is: ")
+  console.log(scoreSumsArray)
   // gets the names of the associated keys (the things voted on)
-  // TO DO
+  let voteScorePairArray = Object.entries(scores);
+  let orderedVoteArray = [];
+  /* loop to populate the orderedVoteArray with the names of the places
+    corresponding to the scores calculated. */
+  for (let scoreIndex = 0; scoreIndex < scoreSumsArray.length; scoreIndex++) {
+    /* loop to check the current score against the value pairs to find the name
+      of the vote corresponding to the current score. */
+    for (let pairIndex = 0; pairIndex < voteScorePairArray.length; pairIndex++){
+      // if statement checks if current score matches in the pair
+      if (scoreSumsArray[scoreIndex] == voteScorePairArray[pairIndex][1]) {
+        /* if statement checks if an idea has already been added to the array.
+         This avoids duplicate ideas in the case where multiple have the
+         same number of votes */
+        if (orderedVoteArray.indexOf(voteScorePairArray[pairIndex][0]) == -1){
+          orderedVoteArray.push(voteScorePairArray[pairIndex][0]);
+        }
+      } // else no match and for loop iterates to next value/name pair
+    }
+  }
+  console.log(orderedVoteArray);
   // updates the html
-  // TO DO 
+  // TO DO
 }
 
 function parseTopVotes(allVotes, voteArray){
