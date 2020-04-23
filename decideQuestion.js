@@ -2,20 +2,17 @@
 
 /* TO DO LIST:
 - Ranking Feature (Algorithm 2)
-  - finish showVotes
-    - need to perform the ordering
-    - need to make div items for the rankings text in the html file
-    - need to update the div text
-    - need to unhide the div items
   - make sure 2nd vote random and 3rd vote random don't repeat previous votes in parseVotes()
 - Update revealVotes for Algorithm 2
-- Update ReadMe with description and directions
-// Begin User Testng Here
-- Basic CSS styling
 - Reset Voting w/ different algorithm
+- Update ReadMe with description and directions
+// Begin User Testing Here
+- Basic CSS styling
 - Remove ability to rank same option in Alg 2
 - Allow revote if tie for first in Alg 2
 - Algorithm 1 & 2 better mitigation for when all votes are rejected
+  - Alg 1 currently removes rejects right before selecting among votes
+  - Alg 2 currently rejects by adding -6 points to rejected place
   - list all votes and all no's
   - check ideas remaining after all rejects removed
     - if no ideas remaining, TBD
@@ -315,13 +312,12 @@ function scoreVotes(fullVotesArray, allIdeas) {
     scores[fullVotesArray[0][scoreInd]] += 4;
     scores[fullVotesArray[1][scoreInd]] += 2;
     scores[fullVotesArray[2][scoreInd]] += 1;
+    scores[fullVotesArray[3][scoreInd]] -= 6;
   }
   return scores;
 }
 
 function showScores(voteScores) {
-  document.getElementById("answerHeading").innerHTML = "The voting results are in:";
-  document.getElementById("answerHeading").removeAttribute("hidden");
   let scoreSumsArray = [];
   // populates the score sums array for ordering in result publishing
   for (let key in scores) {
@@ -355,7 +351,24 @@ function showScores(voteScores) {
   }
   console.log(orderedVoteArray);
   // updates the html
-  // TO DO
+  document.getElementById("answerHeading").innerHTML = "The highest ranked choice is: " + orderedVoteArray[0];
+  document.getElementById("answerHeading").removeAttribute("hidden");
+  clearListItems("currentIdeas");
+  for (let showRankingIndex = 0; showRankingIndex < orderedVoteArray.length; showRankingIndex++) {
+    let newLine = orderedVoteArray[showRankingIndex] + ": " + scores[orderedVoteArray[showRankingIndex]].toString() + " points";
+    addListItem("currentIdeas", newLine)
+  }
+  document.getElementById("finalRankings").removeAttribute("hidden");
+}
+
+function clearListItems(listID) {
+    document.getElementById(listID).innerHTML=""; //clears list
+}
+
+function addListItem(listID, newItemText){
+  let currentListItems = document.getElementById(listID).innerHTML;
+  let newListItem = "<li>" + newItemText + "</li>";
+  document.getElementById(listID).innerHTML= currentListItems + newListItem;
 }
 
 function parseTopVotes(allVotes, voteArray){
