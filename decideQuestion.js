@@ -358,7 +358,6 @@ function showScores(voteScores) {
     let newLine = orderedVoteArray[showRankingIndex] + ": " + scores[orderedVoteArray[showRankingIndex]].toString() + " points";
     addListItem("currentIdeas", newLine)
   }
-  document.getElementById("finalRankings").removeAttribute("hidden");
 }
 
 function clearListItems(listID) {
