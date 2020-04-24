@@ -2,18 +2,30 @@
 
 /* TO DO LIST:
 - Ranking Feature (Algorithm 2)
-- Update ReadMe with description and directions
-// Begin User Testng Here
-- Basic CSS styling
+  - make sure 2nd vote random and 3rd vote random don't repeat previous votes in parseVotes()
+- Update revealVotes for Algorithm 2
 - Reset Voting w/ different algorithm
+- Update ReadMe with description and directions
+// Begin User Testing Here
+- Basic CSS styling
 - Remove ability to rank same option in Alg 2
+- Allow revote if tie for first in Alg 2
+- Algorithm 1 & 2 better mitigation for when all votes are rejected
+  - Alg 1 currently removes rejects right before selecting among votes
+  - Alg 2 currently rejects by adding -6 points to rejected place
+  - list all votes and all no's
+  - check ideas remaining after all rejects removed
+    - if no ideas remaining, TBD
+    - if some remain, assign one of the remaining to each random vote
+  - output final array
 - Show the Random Number (Algorithm 0 & 1)
 - Add reject ability for algorithm 0 ?
+- Add unit tests
 
 BUG LIST:
 - Duplicates remain for voting if cases are different (i.e. "A" and "a" do not
   get sorted into the same vote option)
--
+- Checking/Unchecking not consistent on decideMain
 
 WISH LIST:
 - Easier to Use/Navigate/Understand
@@ -30,6 +42,7 @@ let numberOfOptions = 0; // initializing for decisionAlgorithm
 let numberOfVotes = 0;
 let ideaArray = [];
 let voteArray = [];
+let scores = {};
 let minimumOptionQuantity = 2; // 1 for testing, 2 for operations
 let minimumVoteQuantity = 1; // not currently used
 
@@ -124,45 +137,46 @@ function finishIdeation(){
     document.getElementById("questionExplanation").setAttribute("hidden", 1);
     if (decisionAlgorithm == 0) {
       document.getElementById("decisionButton").removeAttribute("hidden");
-    } else if (decisionAlgorithm == 1){
+    } else {
       document.getElementById("voteForm").removeAttribute("hidden");
       document.getElementById("voteButton").removeAttribute("hidden");
       document.getElementById("endVoteButton").removeAttribute("hidden");
       document.getElementById("restartVotingButton").removeAttribute("hidden");
       document.getElementById("currentVoters").removeAttribute("hidden");
-      document.getElementById("voteSecondSelection").setAttribute("hidden", "");
-      document.getElementById("secondVoteLabel").setAttribute("hidden", "");
-      document.getElementById("voteThirdSelection").setAttribute("hidden", "");
-      document.getElementById("thirdVoteLabel").setAttribute("hidden", "");
+      if (decisionAlgorithm == 1) {
+        document.getElementById("voteSecondSelection").setAttribute("hidden", "");
+        document.getElementById("secondVoteLabel").setAttribute("hidden", "");
+        document.getElementById("voteThirdSelection").setAttribute("hidden", "");
+        document.getElementById("thirdVoteLabel").setAttribute("hidden", "");
+        hideLineBreaks(algorithmTwoBreaks);
+      }
       if (allowRejects != 1) {
         voteNoSpace[0].setAttribute("hidden", "");
         voteNoSpace[1].setAttribute("hidden", "");
         document.getElementById("voteNoLabel").setAttribute("hidden", "");
         document.getElementById("voteNo").setAttribute("hidden", "");
       }
-      for (let brInd = 0; brInd < algorithmTwoBreaks.length; brInd++){
-        algorithmTwoBreaks[brInd].setAttribute("hidden","");
-      }
-      prepareVoting();
-    } else { // decisionAlgorithm == 2
-      document.getElementById("voteForm").removeAttribute("hidden");
-      document.getElementById("endVoteButton").removeAttribute("hidden");
       prepareVoting();
     };
   };
 }
 
+function hideLineBreaks(brID){
+  for (let brInd = 0; brInd < brID.length; brInd++){
+    brID[brInd].setAttribute("hidden","");
+  }
+}
+
 function prepareVoting(){
   if (decisionAlgorithm == 0) {
     console.log("This decision Algorithm should not have called this function.")
-  } else if (decisionAlgorithm == 1) {
+  } else {
+      // decisionAlgorithm == 1 or 2
       ideaArray = removeDuplicates(ideaArray);
       addDropDownOptions(document.getElementById("voteFirstSelection"));
       addDropDownOptions(document.getElementById("voteSecondSelection"));
       addDropDownOptions(document.getElementById("voteThirdSelection"));
       addDropDownOptions(document.getElementById("voteNo"));
-  } else {
-      console.log("This decision Algorithm has not been implemented yet")
   };
 }
 
@@ -222,11 +236,14 @@ function endVoting() {
 }
 
 function calculateDecision(){
-  /* TO DO:
-  - case 2 where it calculates the highest ranking option
-  */
+  let decision ="";
   if (decisionAlgorithm == 2) {
-    // TO DO
+    // TO DO: IN PROGRESS
+    let parsedVotes = parseVotes(voteArray);
+    console.log(parsedVotes);
+    scoreVotes(parsedVotes, ideaArray);
+    console.log(scores);
+    showScores(scores);
   } else {
     // decisionAlgorithm == 0 || decisionAlgorithm == 1
     let options = [];
@@ -236,27 +253,126 @@ function calculateDecision(){
         then removes all votes for rejects and decides between the rest.
         TO DO: - Re-Work algorithm to make random choices among
         non-rejected options */
-      [options, allVotes] = parseVotes(allVotes, voteArray);
+      [options, allVotes] = parseTopVotes(allVotes, voteArray);
       console.log(options);
       if (options[0] == undefined) {
-        //allVotes[0] will not be undefined as long as more than one option is available
-        // all votes were rejected by someone else
-        /* TO DO: display message saying all options were vetoed
-         so vetoes were disregarded.*/
-         console.log("All options were rejected, so original ideaArray used.")
-         options = ideaArray;
+        /*allVotes[0] will not be undefined as long as
+          one or more votes weren't rejected.
+        TO DO: - display message saying all options were vetoed
+         so vetoes were disregarded. */
+         console.log("All options were rejected, so allVotes was used.")
+         options = allVotes;
       }
-    } else { // Algorithm 2
+    } else { // Algorithm 0
       options = ideaArray;
     }
-    let decision = options[Math.floor(Math.random() * options.length)];
+    decision = options[Math.floor(Math.random() * options.length)];
     document.getElementById("answerHeading").innerHTML = "The decision is: " + decision;
     document.getElementById("answerHeading").removeAttribute("hidden");
-    document.getElementById("decisionButton").setAttribute("hidden", "");
+  }
+  document.getElementById("decisionButton").setAttribute("hidden", "");
+  hideLineBreaks(headerToOptionsBR);
+}
+
+function parseVotes(voteArray) {
+  // TO DO: make sure random 2nd and random 3rd don't repeat previous vote
+  let noArray = [];
+  let firstVotes = [];
+  let secondVotes = [];
+  let thirdVotes = [];
+  // for loop populating the arrays above
+  for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
+    if (voteArray[voteInd].noVote != "No") {
+      noArray.push(voteArray[voteInd].noVote);
+    }
+    if (voteArray[voteInd].firstVote == "random") {
+      firstVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+    } else {
+      firstVotes.push(voteArray[voteInd].firstVote);
+    }
+    if (voteArray[voteInd].secondVote == "random") {
+      secondVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+    } else {
+      secondVotes.push(voteArray[voteInd].secondVote);
+    }
+    if (voteArray[voteInd].thirdVote == "random") {
+      thirdVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+    } else {
+      thirdVotes.push(voteArray[voteInd].thirdVote);
+    }
+  }
+  return [firstVotes, secondVotes, thirdVotes, noArray];
+}
+
+function scoreVotes(fullVotesArray, allIdeas) {
+  // populates scores with all the possible options
+  for (let ideaInd = 0; ideaInd < allIdeas.length; ideaInd++) {
+    scores[allIdeas[ideaInd]] = 0;
+  }
+  // Sum the scores from the first, second and third votes in scores
+  for (let scoreInd = 0; scoreInd < fullVotesArray[0].length; scoreInd++) {
+    scores[fullVotesArray[0][scoreInd]] += 4;
+    scores[fullVotesArray[1][scoreInd]] += 2;
+    scores[fullVotesArray[2][scoreInd]] += 1;
+    scores[fullVotesArray[3][scoreInd]] -= 6;
+  }
+  return scores;
+}
+
+function showScores(voteScores) {
+  let scoreSumsArray = [];
+  // populates the score sums array for ordering in result publishing
+  for (let key in scores) {
+    scoreSumsArray.push(scores[key]);
+  }
+  // orders the score
+  scoreSumsArray.sort(function(a, b) {
+  return b-a;
+  });
+  console.log("The score ordering array is: ")
+  console.log(scoreSumsArray)
+  // gets the names of the associated keys (the things voted on)
+  let voteScorePairArray = Object.entries(scores);
+  let orderedVoteArray = [];
+  /* loop to populate the orderedVoteArray with the names of the places
+    corresponding to the scores calculated. */
+  for (let scoreIndex = 0; scoreIndex < scoreSumsArray.length; scoreIndex++) {
+    /* loop to check the current score against the value pairs to find the name
+      of the vote corresponding to the current score. */
+    for (let pairIndex = 0; pairIndex < voteScorePairArray.length; pairIndex++){
+      // if statement checks if current score matches in the pair
+      if (scoreSumsArray[scoreIndex] == voteScorePairArray[pairIndex][1]) {
+        /* if statement checks if an idea has already been added to the array.
+         This avoids duplicate ideas in the case where multiple have the
+         same number of votes */
+        if (orderedVoteArray.indexOf(voteScorePairArray[pairIndex][0]) == -1){
+          orderedVoteArray.push(voteScorePairArray[pairIndex][0]);
+        }
+      } // else no match and for loop iterates to next value/name pair
+    }
+  }
+  console.log(orderedVoteArray);
+  // updates the html
+  document.getElementById("answerHeading").innerHTML = "The highest ranked choice is: " + orderedVoteArray[0];
+  document.getElementById("answerHeading").removeAttribute("hidden");
+  clearListItems("currentIdeas");
+  for (let showRankingIndex = 0; showRankingIndex < orderedVoteArray.length; showRankingIndex++) {
+    let newLine = orderedVoteArray[showRankingIndex] + ": " + scores[orderedVoteArray[showRankingIndex]].toString() + " points";
+    addListItem("currentIdeas", newLine)
   }
 }
 
-function parseVotes(allVotes, voteArray){
+function clearListItems(listID) {
+    document.getElementById(listID).innerHTML=""; //clears list
+}
+
+function addListItem(listID, newItemText){
+  let currentListItems = document.getElementById(listID).innerHTML;
+  let newListItem = "<li>" + newItemText + "</li>";
+  document.getElementById(listID).innerHTML= currentListItems + newListItem;
+}
+
+function parseTopVotes(allVotes, voteArray){
   let noArray = [];
   let newOptions  =[];
   let initialOptions = [];
@@ -270,14 +386,14 @@ function parseVotes(allVotes, voteArray){
       initialOptions.push(voteArray[voteInd].firstVote);
     }
   }
-  allVotes = allVotes.concat(initialOptions); //in case all values are vetoed once
+  // allVotes is an array of all the top votes
+  allVotes = allVotes.concat(initialOptions);
   //loop removing all rejected choices
   for (let noInd = 0; noInd < initialOptions.length; noInd++) {
     if (noArray.indexOf(initialOptions[noInd]) == -1) {
       newOptions = newOptions.concat(initialOptions[noInd]);
     }
   }
-  console.log(newOptions)
   return [newOptions, allVotes];
 }
 
@@ -301,6 +417,9 @@ function revealVotes() {
     let currentVoteDisplay = document.getElementById("currentVoters").innerHTML;
     let newVote = "<li>" + voteArray[voteInd].name + ": " + voteArray[voteInd].firstVote + "</li>";
     document.getElementById("currentVoters").innerHTML= currentVoteDisplay + newVote;
+  }
+  if (decisionAlgorithm == 2){
+    document.getElementById("voterListHeader").innerHTML="Here's everyone's top pick:";
   }
 }
 
