@@ -148,9 +148,7 @@ function finishIdeation(){
         document.getElementById("secondVoteLabel").setAttribute("hidden", "");
         document.getElementById("voteThirdSelection").setAttribute("hidden", "");
         document.getElementById("thirdVoteLabel").setAttribute("hidden", "");
-        for (let brInd = 0; brInd < algorithmTwoBreaks.length; brInd++){
-          algorithmTwoBreaks[brInd].setAttribute("hidden","");
-        }
+        hideLineBreaks(algorithmTwoBreaks);
       }
       if (allowRejects != 1) {
         voteNoSpace[0].setAttribute("hidden", "");
@@ -161,6 +159,12 @@ function finishIdeation(){
       prepareVoting();
     };
   };
+}
+
+function hideLineBreaks(brID){
+  for (let brInd = 0; brInd < brID.length; brInd++){
+    brID[brInd].setAttribute("hidden","");
+  }
 }
 
 function prepareVoting(){
@@ -232,9 +236,6 @@ function endVoting() {
 }
 
 function calculateDecision(){
-  /* TO DO:
-  - case 2 where it calculates the highest ranking option
-  */
   let decision ="";
   if (decisionAlgorithm == 2) {
     // TO DO: IN PROGRESS
@@ -270,6 +271,7 @@ function calculateDecision(){
     document.getElementById("answerHeading").removeAttribute("hidden");
   }
   document.getElementById("decisionButton").setAttribute("hidden", "");
+  hideLineBreaks(headerToOptionsBR);
 }
 
 function parseVotes(voteArray) {
@@ -415,6 +417,9 @@ function revealVotes() {
     let currentVoteDisplay = document.getElementById("currentVoters").innerHTML;
     let newVote = "<li>" + voteArray[voteInd].name + ": " + voteArray[voteInd].firstVote + "</li>";
     document.getElementById("currentVoters").innerHTML= currentVoteDisplay + newVote;
+  }
+  if (decisionAlgorithm == 2){
+    document.getElementById("voterListHeader").innerHTML="Here's everyone's top pick:";
   }
 }
 
