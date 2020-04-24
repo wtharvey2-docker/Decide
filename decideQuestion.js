@@ -3,13 +3,11 @@
 /* TO DO LIST:
 - Ranking Feature (Algorithm 2)
   - make sure 2nd vote random and 3rd vote random don't repeat previous votes in parseVotes()
-- Update revealVotes for Algorithm 2
 - Reset Voting w/ different algorithm
 - Update ReadMe with description and directions
 // Begin User Testing Here
 - Basic CSS styling
-- Remove ability to rank same option in Alg 2
-- Allow revote if tie for first in Alg 2
+- Handle ties for winner in Alg 2
 - Algorithm 1 & 2 better mitigation for when all votes are rejected
   - Alg 1 currently removes rejects right before selecting among votes
   - Alg 2 currently rejects by adding -6 points to rejected place
@@ -19,7 +17,6 @@
     - if some remain, assign one of the remaining to each random vote
   - output final array
 - Show the Random Number (Algorithm 0 & 1)
-- Add reject ability for algorithm 0 ?
 - Add unit tests
 
 BUG LIST:
@@ -31,7 +28,6 @@ WISH LIST:
 - Easier to Use/Navigate/Understand
 - Aesthetic UI
 */
-
 
 // Global Variables
 let groupQuestion = "";
