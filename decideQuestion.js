@@ -173,7 +173,25 @@ function prepareVoting(){
       addDropDownOptions(document.getElementById("voteSecondSelection"));
       addDropDownOptions(document.getElementById("voteThirdSelection"));
       addDropDownOptions(document.getElementById("voteNo"));
+      document.getElementById("voteFirstSelection").addEventListener("change", doTheThing);
   };
+}
+
+function doTheThing(event) {
+  // NOT CURRENTLY FUNCTIONAL
+  // if (document.getElementById("voteFirstSelection").value != "random") {
+  //   let valueToRemove = document.getElementById("voteFirstSelection").value
+  //   document.getElementById("voteSecondSelection").removeChild(document.getElementById(valueToRemove))
+  //   document.getElementById("voteThirdSelection").removeChild(document.getElementById(valueToRemove))
+  // }  else if (document.getElementById("voteSecondSelection").value != "random") {
+  //   let valueToRemove = document.getElementById("voteSecondSelection").value
+  //   document.getElementById("voteFirstSelection").removeChild(document.getElementById(valueToRemove))
+  //   document.getElementById("voteThirdSelection").removeChild(document.getElementById(valueToRemove))
+  // }  else if (document.getElementById("voteThirdSelection").value != "random") {
+  //   let valueToRemove = document.getElementById("voteThirdSelection").value
+  //   document.getElementById("voteFirstSelection").removeChild(document.getElementById(valueToRemove))
+  //   document.getElementById("voteSecondSelection").removeChild(document.getElementById(valueToRemove))
+  // }
 }
 
 function addDropDownOptions(dropDownObject){
