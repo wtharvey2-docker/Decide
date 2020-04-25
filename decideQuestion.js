@@ -173,11 +173,11 @@ function prepareVoting(){
       addDropDownOptions(document.getElementById("voteSecondSelection"));
       addDropDownOptions(document.getElementById("voteThirdSelection"));
       addDropDownOptions(document.getElementById("voteNo"));
-      document.getElementById("voteFirstSelection").addEventListener("change", doTheThing);
+      document.getElementById("voteFirstSelection").addEventListener("change", updateOptions);
   };
 }
 
-function doTheThing(event) {
+function updateOptions(event) {
   // NOT CURRENTLY FUNCTIONAL
   // if (document.getElementById("voteFirstSelection").value != "random") {
   //   let valueToRemove = document.getElementById("voteFirstSelection").value
