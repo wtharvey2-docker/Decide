@@ -1,8 +1,6 @@
 "use strict";
 
 /* TO DO LIST:
-- Ranking Feature (Algorithm 2)
-  - make sure 2nd vote random and 3rd vote random don't repeat previous votes in parseVotes()
 - Reset Voting w/ different algorithm
 - Update ReadMe with description and directions
 // Begin User Testing Here
@@ -41,6 +39,9 @@ let voteArray = [];
 let scores = {};
 let minimumOptionQuantity = 2; // 1 for testing, 2 for operations
 let minimumVoteQuantity = 1; // not currently used
+let oldFirst = "random";
+let oldSecond = "random";
+let oldThird = "random";
 
 function processURL() {
   setEnterFunction("ideaFormIdea","ideaButton0");
@@ -174,33 +175,57 @@ function prepareVoting(){
       addDropDownOptions(document.getElementById("voteThirdSelection"));
       addDropDownOptions(document.getElementById("voteNo"));
       document.getElementById("voteFirstSelection").addEventListener("change", updateOptions);
+      document.getElementById("voteSecondSelection").addEventListener("change", updateOptions);
+      document.getElementById("voteThirdSelection").addEventListener("change", updateOptions);
   };
 }
 
 function updateOptions(event) {
-  // NOT CURRENTLY FUNCTIONAL
-  // if (document.getElementById("voteFirstSelection").value != "random") {
-  //   let valueToRemove = document.getElementById("voteFirstSelection").value
-  //   document.getElementById("voteSecondSelection").removeChild(document.getElementById(valueToRemove))
-  //   document.getElementById("voteThirdSelection").removeChild(document.getElementById(valueToRemove))
-  // }  else if (document.getElementById("voteSecondSelection").value != "random") {
-  //   let valueToRemove = document.getElementById("voteSecondSelection").value
-  //   document.getElementById("voteFirstSelection").removeChild(document.getElementById(valueToRemove))
-  //   document.getElementById("voteThirdSelection").removeChild(document.getElementById(valueToRemove))
-  // }  else if (document.getElementById("voteThirdSelection").value != "random") {
-  //   let valueToRemove = document.getElementById("voteThirdSelection").value
-  //   document.getElementById("voteFirstSelection").removeChild(document.getElementById(valueToRemove))
-  //   document.getElementById("voteSecondSelection").removeChild(document.getElementById(valueToRemove))
-  // }
+  let currentFirst = document.getElementById("voteFirstSelection").value;
+  let currentSecond = document.getElementById("voteSecondSelection").value;
+  let currentThird = document.getElementById("voteThirdSelection").value;
+  console.log(currentFirst,currentSecond,currentThird)
+  if (currentFirst != oldFirst){
+    if (currentSecond == currentFirst) {
+      document.getElementById("voteSecondSelection").value = "random";
+      currentSecond = "random";
+    }
+    if (currentThird == currentFirst){
+      document.getElementById("voteThirdSelection").value = "random";
+      currentThird = "random";
+    }
+    oldFirst = currentFirst;
+  } else if (currentSecond != oldSecond) {
+    if (currentFirst == currentSecond) {
+      document.getElementById("voteFirstSelection").value = "random";
+      currentFirst = "random";
+    }
+    if (currentThird == currentSecond){
+      document.getElementById("voteThirdSelection").value = "random";
+      currentThird = "random";
+    }
+  } else if (currentThird != oldThird) {
+    if (currentFirst == currentThird) {
+      document.getElementById("voteFirstSelection").value = "random";
+      currentFirst = "random";
+    }
+    if (currentSecond == currentThird){
+      document.getElementById("voteSecondSelection").value = "random";
+      currentSecond = "random";
+    }
+  }
+  oldFirst = currentFirst;
+  oldSecond = currentSecond;
+  oldThird = currentThird;
 }
 
 function addDropDownOptions(dropDownObject){
   for (let voteChoiceInd = 0; voteChoiceInd < ideaArray.length; voteChoiceInd++){
-    let additionalIdea = document.createElement("option");
-    additionalIdea.text = ideaArray[voteChoiceInd];
-    additionalIdea.value = ideaArray[voteChoiceInd];
-    additionalIdea.id = ideaArray[voteChoiceInd];
-    dropDownObject.appendChild(additionalIdea);
+      let additionalIdea = document.createElement("option");
+      additionalIdea.text = ideaArray[voteChoiceInd];
+      additionalIdea.value = ideaArray[voteChoiceInd];
+      additionalIdea.id = ideaArray[voteChoiceInd];
+      dropDownObject.appendChild(additionalIdea);
   }
 }
 
