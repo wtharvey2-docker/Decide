@@ -14,25 +14,24 @@
   */
 
 function algorithmZeroOptions() {
-  console.log("hi")
   document.getElementById("allowRejects").checked = false;
-  document.getElementById("showVotes").checked = false;
+  // document.getElementById("showVotes").checked = false;
   document.getElementById("allowRejects").setAttribute("disabled","");
-  document.getElementById("showVotes").setAttribute("disabled","");
+  // document.getElementById("showVotes").setAttribute("disabled","");
 }
 
 function algorithmOneOptions() {
   console.log("one");
   document.getElementById("allowRejects").removeAttribute("disabled");
-  document.getElementById("showVotes").removeAttribute("disabled");
+  // document.getElementById("showVotes").removeAttribute("disabled");
   document.getElementById("allowRejects").checked = true;
-  document.getElementById("showVotes").checked = true;
+  // document.getElementById("showVotes").checked = true;
 }
 
 function algorithmTwoOptions() {
   console.log("two");
   document.getElementById("allowRejects").removeAttribute("disabled");
-  document.getElementById("showVotes").removeAttribute("disabled");
+  // document.getElementById("showVotes").removeAttribute("disabled");
   document.getElementById("allowRejects").checked = true;
-  document.getElementById("showVotes").checked = true;
+  // document.getElementById("showVotes").checked = true;
 }
