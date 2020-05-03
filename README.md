@@ -1,6 +1,3 @@
-# Decide
-A program designed to allow a group to make a decision that gives everyone a say and minimizes the time spent between options that people are equally indifferent between.
-
 This document starts with a description of the tool and when to use it. The next part is a step-by-step walkthrough. The last part talks about further development in the works and how you can help.
 
 ## 1. Description
@@ -16,8 +13,26 @@ This document starts with a description of the tool and when to use it. The next
 
 Any problems, comments, or ideas are greatly appreciated. I made this because I don't like spending half an hour trying to figure out what everyone has eaten in the last week to try to agree on where to eat dinner with a group. I hope you find other uses for this and let me know so that I can make it better for your daily questions. You can reach me at wtharvey2@gmail.com.
 
-Future features may include:
+### 3a. Known Bugs
+- Duplicates remain for voting if cases are different (i.e. "A" and "a" do not
+  get sorted into the same vote option)
+  
+### 3b. Current To Do List
+- Basic CSS styling
+- Comment Code 
+- Handle ties for winner in Alg 2
+- Algorithm 1 & 2 better mitigation for when all votes are rejected
+  - Alg 1 currently removes rejects right before selecting among votes
+  - Alg 2 currently rejects by adding -6 points to rejected place
+  - list all votes and all no's
+  - check ideas remaining after all rejects removed
+    - if no ideas remaining, TBD
+    - if some remain, assign one of the remaining to each random vote
+  - output final array
+- Add unit tests
+
+### 3c. Future Feature Ideas
+- Make decision pages collaborative online (voters can be on different devices)
 - Presets where you can save options for repeated use.
-- Ways to use external files or data to provide options (like if you have a spreadsheet of restaurants you like)
-- Re-vote/re-decide with a different method
 - Easier-to-use interface (open to suggestions for what this may look like)
+- Ways to use external files or data to provide options (like if you have a spreadsheet of restaurants you like)
