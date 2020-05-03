@@ -16,7 +16,7 @@
 function algorithmZeroOptions() {
   document.getElementById("allowRejects").checked = false;
   // document.getElementById("showVotes").checked = false;
-  document.getElementById("allowRejects").setAttribute("disabled","");
+  // document.getElementById("allowRejects").setAttribute("disabled","");
   // document.getElementById("showVotes").setAttribute("disabled","");
 }
 
