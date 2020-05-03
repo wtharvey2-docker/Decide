@@ -21,7 +21,6 @@ function algorithmZeroOptions() {
 }
 
 function algorithmOneOptions() {
-  console.log("one");
   document.getElementById("allowRejects").removeAttribute("disabled");
   // document.getElementById("showVotes").removeAttribute("disabled");
   document.getElementById("allowRejects").checked = true;
@@ -29,7 +28,6 @@ function algorithmOneOptions() {
 }
 
 function algorithmTwoOptions() {
-  console.log("two");
   document.getElementById("allowRejects").removeAttribute("disabled");
   // document.getElementById("showVotes").removeAttribute("disabled");
   document.getElementById("allowRejects").checked = true;
