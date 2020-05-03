@@ -11,11 +11,11 @@
       <label for="groupQuestion">What are you trying to decide?</label>
       <input type="text" id="groupQuestion" name="groupQuestion" required><br><br>
       <label for="decisionAlgorithm">How would you like to decide?</label><br>
-      <input type="radio" id="randomIdea" name="decisionAlgorithm" value="0" onclick="algorithmZeroOptions()">
+      <input type="radio" id="randomIdea" name="decisionAlgorithm" value="0" onchange="algorithmZeroOptions()">
       <label for="randomIdea">Decide Between Ideas Randomly</label><br>
-      <input type="radio" id="randomVote" name="decisionAlgorithm" value="1" onclick="algorithmOneOptions()" checked>
+      <input type="radio" id="randomVote" name="decisionAlgorithm" value="1" onchange="algorithmOneOptions()" checked>
       <label for="randomVote">Decide Between Votes Randomly</label><br>
-      <input type="radio" id="rankedVote" name="decisionAlgorithm" value="2" onclick="algorithmTwoOptions()">
+      <input type="radio" id="rankedVote" name="decisionAlgorithm" value="2" onchange="algorithmTwoOptions()">
       <label for="rankedVote">Decide Between Ranked Votes</label><br><br>
       <input type="checkbox" id="showVotes" name="showVotes" value="1" checked>
       <label for="showVotes"> Do you want to see what everyone voted for?</label><br><br>

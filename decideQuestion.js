@@ -2,7 +2,7 @@
 
 /* TO DO LIST:
 - Update ReadMe with description and directions
-- Try to compile current bugs/ 
+- Try to compile current bugs/
 // Begin User Testing Here
 - Basic CSS styling
 - Handle ties for winner in Alg 2
@@ -20,7 +20,6 @@
 BUG LIST:
 - Duplicates remain for voting if cases are different (i.e. "A" and "a" do not
   get sorted into the same vote option)
-- Checking/Unchecking not consistent on decideMain
 
 WISH LIST:
 - Easier to Use/Navigate/Understand
