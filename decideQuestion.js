@@ -1,30 +1,5 @@
 "use strict";
 
-/* TO DO LIST:
-- Update ReadMe with description and directions
-// Begin User Testing Here
-- Basic CSS styling
-- Handle ties for winner in Alg 2
-- Algorithm 1 & 2 better mitigation for when all votes are rejected
-  - Alg 1 currently removes rejects right before selecting among votes
-  - Alg 2 currently rejects by adding -6 points to rejected place
-  - list all votes and all no's
-  - check ideas remaining after all rejects removed
-    - if no ideas remaining, TBD
-    - if some remain, assign one of the remaining to each random vote
-  - output final array
-- Show the Random Number (Algorithm 0 & 1)
-- Add unit tests
-
-BUG LIST:
-- Duplicates remain for voting if cases are different (i.e. "A" and "a" do not
-  get sorted into the same vote option)
-
-WISH LIST:
-- Easier to Use/Navigate/Understand
-- Aesthetic UI
-*/
-
 // Global Variables
 let groupQuestion = "";
 let decisionAlgorithm = "";
