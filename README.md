@@ -13,10 +13,12 @@ Starting on the initial page, you have three tasks:
   - "Should we wear masks to the party?"
   - "How should we get home from the demolition derby?"
   - "What game should we play?"
+  
 ### 2. Pick the way you would like to decide:
   - Random selection is great when no one feels strongly about any options.
   - Decide by Voting is best when you only have a couple of options.
   - Decide by Ranking is fantastic when you're trying to narrow down ideas from many in a large group.
+  
 ### 3. Check or Uncheck the option to allow voters to reject an idea:
   - This gives people a chance to reject an option if they aren't comfortable saying so directly to the group.
   - It won't solve a Mexican standoff and isn't recommended for groups smaller than 5.
@@ -26,17 +28,21 @@ Upon clicking "Let's Decide", you will be brought to a page where the actual dec
   - One person can input for the group or everyone can be given a chance to add their ideas
   - Once all ideas are added, please click the "Finish Adding Ideas" button.
   - If random selection used, click Let's Decide to find out your decision!
+  
 ### 5. Now a voting window should appear- give everyone a chance to fill it out:
   - Names are required to discourage double voting.
   - Default options are random for all votes and no for the rejecting vote line.
   - When ranking, it should not allow the same option to be selected twice.
   - Click "Conclude Voting" when everyone has voted.
+  
 ### 6. Click Let's Decide!
   - You can see what everyone's top pick was before clicking though!
+  
 ### 7. "Clear Ideas & Reset" reloads the page so that you can add new choices.
+
 ### 8. If the group is happy with the choices, but unhappy with the results, click the buttons that start with "Use ..." to try to decide again.
 
-Please submit feedback if you have any issues, want something changed, or like something in particular!
+*Please send feedback if you have any issues, want something changed, or like something in particular!*
   
 # 3. Development
 
