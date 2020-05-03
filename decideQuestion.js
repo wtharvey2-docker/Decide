@@ -3,7 +3,7 @@
 // Global Variables
 let groupQuestion = "";
 let decisionAlgorithm = "";
-let showVotes = 0;
+let showVotes = 1;
 let allowRejects = 0;
 let numberOfOptions = 0; // initializing for decisionAlgorithm
 let numberOfVotes = 0;
@@ -102,6 +102,7 @@ function resetIdeas(){
 function afterIdeationActions(previousState){
   // TO DO: Message declaring minimum # of options
   if (numberOfOptions >= minimumOptionQuantity) {
+    ideaListHTMLWithoutVotes = storeListItems("currentIdeas");
     document.getElementById("ideaForm").setAttribute("hidden", 1);
     document.getElementById("ideaButton1").setAttribute("hidden", 1);
     document.getElementById("listHeader").innerHTML="Our Options Are:";
