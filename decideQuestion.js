@@ -93,6 +93,7 @@ function addIdea(){
     document.getElementById("resetButton").removeAttribute("hidden");
     document.getElementById("currentIdeas").removeAttribute("hidden");
   };
+  ideaListHTMLWithoutVotes = storeListItems("currentIdeas");
 }
 
 function resetIdeas(){
@@ -102,7 +103,6 @@ function resetIdeas(){
 function afterIdeationActions(previousState){
   // TO DO: Message declaring minimum # of options
   if (numberOfOptions >= minimumOptionQuantity) {
-    ideaListHTMLWithoutVotes = storeListItems("currentIdeas");
     document.getElementById("ideaForm").setAttribute("hidden", 1);
     document.getElementById("ideaButton1").setAttribute("hidden", 1);
     document.getElementById("listHeader").innerHTML="Our Options Are:";
