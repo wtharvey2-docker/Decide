@@ -2,7 +2,6 @@
 
 /* TO DO LIST:
 - Update ReadMe with description and directions
-- Try to compile current bugs/
 // Begin User Testing Here
 - Basic CSS styling
 - Handle ties for winner in Alg 2
@@ -41,6 +40,7 @@ let minimumVoteQuantity = 1; // not currently used
 let oldFirst = "random";
 let oldSecond = "random";
 let oldThird = "random";
+let ideaListHTMLWithoutVotes =""
 
 function processURL() {
   setEnterFunction("ideaFormIdea","ideaButton0");
@@ -417,11 +417,20 @@ function showScores(voteScores) {
   // updates the html
   document.getElementById("answerHeading").innerHTML = "The highest ranked choice is: " + orderedVoteArray[0];
   document.getElementById("answerHeading").removeAttribute("hidden");
+  ideaListHTMLWithoutVotes = storeListItems("currentIdeas");
   clearListItems("currentIdeas");
   for (let showRankingIndex = 0; showRankingIndex < orderedVoteArray.length; showRankingIndex++) {
     let newLine = orderedVoteArray[showRankingIndex] + ": " + scores[orderedVoteArray[showRankingIndex]].toString() + " points";
     addListItem("currentIdeas", newLine)
   }
+}
+
+function storeListItems(listID) {
+  return document.getElementById(listID).innerHTML;
+}
+
+function inputAllListItemsAtOnce(listID, htmlText) {
+  document.getElementById(listID).innerHTML = htmlText;
 }
 
 function clearListItems(listID) {
@@ -500,6 +509,7 @@ function tryDifferentAlgorithm(newAlgorithmVariable){
   hideLineBreaks(tryAgainBr)
   hideLineBreaks(tryNewMethodButton);
   restartVoting(); // clears any leftover votes
+  inputAllListItemsAtOnce("currentIdeas", ideaListHTMLWithoutVotes);
   decisionAlgorithm = newAlgorithmVariable;
   afterIdeationActions(1);
 }
