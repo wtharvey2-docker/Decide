@@ -161,19 +161,16 @@ function showLineBreaks(brID){
 }
 
 function prepareVoting(){
-  if (decisionAlgorithm == 0) {
-    console.log("This decision Algorithm should not have called this function.")
-  } else {
-      // decisionAlgorithm == 1 or 2
-      ideaArray = removeDuplicates(ideaArray);
-      addDropDownOptions(document.getElementById("voteFirstSelection"));
-      addDropDownOptions(document.getElementById("voteSecondSelection"));
-      addDropDownOptions(document.getElementById("voteThirdSelection"));
-      addDropDownOptions(document.getElementById("voteNo"));
-      document.getElementById("voteFirstSelection").addEventListener("change", updateOptions);
-      document.getElementById("voteSecondSelection").addEventListener("change", updateOptions);
-      document.getElementById("voteThirdSelection").addEventListener("change", updateOptions);
-  };
+    // not needed for Algorithm 1, but action performed in case re-vote
+    // used in decisionAlgorithm == 1 or 2
+    ideaArray = removeDuplicates(ideaArray);
+    addDropDownOptions(document.getElementById("voteFirstSelection"));
+    addDropDownOptions(document.getElementById("voteSecondSelection"));
+    addDropDownOptions(document.getElementById("voteThirdSelection"));
+    addDropDownOptions(document.getElementById("voteNo"));
+    document.getElementById("voteFirstSelection").addEventListener("change", updateOptions);
+    document.getElementById("voteSecondSelection").addEventListener("change", updateOptions);
+    document.getElementById("voteThirdSelection").addEventListener("change", updateOptions);
 }
 
 function updateOptions(event) {
