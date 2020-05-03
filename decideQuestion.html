@@ -18,7 +18,7 @@
       <br>
       <button id="ideaButton0" type="button" onclick="addIdea()">Add Idea</button>
       <br>
-      <button type="button" id="ideaButton1" onclick="finishIdeation()" hidden> Finish Adding Ideas </button>
+      <button type="button" id="ideaButton1" onclick="afterIdeationActions(0)" hidden> Finish Adding Ideas </button>
     </form>
     <br id="headerToOptionsBR">
     <form id="voteForm" method="post" hidden>
@@ -32,11 +32,11 @@
       <label for="voteSecondSelection" id="secondVoteLabel">What's your 2nd pick?</label>
       <select id="voteSecondSelection">
         <option value="random">The rest are equally good</option>
-      </select><br id="algorithmTwoBreaks"><br id="algorithmTwoBreaks">
+      </select><br id="voteTwoSpace"><br id="voteTwoSpace">
       <label for="voteThirdSelection" id="thirdVoteLabel">What's your 3rd pick?</label>
       <select id="voteThirdSelection">
         <option value="random">The rest are equally good</option>
-      </select><br id="algorithmTwoBreaks"><br id="algorithmTwoBreaks">
+      </select><br id="voteThreeSpace"><br id="voteThreeSpace">
       <label id="voteNoLabel" for="voteNo">Is there one choice you object to?</label>
       <select id="voteNo">
         <option value="No">Nope, all of these will be ok!</option>
@@ -55,7 +55,13 @@
     </ul>
     <br><br><br><br><br><br><br>
     <button type="button" id="restartVotingButton" onclick="restartVoting()" hidden>Restart Voting</button>
-    <br><br>
+    <br id="tryAgainBr">
+    <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(0)" hidden>Use Same Ideas, but Decide Randomly</button>
+    <br id="tryAgainBr">
+    <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(1)" hidden>Use Same Ideas, but Everyone Gives Top Vote</button>
+    <br id="tryAgainBr">
+    <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(2)" hidden>Use Same Ideas, but Everyone Ranks Top 3</button>
+    <br ><br>
     <button type="button" id="resetButton" onclick="resetIdeas()" hidden>Clear Ideas & Reset</button>
     <br><br>
     <a href="https://wtharvey2.github.io/Decide/" target="_blank">Help! How do I use this?</a>

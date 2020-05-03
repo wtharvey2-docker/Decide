@@ -1,8 +1,8 @@
 "use strict";
 
 /* TO DO LIST:
-- Reset Voting w/ different algorithm
 - Update ReadMe with description and directions
+- Try to compile current bugs/ 
 // Begin User Testing Here
 - Basic CSS styling
 - Handle ties for winner in Alg 2
@@ -125,8 +125,8 @@ function resetIdeas(){
   window.location.reload();
 }
 
-function finishIdeation(){
-  // TO DO: Message delcaring minimum # of options
+function afterIdeationActions(previousState){
+  // TO DO: Message declaring minimum # of options
   if (numberOfOptions >= minimumOptionQuantity) {
     document.getElementById("ideaForm").setAttribute("hidden", 1);
     document.getElementById("ideaButton1").setAttribute("hidden", 1);
@@ -145,7 +145,15 @@ function finishIdeation(){
         document.getElementById("secondVoteLabel").setAttribute("hidden", "");
         document.getElementById("voteThirdSelection").setAttribute("hidden", "");
         document.getElementById("thirdVoteLabel").setAttribute("hidden", "");
-        hideLineBreaks(algorithmTwoBreaks);
+        hideLineBreaks(voteTwoSpace);
+        hideLineBreaks(voteThreeSpace);
+      } else { // for reseting votes with different Algorithm
+        document.getElementById("voteSecondSelection").removeAttribute("hidden");
+        document.getElementById("secondVoteLabel").removeAttribute("hidden");
+        document.getElementById("voteThirdSelection").removeAttribute("hidden");
+        document.getElementById("thirdVoteLabel").removeAttribute("hidden");
+        showLineBreaks(voteTwoSpace);
+        showLineBreaks(voteThreeSpace);
       }
       if (allowRejects != 1) {
         voteNoSpace[0].setAttribute("hidden", "");
@@ -153,14 +161,27 @@ function finishIdeation(){
         document.getElementById("voteNoLabel").setAttribute("hidden", "");
         document.getElementById("voteNo").setAttribute("hidden", "");
       }
+    }
+    if (previousState == 0) {
       prepareVoting();
-    };
+    }
+    if (ideaArray.length < 3) {
+      document.getElementById("voteThirdSelection").setAttribute("hidden","");
+      document.getElementById("thirdVoteLabel").setAttribute("hidden","");
+      hideLineBreaks(voteThreeSpace);
+    }
   };
 }
 
 function hideLineBreaks(brID){
   for (let brInd = 0; brInd < brID.length; brInd++){
     brID[brInd].setAttribute("hidden","");
+  }
+}
+
+function showLineBreaks(brID){
+  for (let brInd = 0; brInd < brID.length; brInd++){
+    brID[brInd].removeAttribute("hidden");
   }
 }
 
@@ -277,7 +298,6 @@ function endVoting() {
 function calculateDecision(){
   let decision ="";
   if (decisionAlgorithm == 2) {
-    // TO DO: IN PROGRESS
     let parsedVotes = parseVotes(voteArray);
     console.log(parsedVotes);
     scoreVotes(parsedVotes, ideaArray);
@@ -311,6 +331,8 @@ function calculateDecision(){
   }
   document.getElementById("decisionButton").setAttribute("hidden", "");
   hideLineBreaks(headerToOptionsBR);
+  showLineBreaks(tryAgainBr);
+  showLineBreaks(tryNewMethodButton);
 }
 
 function parseVotes(voteArray) {
@@ -352,7 +374,9 @@ function scoreVotes(fullVotesArray, allIdeas) {
   for (let scoreInd = 0; scoreInd < fullVotesArray[0].length; scoreInd++) {
     scores[fullVotesArray[0][scoreInd]] += 4;
     scores[fullVotesArray[1][scoreInd]] += 2;
-    scores[fullVotesArray[2][scoreInd]] += 1;
+    if (ideaArray.length > 2) {
+      scores[fullVotesArray[2][scoreInd]] += 1;
+    }
     scores[fullVotesArray[3][scoreInd]] -= 6;
   }
   return scores;
@@ -464,8 +488,21 @@ function revealVotes() {
 
 function restartVoting(){
   voteArray = [];
+  numberOfVotes = 0;
   document.getElementById("voterListHeader").setAttribute("hidden","");
   document.getElementById("currentVoters").innerHTML="";
+}
+
+function tryDifferentAlgorithm(newAlgorithmVariable){
+  // remove the old decision
+  document.getElementById("answerHeading").innerHTML="";
+  document.getElementById("answerHeading").setAttribute("hidden", 1);
+  // remove the buttons
+  hideLineBreaks(tryAgainBr)
+  hideLineBreaks(tryNewMethodButton);
+  restartVoting(); // clears any leftover votes
+  decisionAlgorithm = newAlgorithmVariable;
+  afterIdeationActions(1);
 }
 
 function setEnterFunction(inputID, buttonID){
