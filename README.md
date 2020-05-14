@@ -3,11 +3,11 @@ This document starts with a description of the tool and when to use it. The next
 # 1. Description
   The idea behind *Decide* is to take the difficulty out of making small group decisions like where to eat, what game to play, or what activity to do. The basic process is that you first state what the question is that you're trying to answer, which is then followed by everyone submitting their ideas. After that, people can optionally vote and/or reject ideas before the program selects an answer for the group. Options are available at the beginning to allow the group to choose whether they want to vote or just have a random decision between the options they come up with. Overall, *Decide* has been made with the intention of making the process as easy as possible while also trying to minimize the number of ways that people can game the system so that the group can get a fair decision.
   
-  This tool is not meant to make important decisions and should not be used to randomize decisions like how many children to have, what country to move to, or how much to bet on the Cubs winning another World Series. It's intended for daily use in situations like deciding where to go for lunch with your friends or which streaming service to buy if you have to shelter-in-place again.
+  **This tool is not meant to make important decisions** and should not be used for significant decisions, such as how many children to have, what country to move to, or how much to bet on the Pinewood (or Kentucky) Derby. It's **intended for daily use in social situations** like deciding *where to go for lunch* with your friends or which streaming service to buy if you must stay home for months.
 
 # 2. How to Use
 
-Starting on the initial page, you have three tasks:
+Starting out, you have three tasks:
 ### 1. Input the question you're trying to decide on. Good questions include:
   - "Where should we order dinner from?"
   - "Should we wear masks to the party?"
@@ -21,9 +21,9 @@ Starting on the initial page, you have three tasks:
   
 ### 3. Check or Uncheck the option to allow voters to reject an idea:
   - This gives people a chance to reject an option if they aren't comfortable saying so directly to the group.
-  - It won't solve a Mexican standoff and isn't recommended for groups smaller than 5.
+  - This option is *not recommended for groups smaller than 5 people.*
   
-Upon clicking "Let's Decide", you will be brought to a page where the actual decision process will take place!
+After clicking "Let's Decide", you will be brought to a page where the actual decision process will take place!
 ### 4. The next step is inputting everyone's ideas:
   - One person can input for the group or everyone can be given a chance to add their ideas
   - Once all ideas are added, please click the "Finish Adding Ideas" button.
@@ -49,7 +49,7 @@ Upon clicking "Let's Decide", you will be brought to a page where the actual dec
 Any problems, comments, or ideas are greatly appreciated. I made this because I don't like spending half an hour trying to figure out what everyone has eaten in the last week to try to agree on where to eat dinner with a group. I hope you find other uses for this and let me know so that I can make it better for your daily questions. You can reach me at wtharvey2@gmail.com.
 
 ### 3a. Known Bugs
-- Duplicates remain for voting if cases are different (i.e. "A" and "a" do not
+- Duplicates remain for inputting ideas if cases are different (i.e. "A" and "a" do not
   get sorted into the same vote option)
   
 ### 3b. Current To Do List
