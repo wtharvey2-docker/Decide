@@ -1,17 +1,23 @@
-'use strict';
-
 const express = require('express');
-
-// Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';
-
-// App
 const app = express();
-app.use(express.static('.'))
-// app.get('/', (req, res) => {
-//   res.send('Hello World');
+const path = require('path');
+const router = express.Router();
+
+router.get('/',function(req,res){
+  res.sendFile(path.join(__dirname+'/decideMain.html'));
+  //__dirname : It will resolve to your project folder.
+});
+
+router.get('/decideQuestion',function(req,res){
+   res.sendFile(path.join(__dirname+'/decideQuestion.html'));
+ });
+// 
+// router.get('/sitemap',function(req,res){
+//   res.sendFile(path.join(__dirname+'/sitemap.html'));
 // });
 
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+//add the router
+app.use('/', router);
+app.listen(process.env.port || 3000);
+
+console.log('Running at Port 3000');
