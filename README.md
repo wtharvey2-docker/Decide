@@ -53,8 +53,8 @@ Any problems, comments, or ideas are greatly appreciated. I made this because I 
   get sorted into the same vote option)
   
 ### 3b. Current To Do List
+- [ ] Implement node.js
 - [ ] Basic CSS styling
-- [ ] Comment Code 
 - [ ] Handle ties for winner in Alg 2
 - [ ] Algorithm 1 & 2 better mitigation for when all votes are rejected
   - Alg 1 currently removes rejects right before selecting among votes
@@ -64,7 +64,7 @@ Any problems, comments, or ideas are greatly appreciated. I made this because I 
     - if no ideas remaining, TBD
     - if some remain, assign one of the remaining to each random vote
   - output final array
-- [ ] Add unit tests
+- [ ] Determine unit tests
 
 ### 3c. Future Feature Ideas
 - Make decision pages collaborative online (voters can be on different devices)
