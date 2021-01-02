@@ -27,6 +27,6 @@ router.get('/decideQuestion',function(req,res){
 
 //add the router
 app.use('/', router);
-app.listen(process.env.port || 3000);
+app.listen(process.env.port);
 
 console.log('Running at Port 3000 or ' + String(process.env.port));
