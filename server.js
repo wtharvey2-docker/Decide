@@ -11,7 +11,7 @@ router.get('/',function(req,res){
 router.get('/decideQuestion',function(req,res){
    res.sendFile(path.join(__dirname+'/decideQuestion.html'));
  });
-// 
+//
 // router.get('/sitemap',function(req,res){
 //   res.sendFile(path.join(__dirname+'/sitemap.html'));
 // });
