@@ -17,6 +17,53 @@ let oldSecond = "random";
 let oldThird = "random";
 let ideaListHTMLWithoutVotes =""
 
+
+/* start a new iteration of the program
+
+Gives a new ID number and adds a dictionary entry to set up the metadata
+*/
+function postNewSession(){
+  // TODO
+}
+
+/* gets the dictionary entry on the server corresponding to this iteration of the program
+
+inputs: idNumber(int): the session ID for finding the dictionary entry
+*/
+function getSessionData(idNumber){
+  // TODO
+}
+
+/* post an idea to the server */
+function postIdea(){
+  // TODO
+}
+
+/* changes the state of the program to indicate that ideation is complete */
+function postEndIdeation(){
+  // TODO
+}
+
+/* tells the server to return to the ideation state and deletes all ideas */
+function postResetIdeation(){
+  // TODO
+}
+
+/* post a vote to the server */
+function postNewVote(){
+  // TODO
+}
+
+/* changes the state of the program to indicate that voting is complete */
+function postEndVoting(){
+  // TODO
+}
+
+/* gets the final results for the vote */
+function getVotingResults(){
+  // TODO
+}
+
 function processURL() {
   setEnterFunction("ideaFormIdea","ideaButton0");
   setEnterFunction("voteFormName", 0);
