@@ -4,6 +4,9 @@ const path = require('path');
 const router = express.Router();
 const PORT = process.env.PORT || 3000;
 
+var dataComm = require('./dataComm')
+app.use('/dataComm', dataComm)
+
 router.get('/',function(req,res){
   res.sendFile(path.join(__dirname+'/decideMain.html'));
   //__dirname : It will resolve to your project folder.
@@ -14,13 +17,15 @@ router.get('/decideMainJS',function(req,res){
   //__dirname : It will resolve to your project folder.
 });
 
-router.get('/decideQuestion',function(req,res){
+router.post('/decideQuestion',function(req,res){
    res.sendFile(path.join(__dirname+'/decideQuestion.html'));
  });
 
- router.get('/decideQuestionJS',function(req,res){
+router.get('/decideQuestionJS',function(req,res){
     res.sendFile(path.join(__dirname+'/decideQuestion.js'));
   });
+
+router.get('')
 //
 // router.get('/sitemap',function(req,res){
 //   res.sendFile(path.join(__dirname+'/sitemap.html'));

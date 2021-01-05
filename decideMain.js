@@ -12,24 +12,48 @@
   4 = User-ranked decision of choices from an external source
   5 = Program-ranked decision on external choices based on external ratings
   */
+function makeNewURL(){
+    // get new id number
+    let id_val = 0
+    let request = new XMLHttpRequest();
+    requestURL = '/dataComm/newID';
+    request.open('GET', requestURL);
+    request.responseType = 'text';
 
-function algorithmZeroOptions() {
-  document.getElementById("allowRejects").checked = false;
-  // document.getElementById("showVotes").checked = false;
-  // document.getElementById("allowRejects").setAttribute("disabled","");
-  // document.getElementById("showVotes").setAttribute("disabled","");
+    request.onload = function() {
+      // gets a new id_val
+      id_val = request.responseText;
+      console.log(id_val)
+      console.log('hi')
+    };
+
+    request.send();
+    console.log('id_val is:' + id_val)
+    // make form data into an entry in the data
+
+
+    // set the action to be going to the question page
+    var form = document.getElementById('groupForm');
+    form.action = "decideQuestion";
 }
 
-function algorithmOneOptions() {
-  document.getElementById("allowRejects").removeAttribute("disabled");
-  // document.getElementById("showVotes").removeAttribute("disabled");
-  document.getElementById("allowRejects").checked = true;
-  // document.getElementById("showVotes").checked = true;
-}
-
-function algorithmTwoOptions() {
-  document.getElementById("allowRejects").removeAttribute("disabled");
-  // document.getElementById("showVotes").removeAttribute("disabled");
-  document.getElementById("allowRejects").checked = true;
-  // document.getElementById("showVotes").checked = true;
-}
+// function algorithmZeroOptions() {
+//   document.getElementById("allowRejects").checked = false;
+//   // document.getElementById("showVotes").checked = false;
+//   // document.getElementById("allowRejects").setAttribute("disabled","");
+//   // document.getElementById("showVotes").setAttribute("disabled","");
+// }
+//
+// function algorithmOneOptions() {
+//   document.getElementById("allowRejects").removeAttribute("disabled");
+//   // document.getElementById("showVotes").removeAttribute("disabled");
+//   document.getElementById("allowRejects").checked = true;
+//   // document.getElementById("showVotes").checked = true;
+// }
+//
+// function algorithmTwoOptions() {
+//   document.getElementById("allowRejects").removeAttribute("disabled");
+//   // document.getElementById("showVotes").removeAttribute("disabled");
+//   document.getElementById("allowRejects").checked = true;
+//   // document.getElementById("showVotes").checked = true;
+// }
