@@ -16,18 +16,19 @@ function makeNewURL(){
     // get new id number
     let id_val = 0
     let request = new XMLHttpRequest();
-    requestURL = '/dataComm/newID';
-    request.open('GET', requestURL);
-    request.responseType = 'text';
+    requestURL = '/newID';
+    request.open('GET', requestURL, true);
+    request.responseType = 'json';
 
     request.onload = function() {
       // gets a new id_val
-      id_val = request.responseText;
+      id_val = request.response;
       console.log(id_val)
       console.log('hi')
     };
 
     request.send();
+
     console.log('id_val is:' + id_val)
     // make form data into an entry in the data
 

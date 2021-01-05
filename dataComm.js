@@ -31,11 +31,8 @@ router.get('/newID', function (req, res) {
   // get max id number and add 1
   maxIDNumber += 1;
   // return the id number
-  newIDnumber = maxIDNumber;
-  // res.responseType('text');
-  res.json({ id: newIDnumber });
-  // res.on('data', id_number => { id_number = newIDnumber; });
-  res.sendStatus(200);
+  newIDnumber = String(maxIDNumber);
+  res.json({ 'id_num': String(500)});
 })
 
 module.exports = router

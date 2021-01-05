@@ -7,25 +7,25 @@ const PORT = process.env.PORT || 3000;
 var dataComm = require('./dataComm')
 app.use('/dataComm', dataComm)
 
-router.get('/',function(req,res){
+app.get('/',function(req,res){
   res.sendFile(path.join(__dirname+'/decideMain.html'));
   //__dirname : It will resolve to your project folder.
 });
 
-router.get('/decideMainJS',function(req,res){
+app.get('/decideMainJS',function(req,res){
   res.sendFile(path.join(__dirname+'/decideMain.js'));
   //__dirname : It will resolve to your project folder.
 });
 
-router.post('/decideQuestion',function(req,res){
+app.post('/decideQuestion',function(req,res){
    res.sendFile(path.join(__dirname+'/decideQuestion.html'));
  });
 
-router.get('/decideQuestionJS',function(req,res){
+app.get('/decideQuestionJS',function(req,res){
     res.sendFile(path.join(__dirname+'/decideQuestion.js'));
   });
 
-router.get('')
+// router.get('')
 //
 // router.get('/sitemap',function(req,res){
 //   res.sendFile(path.join(__dirname+'/sitemap.html'));
