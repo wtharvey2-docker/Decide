@@ -12,22 +12,17 @@
   4 = User-ranked decision of choices from an external source
   5 = Program-ranked decision on external choices based on external ratings
   */
+const axios = require('axios').default;
+
 function makeNewURL(){
     // get new id number
     let id_val = 0
-    let request = new XMLHttpRequest();
-    requestURL = '/newID';
-    request.open('GET', requestURL, true);
-    request.responseType = 'json';
-
-    request.onload = function() {
-      // gets a new id_val
-      id_val = request.response;
-      console.log(id_val)
-      console.log('hi')
-    };
-
-    request.send();
+    // let request = new XMLHttpRequest();
+    requestURL = '/dataComm/newID';
+    axios.get(requestURL).then(result => {
+      id_val = result
+      console.log('success:', result)
+    }).catch(error => console.log('error:', error));
 
     console.log('id_val is:' + id_val)
     // make form data into an entry in the data

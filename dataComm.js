@@ -2,6 +2,17 @@ var express = require('express')
 var router = express.Router()
 var maxIDNumber =  1000
 
+// get a unique ID number
+router.get('/newID', function (req, res) {
+  console.log('A new ID request!')
+  // get max id number and add 1
+  maxIDNumber += 1;
+  // return the id number
+  newIDnumber = String(maxIDNumber);
+  // res.json({ 'id_num': String(500)});
+  res.send(newIDnumber);
+})
+
 // get the data for a session
 router.get('/', function (req, res) {
   // get session ID number from req
@@ -24,15 +35,6 @@ router.post('/', function (req, res) {
   // TODO
 
   res.send('request posted')
-})
-
-// get a unique ID number
-router.get('/newID', function (req, res) {
-  // get max id number and add 1
-  maxIDNumber += 1;
-  // return the id number
-  newIDnumber = String(maxIDNumber);
-  res.json({ 'id_num': String(500)});
 })
 
 module.exports = router
