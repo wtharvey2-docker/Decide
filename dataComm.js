@@ -8,9 +8,9 @@ router.get('/newID', function (req, res) {
   // get max id number and add 1
   maxIDNumber += 1;
   // return the id number
-  newIDnumber = String(maxIDNumber);
-  // res.json({ 'id_num': String(500)});
-  res.send(newIDnumber);
+  newIDnumber = maxIDNumber;
+  // res.send(newIDnumber);
+  res.json({ 'id_num': String(newIDnumber)});
 })
 
 // get the data for a session
