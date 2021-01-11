@@ -4,7 +4,7 @@ const path = require('path');
 const router = express.Router();
 const PORT = process.env.PORT || 3000;
 
-var dataComm = require('./dataComm')
+var dataComm = require('./dataComm.js')
 app.use('/dataComm', dataComm)
 
 app.get('/',function(req,res){
@@ -31,8 +31,6 @@ app.get('/decideQuestionJS',function(req,res){
 //   res.sendFile(path.join(__dirname+'/sitemap.html'));
 // });
 
-//add the router
-app.use('/', router);
 app.listen(PORT, () => {
     console.log(`Decide is running on port ${ PORT }`);
 });

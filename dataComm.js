@@ -3,14 +3,15 @@ var router = express.Router()
 var maxIDNumber =  1000
 
 // get a unique ID number
-router.get('/newID', function (req, res) {
+router.get('/newID',(req, res) => {
   console.log('A new ID request!')
   // get max id number and add 1
   maxIDNumber += 1;
   // return the id number
-  newIDnumber = maxIDNumber;
+  newIDnumber = String(maxIDNumber);
   // res.send(newIDnumber);
-  res.json({ 'id_num': String(newIDnumber)});
+  // res.json({ 'id_num': String(newIDnumber)});
+  res.status(200).send(newIDnumber)
 })
 
 // get the data for a session

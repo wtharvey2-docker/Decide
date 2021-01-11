@@ -16,19 +16,21 @@
 function makeNewURL(){
     // get new id number
     let id_val = 0
-    let request = new XMLHttpRequest();
-    requestURL = '/dataComm/newID';
-    request.open('GET', requestURL, true);
-    request.responseType = 'json';
-
-    request.onload = function() {
-      // gets a new id_val
-      id_val = request.response;
-      console.log(id_val)
-      console.log('hi')
-   };
-
-   request.send();
+    var request = new XMLHttpRequest();
+    let requestURL = "/dataComm/newID"
+    request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+           // Typical action to be performed when the document is ready:
+           console.log('ready state changed!')
+           id_val = request.responseText;
+        }
+    };
+    /* Currently using a synchronous HTTP request because a response is needed
+    before submitting form and moving to next page.
+    TO DO: re-factor the page to perform this asynchronously
+    */
+    request.open("GET", requestURL, false);
+    request.send();
 
     console.log('id_val is:' + id_val)
     // make form data into an entry in the data
