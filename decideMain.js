@@ -35,7 +35,10 @@ function makeNewURL(){
     console.log('id_val is:' + id_val)
     // make form data into an entry in the data
 
-
+    // Add ID Value to the form
+    idValueEntry = document.getElementById('questionIDNumber');
+    idValueEntry.setAttribute("value", id_val);
+    
     // set the action to be going to the question page
     var form = document.getElementById('groupForm');
     form.action = "decideQuestion";
