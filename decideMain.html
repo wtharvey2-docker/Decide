@@ -7,21 +7,21 @@
             src='decideMainJS'></script>
   </head>
   <body>
-    <form id="groupForm" onsubmit="makeNewURL()" method="post">
+    <form id="groupForm" onsubmit="makeNewURL()" method="get">
       <label for="groupQuestion">What are you trying to decide?</label>
-      <input type="text" id="groupQuestion" name="groupQuestion" required><br><br>
+      <input type="text" id="groupQuestion" required><br><br>
       <label for="decisionAlgorithm">How would you like to decide?</label><br>
-      <input type="radio" id="randomIdea" name="decisionAlgorithm" value="0" onchange="algorithmZeroOptions()">
+      <input type="radio" id="randomIdea" value="0" onchange="algorithmZeroOptions()">
       <label for="randomIdea">Decide via Random Selection</label><br>
-      <input type="radio" id="randomVote" name="decisionAlgorithm" value="1" onchange="algorithmOneOptions()" checked>
+      <input type="radio" id="randomVote" value="1" onchange="algorithmOneOptions()" checked>
       <label for="randomVote">Decide by Voting</label><br>
-      <input type="radio" id="rankedVote" name="decisionAlgorithm" value="2" onchange="algorithmTwoOptions()">
+      <input type="radio" id="rankedVote" value="2" onchange="algorithmTwoOptions()">
       <label for="rankedVote">Decide by Ranking</label><br><br>
       <!-- VOTES ALWAYS SHOWN FOR NOW; THIS CAN BE REIMPLEMENTED LATER
       <input type="checkbox" id="showVotes" name="showVotes" value="1" checked>
       <label for="showVotes"> Do you want to see what everyone voted for?</label>
       <br><br>-->
-      <input type="checkbox" id="allowRejects" name="allowRejects" value="1" checked>
+      <input type="checkbox" id="allowRejects" value="1" checked>
       <label for="allowRejects"> Allow voters to reject a single idea when voting or ranking?</label><br><br>
       <input type="text" id="questionIDNumber" name="questionID" hidden>
       <input type="submit" value="Let's Decide!">

@@ -17,7 +17,7 @@ app.get('/decideMainJS',function(req,res){
   //__dirname : It will resolve to your project folder.
 });
 
-app.post('/decideQuestion',function(req,res){
+app.get('/decideQuestion',function(req,res){
    res.sendFile(path.join(__dirname+'/decideQuestion.html'));
  });
 
