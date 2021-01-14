@@ -30,11 +30,13 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
   // get information from req
   // TODO
-
+  console.log("next line is req.params")
+  console.log(req.params)
   // Merge the DB data?
   // add information to DB
   // TODO
 
+  console.log('New question session entered!')
   res.send('request posted')
 })
 
