@@ -68,15 +68,15 @@ function makeNewURL(){
 
 function postQuestionToServer(newQuestionDict) {
   var request = new XMLHttpRequest();
-  let requestURL = "/dataComm/"
+  let requestURL = "/dataComm"
   /* Currently using a synchronous HTTP request because a response is needed
   before submitting form and moving to next page.
   TO DO: re-factor the page to perform this asynchronously
   */
   request.open("POST", requestURL);
+  request.setRequestHeader("Content-Type", "application/json");
   requestString = JSON.stringify(newQuestionDict);
-  console.log(requestString)
-  request.send("Hello There");
+  request.send(requestString);
 }
 
 function clearFormData() {

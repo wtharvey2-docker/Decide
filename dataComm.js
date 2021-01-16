@@ -1,6 +1,11 @@
 var express = require('express')
 var router = express.Router()
+const bodyParser = require('body-parser');
+router.use(bodyParser.json());
+
 var maxIDNumber =  1000
+
+AllSessionDictionary = {}
 
 // get a unique ID number
 router.get('/newID',(req, res) => {
@@ -29,14 +34,14 @@ router.get('/', function (req, res) {
 // post the db update
 router.post('/', function (req, res) {
   // get information from req
-  // TODO
-  console.log("next line is req.params")
-  console.log(req.params)
+  newSessionInfo = req.body
+
   // Merge the DB data?
   // add information to DB
-  // TODO
+  AllSessionDictionary[newSessionInfo['QuestionID']] = newSessionInfo;
 
   console.log('New question session entered!')
+  console.log(AllSessionDictionary)
   res.send('request posted')
 })
 
