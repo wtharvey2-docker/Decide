@@ -51,7 +51,8 @@ function makeNewURL(){
       "Question": document.getElementById('groupQuestion').value,
       "Algorithm": String(algorithm),
       "Rejects": document.getElementById('allowRejects').value,
-      "QuestionID": String(id_val)
+      "QuestionID": String(id_val),
+      "State": "ideation",
     }
 
     // Post data to server for a session

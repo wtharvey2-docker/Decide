@@ -1,6 +1,9 @@
 "use strict";
 
 // Global Variables
+let debug = 0;
+let state = "";
+let questionID = "";
 let groupQuestion = "";
 let decisionAlgorithm = "";
 let showVotes = 1;
@@ -21,36 +24,12 @@ function processURL() {
   setEnterFunction("ideaFormIdea","ideaButton0");
   setEnterFunction("voteFormName", 0);
   // defining indices
-  let groupQuestionIndex = document.URL.indexOf("groupQuestion=")
-    + ("groupQuestion=").length;
-  let groupQuestionIndexEnd = document.URL.indexOf("&", groupQuestionIndex);
-  let decisionAlgorithmIndex = document.URL.indexOf("decisionAlgorithm=")
-    + ("decisionAlgorithm=").length;
-  let decisionAlgorithmIndexEnd = document.URL.indexOf("&", decisionAlgorithmIndex);
-  let showVotesIndex = document.URL.indexOf("showVotes=") + ("showVotes=").length;
-  let allowRejectIndex = document.URL.indexOf("allowRejects=") + ("allowRejects=").length;
-  if (groupQuestionIndex == document.URL.length) {
-    // debugging in case required field is lost for groupQuestion & decisionAlgorithm
-    console.log("There's an error in that the main page information isn't being put in the URL")
-  }
+  let questionIDIndex = document.URL.indexOf("questionID=") + ("questionID=").length;
 
   // translating information from URL
-  groupQuestion = document.URL.substring(groupQuestionIndex,
-    groupQuestionIndexEnd).replace(/[+]/g, " ");
-  if (decisionAlgorithmIndexEnd == -1) {
-    decisionAlgorithm = document.URL.substring(decisionAlgorithmIndex);
-  } else {
-    decisionAlgorithm = document.URL.substring(decisionAlgorithmIndex,
-      decisionAlgorithmIndexEnd);
-  };
+  questionID = document.URL.substring(questionIDIndex)
+  getSessionData(questionID)
 
-  // updating values if Vote Showing box is checked
-  if (showVotesIndex > (("showVotes=").length -1)) {
-    showVotes = 1;
-  };
-  if (allowRejectIndex > (("allowRejects=").length -1)) {
-    allowRejects = 1;
-  };
   while (groupQuestion.indexOf("%") != -1 &&
     groupQuestion.indexOf("%") != groupQuestion.length - 1) {
     /* first case is checking to see if there may be any html codes for
@@ -71,33 +50,49 @@ function processURL() {
   };
 
   // For debugging
-  console.log("The Question Input is: " + groupQuestion);
-  console.log("decisionAlgorithm = " + decisionAlgorithm);
-  console.log("showVotes = " + showVotes);
-  console.log("allowRejects = " + allowRejects);
-  document.getElementById("questionHeading").innerHTML = groupQuestion
-}
+  if debug {
+    console.log("The Question Input is: " + groupQuestion);
+    console.log("decisionAlgorithm = " + decisionAlgorithm);
+    console.log("showVotes = " + showVotes);
+    console.log("allowRejects = " + allowRejects);
+    document.getElementById("questionHeading").innerHTML = groupQuestion
+    }
 
 
-
-/* start a new iteration of the program
-
-Gives a new ID number and adds a dictionary entry to set up the metadata
-*/
-function postNewSession(){
-  // TODO
-}
+  }
 
 /* gets the dictionary entry on the server corresponding to this iteration of the program
 
 inputs: idNumber(int): the session ID for finding the dictionary entry
 */
 function getSessionData(idNumber){
-  // TODO
+  var request = new XMLHttpRequest();
+  let requestURL = "/dataComm/findSession"
+  request.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+         // Typical action to be performed when the document is ready:
+         let sessionData = JSON.parse(request.responseText);
+         groupQuestion = sessionData['Question'];
+         decisionAlgorithm = sessionData['Algorithm'];
+         allowRejects = sessionData['Rejects'];
+         sessionState = sessionData['State'];
+         console.log('Session Data Received')
+      } else { // The session doesn't exist
+        // TODO Make an error landing page
+        groupQuestion = "Try typing your link again. This one doesn't seem to be working!"
+        decisionAlgorithm = 0;
+      }
+  };
+  /* Currently using a synchronous HTTP request because a response is needed
+  before submitting form and moving to next page.
+  TO DO: re-factor the page to perform this asynchronously
+  */
+  request.open("POST", requestURL, false);
+  request.send(idNumber);
 }
 
 /* post an idea to the server */
-function postIdea(){
+function postIdea(idNumber){
   // TODO
 }
 

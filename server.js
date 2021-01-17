@@ -34,5 +34,3 @@ app.get('/decideQuestionJS',function(req,res){
 app.listen(PORT, () => {
     console.log(`Decide is running on port ${ PORT }`);
 });
-
-// console.log('Running at Port 3000 or ' + String(process.env.port));
