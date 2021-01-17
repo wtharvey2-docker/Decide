@@ -14,13 +14,17 @@ AllSessionDictionary = {
   QuestionID: '333',
   Ideas: [],
   Votes: [],
-  Winner: ""
-},
+  Scores: {},
+  Winner: ""},
   111: {Question: "What should we have to eat?",
   Algorithm: '1',
   Rejects: '1',
   State: 'ideation',
-  QuestionID: '111'},
+  QuestionID: '111',
+  Ideas: [],
+  Votes: [],
+  Scores: {},
+  Winner: ""},
   222: {Question: "What game should we play?",
   Algorithm: '1',
   Rejects: '1',
@@ -28,6 +32,7 @@ AllSessionDictionary = {
   QuestionID: '222',
   Ideas: [],
   Votes: [],
+  Scores: {},
   Winner: ""},
   333: {Question: "What should we watch?",
   Algorithm: '1',
@@ -36,6 +41,7 @@ AllSessionDictionary = {
   QuestionID: '333',
   Ideas: [],
   Votes: [],
+  Scores: {},
   Winner: ""},
 }
 
@@ -131,20 +137,160 @@ router.post('/newVote', function (req,res) {
 router.post('/endVoting', function (req,res) {
   let sessionID = req.body
   if (AllSessionDictionary[sessionID]['Votes'].length > 0) {
-    AllSessionDictionary[sessionID]["State"] = "voting";
+    AllSessionDictionary[sessionID]["State"] = "result";
   }
   res.sendStatus(202)
   })
 
 // post a message to reset ideation
 router.post('/resetIdeas', function (req,res) {
-  // TODO
+  let sessionID = req.body
+  AllSessionDictionary[sessionID]['Ideas'] = []
+  res.sendStatus(202)
 })
 
 // post a message to reset Voting
 router.post('/resetVotes', function (req,res) {
-  // TODO
+  let sessionID = req.body
+  AllSessionDictionary[sessionID]['Votes'] = []
+  res.sendStatus(202)
 })
 
+// a post that gets the winner of a session
+router.post('/declareWinner', function (req,res) {
+  let sessionID = req.body
+  if (AllSessionDictionary[sessionID]['Winner'] == ""){
+    // calculate which option won
+    console.log("Calculating Winner now")
+    calculateDecision(sessionID)
+  }
+  // Winner already known otherwise
+
+  res.sendStatus(202)
+})
 
 module.exports = router
+
+function calculateDecision(sessionID){
+  let decision ="";
+  let decisionAlgorithm = AllSessionDictionary[sessionID]['Algorithm']
+  let ideaArray = AllSessionDictionary[sessionID]['Ideas']
+  if (decisionAlgorithm == 2) {
+    let parsedVotes = parseVotes(AllSessionDictionary[sessionID]['Votes']);
+    console.log(parsedVotes);
+    let scores = scoreVotes(parsedVotes, ideaArray);
+    console.log("Scores: ")
+    console.log(scores);
+    AllSessionDictionary[sessionID]['Scores'] = scores
+  } else {
+    // decisionAlgorithm == 0 || decisionAlgorithm == 1
+    let options = [];
+    let allVotes = [];
+    if (decisionAlgorithm == 1) {
+      /* currently does random votes not including the noVotes
+      then removes all votes for rejects and decides between the rest.
+      TO DO: - Re-Work algorithm to make random choices among
+      non-rejected options */
+      [options, allVotes] = parseTopVotes(allVotes, AllSessionDictionary[sessionID]['Votes']);
+      console.log(options);
+      if (options[0] == undefined) {
+        /*allVotes[0] will not be undefined as long as
+        one or more votes weren't rejected.
+        TO DO: - display message saying all options were vetoed
+        so vetoes were disregarded. */
+        console.log("All options were rejected, so allVotes was used.")
+        options = allVotes;
+      }
+    } else { // Algorithm 0
+      options = ideaArray;
+    }
+    AllSessionDictionary[sessionID]['Winner'] = options[Math.floor(Math.random() * options.length)];
+  }
+}
+
+function parseVotes(voteArray) {
+  // Parses the votes into arrays within a list organized by vote ranking
+  // TO DO: make sure random 2nd and random 3rd don't repeat previous vote
+  let noArray = [];
+  let firstVotes = [];
+  let secondVotes = [];
+  let thirdVotes = [];
+  // for loop populating the arrays above
+  for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
+    if (voteArray[voteInd].noVote != "No") {
+      noArray.push(voteArray[voteInd].noVote);
+    }
+    if (voteArray[voteInd].firstVote == "random") {
+      firstVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+    } else {
+      firstVotes.push(voteArray[voteInd].firstVote);
+    }
+    if (voteArray[voteInd].secondVote == "random") {
+      secondVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+    } else {
+      secondVotes.push(voteArray[voteInd].secondVote);
+    }
+    if (voteArray[voteInd].thirdVote == "random") {
+      thirdVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+    } else {
+      thirdVotes.push(voteArray[voteInd].thirdVote);
+    }
+  }
+  return [firstVotes, secondVotes, thirdVotes, noArray];
+}
+
+function parseTopVotes(allVotes, voteArray){
+  let noArray = [];
+  let newOptions  =[];
+  let initialOptions = [];
+  for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
+    if (voteArray[voteInd].noVote != "No") {
+      noArray.push(voteArray[voteInd].noVote);
+    }
+    if (voteArray[voteInd].firstVote == "random") {
+      initialOptions.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+    } else {
+      initialOptions.push(voteArray[voteInd].firstVote);
+    }
+  }
+  // allVotes is an array of all the top votes
+  allVotes = allVotes.concat(initialOptions);
+  //loop removing all rejected choices
+  for (let noInd = 0; noInd < initialOptions.length; noInd++) {
+    if (noArray.indexOf(initialOptions[noInd]) == -1) {
+      newOptions = newOptions.concat(initialOptions[noInd]);
+    }
+  }
+  return [newOptions, allVotes];
+}
+
+function assignRandomChoice(ideas, noVote) {
+  let remainingIdeas = [];
+  if (noVote != "No") {
+    let noIndex = ideas.indexOf(noVote);
+    if (noIndex != 0) {
+      remainingIdeas = remainingIdeas.concat(ideas.slice(0,noIndex));
+    }
+    remainingIdeas = remainingIdeas.concat(ideas.slice(noIndex+1))
+  } else {
+    remainingIdeas = remainingIdeas.concat(ideas);
+  }
+  return remainingIdeas[Math.floor(Math.random() * remainingIdeas.length)];
+}
+
+function scoreVotes(fullVotesArray, allIdeas) {
+  // populates scores with all the possible options
+  for (let ideaInd = 0; ideaInd < allIdeas.length; ideaInd++) {
+    scores[allIdeas[ideaInd]] = 0;
+  }
+  // Sum the scores from the first, second and third votes in scores
+  for (let scoreInd = 0; scoreInd < fullVotesArray[0].length; scoreInd++) {
+    scores[fullVotesArray[0][scoreInd]] += 4;
+    scores[fullVotesArray[1][scoreInd]] += 2;
+    if (ideaArray.length > 2) {
+      scores[fullVotesArray[2][scoreInd]] += 1;
+    }
+    scores[fullVotesArray[3][scoreInd]] -= 6;
+  }
+  return scores;
+}

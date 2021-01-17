@@ -55,6 +55,7 @@ function makeNewURL(){
       State: "ideation",
       Ideas: [],
       Votes: [],
+      Scores: {},
       Winner: ""
     }
 

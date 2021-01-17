@@ -13,6 +13,7 @@ let numberOfVotes = 0;
 let ideaArray = [];
 let voteArray = [];
 let scores = {};
+let winner = "";
 let minimumOptionQuantity = 2; // 1 for testing, 2 for operations
 let minimumVoteQuantity = 1; // not currently used
 let oldFirst = "random";
@@ -85,8 +86,19 @@ function loadVotingState() {
 }
 
 function loadResultState() {
-  // TODO
+  // load a session that has state="result"
+  loadVotingState()
   endVoting()
+  if (decisionAlgorithm == 2){
+    showScores()
+  } else {
+    document.getElementById("answerHeading").innerHTML = "The decision is: " + winner;
+    document.getElementById("answerHeading").removeAttribute("hidden");
+  }
+  document.getElementById("decisionButton").setAttribute("hidden", "");
+  hideLineBreaks(headerToOptionsBR);
+  showLineBreaks(tryAgainBr);
+  showLineBreaks(tryNewMethodButton);
 }
 
 /* gets the dictionary entry on the server corresponding to this iteration of the program
@@ -105,7 +117,8 @@ function getSessionData(idNumber){
       sessionState = sessionData['State'];
       ideaArray = sessionData['Ideas'];
       voteArray = sessionData['Votes'];
-
+      scores = sessionData['Scores'];
+      winner = sessionData['Winner'];
       console.log('Session Data Received')
     } else { // The session doesn't exist
       // TODO Make an error landing page
@@ -194,16 +207,33 @@ function postNewVote(){
 
 /* changes the state of the program to indicate that voting is complete */
 function postEndVoting(){
-  // TODO
-
-  window.location.reload();
+  var request = new XMLHttpRequest();
+  let requestURL = "/dataComm/endVoting"
+  request.open("POST", requestURL);
+  request.onreadystatechange = function () {
+    postVotingResults() //
+    // reload to get most recent state of the session
+    window.location.reload();
+  }
+  request.onerror = function () {
+    console.log('A post error is happening')
+  }
+  request.send(questionID);
 }
 
 /* gets the final results for the vote */
-function getVotingResults(){
-  // TODO
-
-  window.location.reload();
+function postVotingResults(){
+  var request = new XMLHttpRequest();
+  let requestURL = "/dataComm/declareWinner"
+  request.open("POST", requestURL);
+  request.onreadystatechange = function () {
+    // reload to get most recent state of the session
+    window.location.reload();
+  }
+  request.onerror = function () {
+    console.log('A post error is happening')
+  }
+  request.send(questionID);
 }
 
 function addIdea(newValue = ""){
@@ -350,6 +380,7 @@ function removeDuplicates(arrayInitial){
 }
 
 function addToVoterList(newVote){
+  // update the voter list in the DOM
   document.getElementById("voterListHeader").removeAttribute("hidden");
   let currentVoterList = document.getElementById("currentVoters").innerHTML;
   let newVoter = "<li>" + newVote.name + "</li>";
@@ -366,94 +397,7 @@ function endVoting() {
   }
 }
 
-function calculateDecision(){
-  let decision ="";
-  if (decisionAlgorithm == 2) {
-    let parsedVotes = parseVotes(voteArray);
-    console.log(parsedVotes);
-    scoreVotes(parsedVotes, ideaArray);
-    console.log(scores);
-    showScores(scores);
-  } else {
-    // decisionAlgorithm == 0 || decisionAlgorithm == 1
-    let options = [];
-    let allVotes = [];
-    if (decisionAlgorithm == 1) {
-      /* currently does random votes not including the noVotes
-      then removes all votes for rejects and decides between the rest.
-      TO DO: - Re-Work algorithm to make random choices among
-      non-rejected options */
-      [options, allVotes] = parseTopVotes(allVotes, voteArray);
-      console.log(options);
-      if (options[0] == undefined) {
-        /*allVotes[0] will not be undefined as long as
-        one or more votes weren't rejected.
-        TO DO: - display message saying all options were vetoed
-        so vetoes were disregarded. */
-        console.log("All options were rejected, so allVotes was used.")
-        options = allVotes;
-      }
-    } else { // Algorithm 0
-      options = ideaArray;
-    }
-    decision = options[Math.floor(Math.random() * options.length)];
-    document.getElementById("answerHeading").innerHTML = "The decision is: " + decision;
-    document.getElementById("answerHeading").removeAttribute("hidden");
-  }
-  document.getElementById("decisionButton").setAttribute("hidden", "");
-  hideLineBreaks(headerToOptionsBR);
-  showLineBreaks(tryAgainBr);
-  showLineBreaks(tryNewMethodButton);
-}
-
-function parseVotes(voteArray) {
-  // TO DO: make sure random 2nd and random 3rd don't repeat previous vote
-  let noArray = [];
-  let firstVotes = [];
-  let secondVotes = [];
-  let thirdVotes = [];
-  // for loop populating the arrays above
-  for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
-    if (voteArray[voteInd].noVote != "No") {
-      noArray.push(voteArray[voteInd].noVote);
-    }
-    if (voteArray[voteInd].firstVote == "random") {
-      firstVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
-    } else {
-      firstVotes.push(voteArray[voteInd].firstVote);
-    }
-    if (voteArray[voteInd].secondVote == "random") {
-      secondVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
-    } else {
-      secondVotes.push(voteArray[voteInd].secondVote);
-    }
-    if (voteArray[voteInd].thirdVote == "random") {
-      thirdVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
-    } else {
-      thirdVotes.push(voteArray[voteInd].thirdVote);
-    }
-  }
-  return [firstVotes, secondVotes, thirdVotes, noArray];
-}
-
-function scoreVotes(fullVotesArray, allIdeas) {
-  // populates scores with all the possible options
-  for (let ideaInd = 0; ideaInd < allIdeas.length; ideaInd++) {
-    scores[allIdeas[ideaInd]] = 0;
-  }
-  // Sum the scores from the first, second and third votes in scores
-  for (let scoreInd = 0; scoreInd < fullVotesArray[0].length; scoreInd++) {
-    scores[fullVotesArray[0][scoreInd]] += 4;
-    scores[fullVotesArray[1][scoreInd]] += 2;
-    if (ideaArray.length > 2) {
-      scores[fullVotesArray[2][scoreInd]] += 1;
-    }
-    scores[fullVotesArray[3][scoreInd]] -= 6;
-  }
-  return scores;
-}
-
-function showScores(voteScores) {
+function showScores() {
   let scoreSumsArray = [];
   // populates the score sums array for ordering in result publishing
   for (let key in scores) {
@@ -513,45 +457,6 @@ function addListItem(listID, newItemText){
   let currentListItems = document.getElementById(listID).innerHTML;
   let newListItem = "<li>" + newItemText + "</li>";
   document.getElementById(listID).innerHTML= currentListItems + newListItem;
-}
-
-function parseTopVotes(allVotes, voteArray){
-  let noArray = [];
-  let newOptions  =[];
-  let initialOptions = [];
-  for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
-    if (voteArray[voteInd].noVote != "No") {
-      noArray.push(voteArray[voteInd].noVote);
-    }
-    if (voteArray[voteInd].firstVote == "random") {
-      initialOptions.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
-    } else {
-      initialOptions.push(voteArray[voteInd].firstVote);
-    }
-  }
-  // allVotes is an array of all the top votes
-  allVotes = allVotes.concat(initialOptions);
-  //loop removing all rejected choices
-  for (let noInd = 0; noInd < initialOptions.length; noInd++) {
-    if (noArray.indexOf(initialOptions[noInd]) == -1) {
-      newOptions = newOptions.concat(initialOptions[noInd]);
-    }
-  }
-  return [newOptions, allVotes];
-}
-
-function assignRandomChoice(ideas, noVote) {
-  let remainingIdeas = [];
-  if (noVote != "No") {
-    let noIndex = ideas.indexOf(noVote);
-    if (noIndex != 0) {
-      remainingIdeas = remainingIdeas.concat(ideas.slice(0,noIndex));
-    }
-    remainingIdeas = remainingIdeas.concat(ideas.slice(noIndex+1))
-  } else {
-    remainingIdeas = remainingIdeas.concat(ideas);
-  }
-  return remainingIdeas[Math.floor(Math.random() * remainingIdeas.length)];
 }
 
 function revealVotes() {
