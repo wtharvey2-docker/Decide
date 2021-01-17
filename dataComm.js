@@ -109,20 +109,32 @@ router.post('/newIdea', function (req,res) {
   res.sendStatus(202)
 })
 
-// post a message to end idea input
+// a post to end idea input
 router.post('/endIdeation', function (req,res) {
-  // TODO
+  let sessionID = req.body
+  if (AllSessionDictionary[sessionID]['Ideas'].length > 1) {
+    AllSessionDictionary[sessionID]["State"] = "voting";
+  }
+  res.sendStatus(202)
 })
 
 // post a new vote
 router.post('/newVote', function (req,res) {
-  // TODO
+  let voteJSON = JSON.parse(req.body)
+  let questID = voteJSON["id"];
+  let newVote = voteJSON["vote"];
+  AllSessionDictionary[questID]["Votes"].push(newVote)
+  res.sendStatus(202)
 })
 
 // post a message to end idea input
 router.post('/endVoting', function (req,res) {
-  // TODO
-})
+  let sessionID = req.body
+  if (AllSessionDictionary[sessionID]['Votes'].length > 0) {
+    AllSessionDictionary[sessionID]["State"] = "voting";
+  }
+  res.sendStatus(202)
+  })
 
 // post a message to reset ideation
 router.post('/resetIdeas', function (req,res) {

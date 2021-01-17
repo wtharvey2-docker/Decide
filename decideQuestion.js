@@ -60,16 +60,33 @@ function processURL() {
 
   // handle sessions that aren't in ideation still
   if (sessionState == "voting"){
-
+    loadVotingState()
   } else if (sessionState == "result") {
-
+    loadResultState()
   } else { // sessionState == 'ideation'
-    var ideaInd;
-    for (ideaInd = 0; ideaInd < ideaArray.length; ideaInd++) {
-      addIdea(ideaArray[ideaInd]);
-    }
+    loadIdeationState()
   }
+}
 
+function loadIdeationState() {
+  var ideaInd;
+  for (ideaInd = 0; ideaInd < ideaArray.length; ideaInd++) {
+    addIdea(ideaArray[ideaInd]);
+  }
+}
+
+function loadVotingState() {
+  loadIdeationState()
+  afterIdeationActions(0)
+  var voteInd;
+  for (voteInd = 0; voteInd < voteArray.length; voteInd++) {
+    addToVoterList(voteArray[voteInd])
+  }
+}
+
+function loadResultState() {
+  // TODO
+  endVoting()
 }
 
 /* gets the dictionary entry on the server corresponding to this iteration of the program
@@ -110,16 +127,10 @@ function postIdea(){
   let newItemValue = document.getElementById("ideaFormIdea").value;
   var request = new XMLHttpRequest();
   let requestURL = "/dataComm/newIdea"
-  /* Currently using a synchronous HTTP request because a response is needed
-  before submitting form and moving to next page.
-  TO DO: re-factor the page to perform this asynchronously
-  */
   request.open("POST", requestURL);
   request.onreadystatechange = function () {
     // reload to get most recent state of the session
-    console.log("hi")
     window.location.reload();
-    console.log("ho")
   }
   request.onerror = function () {
     console.log('A post error is happening')
@@ -130,9 +141,17 @@ function postIdea(){
 
 /* changes the state of the program to indicate that ideation is complete */
 function postEndIdeation(){
-  // TODO
-
-  window.location.reload();
+  var request = new XMLHttpRequest();
+  let requestURL = "/dataComm/endIdeation"
+  request.open("POST", requestURL);
+  request.onreadystatechange = function () {
+    // reload to get most recent state of the session
+    window.location.reload();
+  }
+  request.onerror = function () {
+    console.log('A post error is happening')
+  }
+  request.send(questionID);
 }
 
 /* tells the server to return to the ideation state and deletes all ideas */
@@ -143,10 +162,34 @@ function postResetIdeation(){
 }
 
 /* post a vote to the server */
-function postNewVote(vote){
-  // TODO
+function postNewVote(){
+  if (document.getElementById("voteFormName").value.trim() !== "") {
+    let newVote = {};
+    newVote.name = document.getElementById("voteFormName").value.trim();
+    document.getElementById("voteFormName").value = "";
+    newVote.firstVote = document.getElementById("voteFirstSelection").value;
+    document.getElementById("voteFirstSelection").value="random";
+    newVote.secondVote = document.getElementById("voteSecondSelection").value;
+    document.getElementById("voteSecondSelection").value="random";
+    newVote.thirdVote = document.getElementById("voteThirdSelection").value;
+    document.getElementById("voteThirdSelection").value="random";
+    newVote.noVote = document.getElementById("voteNo").value;
+    document.getElementById("voteNo").value="No";
 
-  window.location.reload();
+    // set up request
+    var request = new XMLHttpRequest();
+    let requestURL = "/dataComm/newVote"
+    request.open("POST", requestURL);
+    request.onreadystatechange = function () {
+      // reload to get most recent state of the session
+      window.location.reload();
+    }
+    request.onerror = function () {
+      console.log('A post error is happening')
+    }
+    let requestString = JSON.stringify({id: questionID, vote: newVote});
+    request.send(requestString);
+  }
 }
 
 /* changes the state of the program to indicate that voting is complete */
@@ -175,51 +218,63 @@ function addIdea(newValue = ""){
 }
 
 function afterIdeationActions(previousState){
-  // TO DO: Message declaring minimum # of options
-  if (numberOfOptions >= minimumOptionQuantity) {
-    document.getElementById("ideaForm").setAttribute("hidden", 1);
-    document.getElementById("ideaButton1").setAttribute("hidden", 1);
-    document.getElementById("listHeader").innerHTML="Our Options Are:";
-    document.getElementById("questionExplanation").setAttribute("hidden", 1);
-    if (decisionAlgorithm == 0) {
-      document.getElementById("decisionButton").removeAttribute("hidden");
-    } else {
-      document.getElementById("voteForm").removeAttribute("hidden");
-      document.getElementById("voteButton").removeAttribute("hidden");
-      document.getElementById("endVoteButton").removeAttribute("hidden");
-      document.getElementById("restartVotingButton").removeAttribute("hidden");
-      document.getElementById("currentVoters").removeAttribute("hidden");
-      if (decisionAlgorithm == 1) {
-        document.getElementById("voteSecondSelection").setAttribute("hidden", "");
-        document.getElementById("secondVoteLabel").setAttribute("hidden", "");
-        document.getElementById("voteThirdSelection").setAttribute("hidden", "");
-        document.getElementById("thirdVoteLabel").setAttribute("hidden", "");
-        hideLineBreaks(voteTwoSpace);
-        hideLineBreaks(voteThreeSpace);
-      } else { // for reseting votes with different Algorithm
-        document.getElementById("voteSecondSelection").removeAttribute("hidden");
-        document.getElementById("secondVoteLabel").removeAttribute("hidden");
-        document.getElementById("voteThirdSelection").removeAttribute("hidden");
-        document.getElementById("thirdVoteLabel").removeAttribute("hidden");
-        showLineBreaks(voteTwoSpace);
-        showLineBreaks(voteThreeSpace);
-      }
-      if (allowRejects != 1) {
-        voteNoSpace[0].setAttribute("hidden", "");
-        voteNoSpace[1].setAttribute("hidden", "");
-        document.getElementById("voteNoLabel").setAttribute("hidden", "");
-        document.getElementById("voteNo").setAttribute("hidden", "");
-      }
-    }
-    if (previousState == 0) {
-      prepareVoting();
-    }
-    if (ideaArray.length < 3) {
-      document.getElementById("voteThirdSelection").setAttribute("hidden","");
-      document.getElementById("thirdVoteLabel").setAttribute("hidden","");
+  // Updates the DOM to be ready for voting
+  document.getElementById("ideaForm").setAttribute("hidden", 1);
+  document.getElementById("ideaButton1").setAttribute("hidden", 1);
+  document.getElementById("listHeader").innerHTML="Our Options Are:";
+  document.getElementById("questionExplanation").setAttribute("hidden", 1);
+  if (decisionAlgorithm == 0) {
+    document.getElementById("decisionButton").removeAttribute("hidden");
+  } else {
+    document.getElementById("voteForm").removeAttribute("hidden");
+    document.getElementById("voteButton").removeAttribute("hidden");
+    document.getElementById("endVoteButton").removeAttribute("hidden");
+    document.getElementById("restartVotingButton").removeAttribute("hidden");
+    document.getElementById("currentVoters").removeAttribute("hidden");
+    if (decisionAlgorithm == 1) {
+      document.getElementById("voteSecondSelection").setAttribute("hidden", "");
+      document.getElementById("secondVoteLabel").setAttribute("hidden", "");
+      document.getElementById("voteThirdSelection").setAttribute("hidden", "");
+      document.getElementById("thirdVoteLabel").setAttribute("hidden", "");
+      hideLineBreaks(voteTwoSpace);
       hideLineBreaks(voteThreeSpace);
+    } else { // for reseting votes with different Algorithm
+      document.getElementById("voteSecondSelection").removeAttribute("hidden");
+      document.getElementById("secondVoteLabel").removeAttribute("hidden");
+      document.getElementById("voteThirdSelection").removeAttribute("hidden");
+      document.getElementById("thirdVoteLabel").removeAttribute("hidden");
+      showLineBreaks(voteTwoSpace);
+      showLineBreaks(voteThreeSpace);
     }
-  };
+    if (allowRejects != 1) {
+      voteNoSpace[0].setAttribute("hidden", "");
+      voteNoSpace[1].setAttribute("hidden", "");
+      document.getElementById("voteNoLabel").setAttribute("hidden", "");
+      document.getElementById("voteNo").setAttribute("hidden", "");
+    }
+  }
+  if (previousState == 0) {
+    prepareVoting();
+  }
+  if (ideaArray.length < 3) {
+    document.getElementById("voteThirdSelection").setAttribute("hidden","");
+    document.getElementById("thirdVoteLabel").setAttribute("hidden","");
+    hideLineBreaks(voteThreeSpace);
+  }
+}
+
+function prepareVoting(){
+  // This is used by 'afterIdeationActions()'
+  // not needed for Algorithm 1, but action performed in case re-vote
+  // used in decisionAlgorithm == 1 or 2
+  ideaArray = removeDuplicates(ideaArray);
+  addDropDownOptions(document.getElementById("voteFirstSelection"));
+  addDropDownOptions(document.getElementById("voteSecondSelection"));
+  addDropDownOptions(document.getElementById("voteThirdSelection"));
+  addDropDownOptions(document.getElementById("voteNo"));
+  document.getElementById("voteFirstSelection").addEventListener("change", updateOptions);
+  document.getElementById("voteSecondSelection").addEventListener("change", updateOptions);
+  document.getElementById("voteThirdSelection").addEventListener("change", updateOptions);
 }
 
 function hideLineBreaks(brID){
@@ -232,19 +287,6 @@ function showLineBreaks(brID){
   for (let brInd = 0; brInd < brID.length; brInd++){
     brID[brInd].removeAttribute("hidden");
   }
-}
-
-function prepareVoting(){
-  // not needed for Algorithm 1, but action performed in case re-vote
-  // used in decisionAlgorithm == 1 or 2
-  ideaArray = removeDuplicates(ideaArray);
-  addDropDownOptions(document.getElementById("voteFirstSelection"));
-  addDropDownOptions(document.getElementById("voteSecondSelection"));
-  addDropDownOptions(document.getElementById("voteThirdSelection"));
-  addDropDownOptions(document.getElementById("voteNo"));
-  document.getElementById("voteFirstSelection").addEventListener("change", updateOptions);
-  document.getElementById("voteSecondSelection").addEventListener("change", updateOptions);
-  document.getElementById("voteThirdSelection").addEventListener("change", updateOptions);
 }
 
 function updateOptions(event) {
@@ -307,38 +349,21 @@ function removeDuplicates(arrayInitial){
   return arrayNoDuplicates;
 }
 
-function enterVote(){
-  if (document.getElementById("voteFormName").value.trim() !== "") {
-    let newVote = {};
-    newVote.name = document.getElementById("voteFormName").value.trim();
-    document.getElementById("voteFormName").value = "";
-    newVote.firstVote = document.getElementById("voteFirstSelection").value;
-    document.getElementById("voteFirstSelection").value="random";
-    newVote.secondVote = document.getElementById("voteSecondSelection").value;
-    document.getElementById("voteSecondSelection").value="random";
-    newVote.thirdVote = document.getElementById("voteThirdSelection").value;
-    document.getElementById("voteThirdSelection").value="random";
-    newVote.noVote = document.getElementById("voteNo").value;
-    document.getElementById("voteNo").value="No";
-    voteArray.push(newVote);
-    document.getElementById("voterListHeader").removeAttribute("hidden");
-    let currentVoterList = document.getElementById("currentVoters").innerHTML;
-    let newVoter = "<li>" + newVote.name + "</li>";
-    document.getElementById("currentVoters").innerHTML= currentVoterList + newVoter;
-    numberOfVotes++;
-  }
+function addToVoterList(newVote){
+  document.getElementById("voterListHeader").removeAttribute("hidden");
+  let currentVoterList = document.getElementById("currentVoters").innerHTML;
+  let newVoter = "<li>" + newVote.name + "</li>";
+  document.getElementById("currentVoters").innerHTML= currentVoterList + newVoter;
 }
 
 function endVoting() {
-  if (numberOfVotes > 0) {
-    document.getElementById("endVoteButton").setAttribute("hidden", "");
-    document.getElementById("voteForm").setAttribute("hidden", "");
-    document.getElementById("decisionButton").removeAttribute("hidden");
-    document.getElementById("restartVotingButton").setAttribute("hidden","");
-    if (showVotes == 1) {
-      revealVotes();
-    }
-  };
+  document.getElementById("endVoteButton").setAttribute("hidden", "");
+  document.getElementById("voteForm").setAttribute("hidden", "");
+  document.getElementById("decisionButton").removeAttribute("hidden");
+  document.getElementById("restartVotingButton").setAttribute("hidden","");
+  if (showVotes == 1) {
+    revealVotes();
+  }
 }
 
 function calculateDecision(){
