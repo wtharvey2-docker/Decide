@@ -2,7 +2,7 @@
 
 // Global Variables
 let debug = 0;
-let state = "";
+let sessionState = "";
 let questionID = "";
 let groupQuestion = "";
 let decisionAlgorithm = "";
@@ -50,19 +50,17 @@ function processURL() {
   };
 
   // For debugging
-  if debug {
+  if (debug) {
     console.log("The Question Input is: " + groupQuestion);
     console.log("decisionAlgorithm = " + decisionAlgorithm);
     console.log("showVotes = " + showVotes);
     console.log("allowRejects = " + allowRejects);
-    document.getElementById("questionHeading").innerHTML = groupQuestion
     }
-
+    document.getElementById("questionHeading").innerHTML = groupQuestion
 
   }
 
 /* gets the dictionary entry on the server corresponding to this iteration of the program
-
 inputs: idNumber(int): the session ID for finding the dictionary entry
 */
 function getSessionData(idNumber){

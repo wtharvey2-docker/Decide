@@ -10,22 +10,22 @@ AllSessionDictionary = {
   22: {Question: "What do you want to do?",
   Algorithm: '1',
   Rejects: '1',
-  State: 'ideation'
+  State: 'ideation',
   QuestionID: '333'},
   111: {Question: "What should we have to eat?",
   Algorithm: '1',
   Rejects: '1',
-  State: 'ideation'
+  State: 'ideation',
   QuestionID: '111'},
   222: {Question: "What game should we play?",
   Algorithm: '1',
   Rejects: '1',
-  State: 'ideation'
+  State: 'ideation',
   QuestionID: '222'},
   333: {Question: "What should we watch?",
   Algorithm: '1',
   Rejects: '1',
-  State: 'ideation'
+  State: 'ideation',
   QuestionID: '333'},
 }
 
