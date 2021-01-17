@@ -48,11 +48,14 @@ function makeNewURL(){
     }
 
     newQuestionSession = {
-      "Question": document.getElementById('groupQuestion').value,
-      "Algorithm": String(algorithm),
-      "Rejects": document.getElementById('allowRejects').value,
-      "QuestionID": String(id_val),
-      "State": "ideation",
+      Question: document.getElementById('groupQuestion').value,
+      Algorithm: String(algorithm),
+      Rejects: document.getElementById('allowRejects').value,
+      QuestionID: String(id_val),
+      State: "ideation",
+      Ideas: [],
+      Votes: [],
+      Winner: ""
     }
 
     // Post data to server for a session

@@ -11,7 +11,11 @@ AllSessionDictionary = {
   Algorithm: '1',
   Rejects: '1',
   State: 'ideation',
-  QuestionID: '333'},
+  QuestionID: '333',
+  Ideas: [],
+  Votes: [],
+  Winner: ""
+},
   111: {Question: "What should we have to eat?",
   Algorithm: '1',
   Rejects: '1',
@@ -21,12 +25,18 @@ AllSessionDictionary = {
   Algorithm: '1',
   Rejects: '1',
   State: 'ideation',
-  QuestionID: '222'},
+  QuestionID: '222',
+  Ideas: [],
+  Votes: [],
+  Winner: ""},
   333: {Question: "What should we watch?",
   Algorithm: '1',
   Rejects: '1',
   State: 'ideation',
-  QuestionID: '333'},
+  QuestionID: '333',
+  Ideas: [],
+  Votes: [],
+  Winner: ""},
 }
 
 // get a unique ID number
@@ -65,7 +75,7 @@ router.post('/', function (req, res) {
   // get information from req
   newSessionInfo = req.body
 
-  // To Do: Implement
+  // To Do: Implement database
   // add information to DB
   AllSessionDictionary[newSessionInfo['QuestionID']] = newSessionInfo;
 
@@ -76,7 +86,27 @@ router.post('/', function (req, res) {
 
 // post a new idea
 router.post('/newIdea', function (req,res) {
-  // TODO
+  let postJSON = JSON.parse(req.body)
+  let questID = postJSON["id"];
+  let newIdea = postJSON["idea"];
+  // Check that the idea doesn't already exist
+  var ideaInd;
+  let ideaBool = 1;
+  console.log(newIdea)
+  console.log(AllSessionDictionary[questID])
+  for (ideaInd = 0; ideaInd < AllSessionDictionary[questID]["Ideas"].length; ideaInd++){
+    if (newIdea == AllSessionDictionary[questID]['Ideas'][ideaInd]){
+      ideaBool = 0;
+    }
+  }
+
+  // Add the idea to the ideaArray
+  if (ideaBool) {
+    AllSessionDictionary[questID]['Ideas'].push(newIdea)
+  }
+  console.log(AllSessionDictionary[questID])
+  console.log("Should be done")
+  res.sendStatus(202)
 })
 
 // post a message to end idea input
