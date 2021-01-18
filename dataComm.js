@@ -16,6 +16,24 @@ AllSessionDictionary = {
   Votes: [],
   Scores: {},
   Winner: ""},
+  21: {Question: "What do you want to do?",
+  Algorithm: '0',
+  Rejects: '1',
+  State: 'ideation',
+  QuestionID: '333',
+  Ideas: [],
+  Votes: [],
+  Scores: {},
+  Winner: ""},
+  23: {Question: "What do you want to do?",
+  Algorithm: '2',
+  Rejects: '1',
+  State: 'ideation',
+  QuestionID: '333',
+  Ideas: [],
+  Votes: [],
+  Scores: {},
+  Winner: ""},
   111: {Question: "What should we have to eat?",
   Algorithm: '1',
   Rejects: '1',
@@ -119,7 +137,12 @@ router.post('/newIdea', function (req,res) {
 router.post('/endIdeation', function (req,res) {
   let sessionID = req.body
   if (AllSessionDictionary[sessionID]['Ideas'].length > 1) {
-    AllSessionDictionary[sessionID]["State"] = "voting";
+    if (AllSessionDictionary[sessionID]['Algorithm'] == '0'){
+      calculateDecision(sessionID); // calculates decision since it's just random
+      AllSessionDictionary[sessionID]["State"] = "result";
+    } else {
+      AllSessionDictionary[sessionID]["State"] = "voting";
+    }
   }
   res.sendStatus(202)
 })
@@ -215,6 +238,7 @@ function parseVotes(voteArray) {
   let firstVotes = [];
   let secondVotes = [];
   let thirdVotes = [];
+  let ideaArray = AllSessionDictionary[sessionID]['Ideas']
   // for loop populating the arrays above
   for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
     if (voteArray[voteInd].noVote != "No") {
@@ -243,6 +267,7 @@ function parseTopVotes(allVotes, voteArray){
   let noArray = [];
   let newOptions  =[];
   let initialOptions = [];
+  let ideaArray = AllSessionDictionary[sessionID]['Ideas']
   for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
     if (voteArray[voteInd].noVote != "No") {
       noArray.push(voteArray[voteInd].noVote);
@@ -280,6 +305,9 @@ function assignRandomChoice(ideas, noVote) {
 
 function scoreVotes(fullVotesArray, allIdeas) {
   // populates scores with all the possible options
+  let scores = {};
+  console.log('FullVote')
+  console.log(fullVotesArray)
   for (let ideaInd = 0; ideaInd < allIdeas.length; ideaInd++) {
     scores[allIdeas[ideaInd]] = 0;
   }
@@ -287,10 +315,16 @@ function scoreVotes(fullVotesArray, allIdeas) {
   for (let scoreInd = 0; scoreInd < fullVotesArray[0].length; scoreInd++) {
     scores[fullVotesArray[0][scoreInd]] += 4;
     scores[fullVotesArray[1][scoreInd]] += 2;
-    if (ideaArray.length > 2) {
+    if (allIdeas.length > 2) {
       scores[fullVotesArray[2][scoreInd]] += 1;
     }
-    scores[fullVotesArray[3][scoreInd]] -= 6;
+    if (typeof scores[fullVotesArray[3][scoreInd]] !== 'undefined'){
+      scores[fullVotesArray[3][scoreInd]] -= 6;
+    }
   }
+  // if (allIdeas.length == 2) {
+  //   // This is to make sure an undefined value isn't included
+  //   scores = scores[0,2];
+  // }
   return scores;
 }
