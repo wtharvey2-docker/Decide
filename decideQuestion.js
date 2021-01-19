@@ -57,9 +57,10 @@ function processURL() {
     console.log("showVotes = " + showVotes);
     console.log("allowRejects = " + allowRejects);
   }
+
   document.getElementById("questionHeading").innerHTML = groupQuestion
 
-  // handle sessions that aren't in ideation still
+  /* handle sessions that aren't in ideation still */
   if (sessionState == "voting"){
     loadVotingState()
   } else if (sessionState == "result") {
@@ -119,7 +120,6 @@ function getSessionData(idNumber){
       voteArray = sessionData['Votes'];
       scores = sessionData['Scores'];
       winner = sessionData['Winner'];
-      console.log('Session Data Received')
     } else { // The session doesn't exist
       // TODO Make an error landing page
       groupQuestion = "Try typing your link again. This one doesn't seem to be working!"
@@ -349,7 +349,6 @@ function updateOptions(event) {
   let currentFirst = document.getElementById("voteFirstSelection").value;
   let currentSecond = document.getElementById("voteSecondSelection").value;
   let currentThird = document.getElementById("voteThirdSelection").value;
-  console.log(currentFirst,currentSecond,currentThird)
   if (currentFirst != oldFirst){
     if (currentSecond == currentFirst) {
       document.getElementById("voteSecondSelection").value = "random";
@@ -433,8 +432,6 @@ function showScores() {
   scoreSumsArray.sort(function(a, b) {
     return b-a;
   });
-  console.log("The score ordering array is: ")
-  console.log(scoreSumsArray)
   // gets the names of the associated keys (the things voted on)
   let voteScorePairArray = Object.entries(scores);
   let orderedVoteArray = [];
@@ -455,7 +452,6 @@ function showScores() {
       } // else no match and for loop iterates to next value/name pair
     }
   }
-  console.log(orderedVoteArray);
   // updates the html
   document.getElementById("answerHeading").innerHTML = "The highest ranked choice is: " + orderedVoteArray[0];
   document.getElementById("answerHeading").removeAttribute("hidden");
