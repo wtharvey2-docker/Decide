@@ -189,11 +189,11 @@ router.post('/declareWinner', function (req,res) {
     } else {
     // calculate which option won
     calculateDecision(sessionID)
+    console.log("The end results of a session were: ")
+    console.log(AllSessionDictionary[sessionID]);
     }
   }
   // Winner already known otherwise
-  console.log("The end results of a session were: ")
-  console.log(AllSessionDictionary[sessionID]);
   res.sendStatus(202)
 })
 
