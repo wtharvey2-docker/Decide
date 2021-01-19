@@ -9,15 +9,15 @@
   <body onload="processURL()">
     <h1 id="questionHeading"></h1>
     <h1 id="answerHeading" hidden></h1>
-    <h3 id="questionExplanation">I bet your idea is better than you think- add it! </h3>
+    <h3 id="questionExplanation">Add your idea below! </h3>
     <form id="ideaForm" method="post">
       <label for="ideaFormIdea">What would you choose if you had to decide?</label>
       <br>
       <input type="text" id="ideaFormIdea" name="userIdea" required>
       <br>
-      <button id="ideaButton0" type="button" onclick="addIdea()">Add Idea</button>
+      <button id="ideaButton0" type="button" onclick="postIdea()">Add Idea</button>
       <br>
-      <button type="button" id="ideaButton1" onclick="afterIdeationActions(0)" hidden> Finish Adding Ideas </button>
+      <button type="button" id="ideaButton1" onclick="postEndIdeation()" hidden> Finish Adding Ideas </button>
     </form>
     <br id="headerToOptionsBR">
     <form id="voteForm" method="post" hidden>
@@ -40,15 +40,15 @@
       <select id="voteNo">
         <option value="No">Nope, all of these will be ok!</option>
       </select><br id="voteNoSpace"><br id="voteNoSpace">
-      <button type="button" id="voteButton" onclick="enterVote()" hidden>Add Your Vote</button>
+      <button type="button" id="voteButton" onclick="postNewVote()" hidden>Add Your Vote</button>
       <br><br>
     </form>
-    <button type="button" id="endVoteButton" onclick="endVoting()" hidden> Conclude Voting</button>
+    <button type="button" id="endVoteButton" onclick="postEndVoting()" hidden> Conclude Voting</button>
     <br id="headerToOptionsBR">
     <h3 id="listHeader" hidden>Here's what we have come up with so far:</h3>
     <ul id="currentIdeas">
     </ul>
-    <button type="button" id="decisionButton" onclick="calculateDecision()" hidden> Let's Decide! </button>
+    <button type="button" id="decisionButton" onclick="postEndVoting()" hidden> Let's Decide! </button>
     <h3 id="voterListHeader" hidden>These people have voted:</h3>
     <ul id="currentVoters" hidden>
     </ul>
@@ -61,7 +61,7 @@
     <br id="tryAgainBr">
     <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(2)" hidden>Use Same Ideas, but Everyone Ranks Top 3</button>
     <br ><br>
-    <button type="button" id="resetButton" onclick="resetIdeas()" hidden>Clear Ideas & Reset</button>
+    <button type="button" id="resetButton" onclick="postResetIdeation()" hidden>Clear Ideas & Reset</button>
     <br><br>
     <a href="https://wtharvey2.github.io/Decide/" target="_blank">Help! How do I use this?</a>
     <br>
