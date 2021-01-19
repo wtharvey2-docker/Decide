@@ -13,23 +13,84 @@
   5 = Program-ranked decision on external choices based on external ratings
   */
 
-function algorithmZeroOptions() {
-  document.getElementById("allowRejects").checked = false;
-  // document.getElementById("showVotes").checked = false;
-  // document.getElementById("allowRejects").setAttribute("disabled","");
-  // document.getElementById("showVotes").setAttribute("disabled","");
+function makeNewURL(){
+    // get new id number
+    let id_val = 0
+    var request = new XMLHttpRequest();
+    let requestURL = "/dataComm/newID"
+    request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+           // Typical action to be performed when the document is ready:
+           console.log('ready state changed!')
+           id_val = request.responseText;
+        }
+    };
+    /* Currently using a synchronous HTTP request because a response is needed
+    before submitting form and moving to next page.
+    TO DO: re-factor the page to perform this asynchronously
+    */
+    request.open("GET", requestURL, false);
+    request.send();
+
+    console.log('id_val is:' + id_val)
+    // make form data into an entry in the data
+
+    // Add ID Value to the form
+    idValueEntry = document.getElementById('questionIDNumber');
+    idValueEntry.setAttribute("value", id_val);
+
+    // Makes a dictionary for the question request
+    let algorithm = 1; // defaults to 'randomVote'
+    if (document.getElementById('randomIdea').value == 1) {
+      algorithm = 0;
+    } else if (document.getElementById('rankedVote').value == 1) {
+      algorithm = 2;
+    }
+    let rejectState = 0;
+    if (document.getElementById('allowRejects').checked == true) {
+      rejectState = 1;
+    }
+
+    newQuestionSession = {
+      Question: document.getElementById('groupQuestion').value,
+      Algorithm: String(algorithm),
+      Rejects: rejectState,
+      QuestionID: String(id_val),
+      State: "ideation",
+      Ideas: [],
+      Votes: [],
+      Scores: {},
+      Winner: ""
+    }
+
+    // Post data to server for a session
+    console.log(newQuestionSession)
+    postQuestionToServer(newQuestionSession)
+
+    // TODO: Delete information from form to prevent extra data
+    clearFormData();
+
+    // set the action to be going to the question page
+    var form = document.getElementById('groupForm');
+    form.action = "question";
 }
 
-function algorithmOneOptions() {
-  document.getElementById("allowRejects").removeAttribute("disabled");
-  // document.getElementById("showVotes").removeAttribute("disabled");
-  document.getElementById("allowRejects").checked = true;
-  // document.getElementById("showVotes").checked = true;
+function postQuestionToServer(newQuestionDict) {
+  var request = new XMLHttpRequest();
+  let requestURL = "/dataComm"
+  /* Currently using a synchronous HTTP request because a response is needed
+  before submitting form and moving to next page.
+  TO DO: re-factor the page to perform this asynchronously
+  */
+  request.open("POST", requestURL);
+  request.setRequestHeader("Content-Type", "application/json");
+  requestString = JSON.stringify(newQuestionDict);
+  request.send(requestString);
 }
 
-function algorithmTwoOptions() {
-  document.getElementById("allowRejects").removeAttribute("disabled");
-  // document.getElementById("showVotes").removeAttribute("disabled");
-  document.getElementById("allowRejects").checked = true;
-  // document.getElementById("showVotes").checked = true;
+function clearFormData() {
+  questionEntry = document.getElementById('groupQuestion');
+  questionEntry.setAttribute("value", '');
+  /* Other settings are not deemed sensitive data
+    and are thus not cleared */
 }
