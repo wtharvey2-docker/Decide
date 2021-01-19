@@ -136,8 +136,9 @@ function getSessionData(idNumber){
 
 /* post an idea to the server */
 function postIdea(){
-  // prep http request
   let newItemValue = document.getElementById("ideaFormIdea").value;
+  if (newItemValue != ""){
+  // prep http request
   var request = new XMLHttpRequest();
   let requestURL = "/dataComm/newIdea"
   request.open("POST", requestURL);
@@ -150,6 +151,7 @@ function postIdea(){
   }
   let requestString = JSON.stringify({id: questionID, idea: newItemValue});
   request.send(requestString);
+}
 }
 
 /* changes the state of the program to indicate that ideation is complete */
@@ -169,9 +171,17 @@ function postEndIdeation(){
 
 /* tells the server to return to the ideation state and deletes all ideas */
 function postResetIdeation(){
-  // TODO
-
-  window.location.reload();
+  var request = new XMLHttpRequest();
+  let requestURL = "/dataComm/resetIdeas"
+  request.open("POST", requestURL);
+  request.onreadystatechange = function () {
+    // reload to get most recent state of the session
+    window.location.reload();
+  }
+  request.onerror = function () {
+    console.log('A post error is happening')
+  }
+  request.send(questionID);
 }
 
 /* post a vote to the server */
@@ -204,6 +214,22 @@ function postNewVote(){
     request.send(requestString);
   }
 }
+
+/* resets the voting so that everyone can re-vote */
+function postResetVoting() {
+  var request = new XMLHttpRequest();
+  let requestURL = "/dataComm/resetVotes"
+  request.open("POST", requestURL);
+  request.onreadystatechange = function () {
+    // reload to get most recent state of the session
+    window.location.reload();
+  }
+  request.onerror = function () {
+    console.log('A post error is happening')
+  }
+  request.send(questionID);
+}
+
 
 /* changes the state of the program to indicate that voting is complete */
 function postEndVoting(){
@@ -472,8 +498,7 @@ function revealVotes() {
 }
 
 function restartVoting(){
-  voteArray = [];
-  numberOfVotes = 0;
+  postResetVoting()
   document.getElementById("voterListHeader").setAttribute("hidden","");
   document.getElementById("currentVoters").innerHTML="";
 }
@@ -487,7 +512,22 @@ function tryDifferentAlgorithm(newAlgorithmVariable){
   hideLineBreaks(tryNewMethodButton);
   restartVoting(); // clears any leftover votes
   inputAllListItemsAtOnce("currentIdeas", ideaListHTMLWithoutVotes);
-  decisionAlgorithm = newAlgorithmVariable;
+
+  // post to the server the reset
+  let newItemValue = document.getElementById("ideaFormIdea").value;
+  var request = new XMLHttpRequest();
+  let requestURL = "/dataComm/tryNewAlgorithm"
+  request.open("POST", requestURL);
+  request.onreadystatechange = function () {
+    // reload to get most recent state of the session
+    window.location.reload();
+  }
+  request.onerror = function () {
+    console.log('A post error is happening')
+  }
+  let requestString = JSON.stringify({id: questionID, algorithm: newAlgorithmVariable});
+  request.send(requestString);
+
   afterIdeationActions(1);
 }
 

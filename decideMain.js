@@ -46,11 +46,15 @@ function makeNewURL(){
     } else if (document.getElementById('rankedVote').value == 1) {
       algorithm = 2;
     }
+    let rejectState = 0;
+    if (document.getElementById('allowRejects').checked == true) {
+      rejectState = 1;
+    }
 
     newQuestionSession = {
       Question: document.getElementById('groupQuestion').value,
       Algorithm: String(algorithm),
-      Rejects: document.getElementById('allowRejects').value,
+      Rejects: rejectState,
       QuestionID: String(id_val),
       State: "ideation",
       Ideas: [],
@@ -68,7 +72,7 @@ function makeNewURL(){
 
     // set the action to be going to the question page
     var form = document.getElementById('groupForm');
-    form.action = "decideQuestion";
+    form.action = "question";
 }
 
 function postQuestionToServer(newQuestionDict) {

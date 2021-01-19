@@ -169,13 +169,20 @@ router.post('/endVoting', function (req,res) {
 router.post('/resetIdeas', function (req,res) {
   let sessionID = req.body
   AllSessionDictionary[sessionID]['Ideas'] = []
+  AllSessionDictionary[sessionID]['Votes'] = []
+  AllSessionDictionary[sessionID]['Scores'] = {}
+  AllSessionDictionary[sessionID]['Winner'] = ""
+  AllSessionDictionary[sessionID]['State'] = 'ideation'
   res.sendStatus(202)
 })
 
-// post a message to reset Voting
+// post a message to reset voting
 router.post('/resetVotes', function (req,res) {
   let sessionID = req.body
   AllSessionDictionary[sessionID]['Votes'] = []
+  AllSessionDictionary[sessionID]['Scores'] = {}
+  AllSessionDictionary[sessionID]['Winner'] = ""
+  AllSessionDictionary[sessionID]['State'] = 'voting'
   res.sendStatus(202)
 })
 
@@ -183,12 +190,29 @@ router.post('/resetVotes', function (req,res) {
 router.post('/declareWinner', function (req,res) {
   let sessionID = req.body
   if (AllSessionDictionary[sessionID]['Winner'] == ""){
+    if (AllSessionDictionary[sessionID]['Algorithm'] > 0 && AllSessionDictionary[sessionID]['Votes'].length < 1){
+      console.log("A declareWinner post was sent when no votes were present. Nothing was done.")
+    } else {
     // calculate which option won
     console.log("Calculating Winner now")
     calculateDecision(sessionID)
+    }
   }
   // Winner already known otherwise
 
+  res.sendStatus(202)
+})
+
+router.post('/tryNewAlgorithm', function (req,res) {
+  let voteJSON = JSON.parse(req.body)
+  let questID = voteJSON["id"];
+  AllSessionDictionary[questID]["Algorithm"] = voteJSON["algorithm"];
+  if (voteJSON["algorithm"] == 0) {
+    calculateDecision(sessionID); // calculates decision since it's just random
+    AllSessionDictionary[sessionID]["State"] = "result"
+  } else {
+    AllSessionDictionary[sessionID]["State"] = "voting";
+  }
   res.sendStatus(202)
 })
 
