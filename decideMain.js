@@ -20,8 +20,7 @@ function makeNewURL(){
     let requestURL = "/dataComm/newID"
     request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-           // Typical action to be performed when the document is ready:
-           console.log('ready state changed!')
+           // Gets the ID value to add to the URL
            id_val = request.responseText;
         }
     };
@@ -32,7 +31,6 @@ function makeNewURL(){
     request.open("GET", requestURL, false);
     request.send();
 
-    console.log('id_val is:' + id_val)
     // make form data into an entry in the data
 
     // Add ID Value to the form
@@ -64,7 +62,6 @@ function makeNewURL(){
     }
 
     // Post data to server for a session
-    console.log(newQuestionSession)
     postQuestionToServer(newQuestionSession)
 
     // TODO: Delete information from form to prevent extra data
