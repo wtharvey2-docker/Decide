@@ -71,7 +71,6 @@ Any problems, comments, or ideas are greatly appreciated. I made this because I 
 - [ ] Determine unit tests
 
 ### 3c. Future Feature Ideas
-- Make decision pages collaborative online (voters can be on different devices)
 - Presets where you can save options for repeated use.
 - Easier-to-use interface (open to suggestions for what this may look like)
 - Ways to use external files or data to provide options (like if you have a spreadsheet of restaurants you like)
