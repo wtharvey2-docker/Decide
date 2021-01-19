@@ -3,7 +3,7 @@ var router = express.Router()
 const bodyParser = require('body-parser');
 router.use(bodyParser.json());
 router.use(bodyParser.text());
-
+let debug = 0;
 var maxIDNumber =  1000
 
 AllSessionDictionary = {
@@ -65,7 +65,6 @@ AllSessionDictionary = {
 
 // get a unique ID number
 router.get('/newID',(req, res) => {
-  console.log('A new ID request!')
   // get max id number and add 1
   maxIDNumber += 1;
   // return the id number
@@ -79,12 +78,13 @@ router.get('/newID',(req, res) => {
 router.post('/findSession', function (req, res) {
   // get session ID number from req
   sessionID = req.body
-  console.log('sessionID is ' + req.body)
 
   // get data corresponding to ID from DB
   jsonFromDB = AllSessionDictionary[sessionID];
-  console.log("what will be sent:")
-  console.log(jsonFromDB)
+  if (debug) {
+    console.log("findSession request received. Current session data is: ")
+    console.log(jsonFromDB)
+  }
 
   // sending it
   if (typeof jsonFromDB !== 'undefined'){
@@ -103,8 +103,6 @@ router.post('/', function (req, res) {
   // add information to DB
   AllSessionDictionary[newSessionInfo['QuestionID']] = newSessionInfo;
 
-  console.log('New question session entered!')
-  console.log(AllSessionDictionary)
   res.send('request posted')
 })
 
@@ -116,8 +114,6 @@ router.post('/newIdea', function (req,res) {
   // Check that the idea doesn't already exist
   var ideaInd;
   let ideaBool = 1;
-  console.log(newIdea)
-  console.log(AllSessionDictionary[questID])
   for (ideaInd = 0; ideaInd < AllSessionDictionary[questID]["Ideas"].length; ideaInd++){
     if (newIdea == AllSessionDictionary[questID]['Ideas'][ideaInd]){
       ideaBool = 0;
@@ -128,8 +124,6 @@ router.post('/newIdea', function (req,res) {
   if (ideaBool) {
     AllSessionDictionary[questID]['Ideas'].push(newIdea)
   }
-  console.log(AllSessionDictionary[questID])
-  console.log("Should be done")
   res.sendStatus(202)
 })
 
@@ -191,21 +185,27 @@ router.post('/declareWinner', function (req,res) {
   let sessionID = req.body
   if (AllSessionDictionary[sessionID]['Winner'] == ""){
     if (AllSessionDictionary[sessionID]['Algorithm'] > 0 && AllSessionDictionary[sessionID]['Votes'].length < 1){
-      console.log("A declareWinner post was sent when no votes were present. Nothing was done.")
+      console.log("A declareWinner request was received when no votes were present. Nothing was done.")
     } else {
     // calculate which option won
-    console.log("Calculating Winner now")
     calculateDecision(sessionID)
     }
   }
   // Winner already known otherwise
-
+  console.log("The end results of a session were: ")
+  console.log(AllSessionDictionary[sessionID]);
   res.sendStatus(202)
 })
 
 router.post('/tryNewAlgorithm', function (req,res) {
   let voteJSON = JSON.parse(req.body)
   let questID = voteJSON["id"];
+
+  //
+  console.log("Session " + String(questID) + " requested a new algorithm. " +
+    "They requested Algorithm " + String(voteJSON["algorithm"]) + ".");
+  console.log(AllSessionDictionary[questID]);
+
   AllSessionDictionary[questID]["Algorithm"] = voteJSON["algorithm"];
   if (voteJSON["algorithm"] == 0) {
     calculateDecision(sessionID); // calculates decision since it's just random
@@ -224,10 +224,7 @@ function calculateDecision(sessionID){
   let ideaArray = AllSessionDictionary[sessionID]['Ideas']
   if (decisionAlgorithm == 2) {
     let parsedVotes = parseVotes(AllSessionDictionary[sessionID]['Votes']);
-    console.log(parsedVotes);
     let scores = scoreVotes(parsedVotes, ideaArray);
-    console.log("Scores: ")
-    console.log(scores);
     AllSessionDictionary[sessionID]['Scores'] = scores
   } else {
     // decisionAlgorithm == 0 || decisionAlgorithm == 1
@@ -239,13 +236,11 @@ function calculateDecision(sessionID){
       TO DO: - Re-Work algorithm to make random choices among
       non-rejected options */
       [options, allVotes] = parseTopVotes(allVotes, AllSessionDictionary[sessionID]['Votes']);
-      console.log(options);
       if (options[0] == undefined) {
         /*allVotes[0] will not be undefined as long as
         one or more votes weren't rejected.
         TO DO: - display message saying all options were vetoed
         so vetoes were disregarded. */
-        console.log("All options were rejected, so allVotes was used.")
         options = allVotes;
       }
     } else { // Algorithm 0
@@ -330,8 +325,6 @@ function assignRandomChoice(ideas, noVote) {
 function scoreVotes(fullVotesArray, allIdeas) {
   // populates scores with all the possible options
   let scores = {};
-  console.log('FullVote')
-  console.log(fullVotesArray)
   for (let ideaInd = 0; ideaInd < allIdeas.length; ideaInd++) {
     scores[allIdeas[ideaInd]] = 0;
   }
