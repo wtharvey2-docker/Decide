@@ -53,7 +53,12 @@ Any problems, comments, or ideas are greatly appreciated. I made this because I 
   get sorted into the same vote option)
   
 ### 3b. Current To Do List
-- [ ] Implement node.js
+- [ ] Implement server-side data storage
+- [ ] Clean up console.log statements
+- [ ] Implement random question numbers
+- [ ] Make the question URL cleaner
+- [ ] Minimize http requests
+- [ ] Move data storage to database or json file
 - [ ] Basic CSS styling
 - [ ] Handle ties for winner in Alg 2
 - [ ] Algorithm 1 & 2 better mitigation for when all votes are rejected
