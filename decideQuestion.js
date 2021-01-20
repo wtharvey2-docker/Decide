@@ -24,6 +24,8 @@ let ideaListHTMLWithoutVotes =""
 function processURL() {
   setEnterFunction("ideaFormIdea","ideaButton0");
   setEnterFunction("voteFormName", 0);
+
+  document.getElementById("displayedURL").innerHTML = document.URL;
   // defining indices
   let questionIDIndex = document.URL.indexOf("questionID=") + ("questionID=").length;
 
@@ -269,6 +271,7 @@ function addIdea(newValue = ""){
   document.getElementById("ideaFormIdea").value = "";
   document.getElementById("listHeader").removeAttribute("hidden");
   document.getElementById("ideaButton1").removeAttribute("hidden");
+  document.getElementById("finishBlurb1").innerHTML="Hit finish once you can see everyone's ideas on your screen!";
   document.getElementById("resetButton").removeAttribute("hidden");
   document.getElementById("currentIdeas").removeAttribute("hidden");
 }
@@ -277,15 +280,15 @@ function afterIdeationActions(previousState){
   // Updates the DOM to be ready for voting
   document.getElementById("ideaForm").setAttribute("hidden", 1);
   document.getElementById("ideaButton1").setAttribute("hidden", 1);
+  document.getElementById("finishBlurb1").innerHTML="";
   document.getElementById("listHeader").innerHTML="Our Options Are:";
-  document.getElementById("questionExplanation").setAttribute("hidden", 1);
   if (decisionAlgorithm == 0) {
+    document.getElementById("questionExplanation").setAttribute("hidden", 1);
     document.getElementById("decisionButton").removeAttribute("hidden");
   } else {
+    document.getElementById("questionExplanation").innerHTML = "Now it's time for everyone to pick what they think is best!"
     document.getElementById("voteForm").removeAttribute("hidden");
     document.getElementById("voteButton").removeAttribute("hidden");
-    document.getElementById("endVoteButton").removeAttribute("hidden");
-    document.getElementById("restartVotingButton").removeAttribute("hidden");
     document.getElementById("currentVoters").removeAttribute("hidden");
     if (decisionAlgorithm == 1) {
       document.getElementById("voteSecondSelection").setAttribute("hidden", "");
@@ -407,16 +410,21 @@ function removeDuplicates(arrayInitial){
 function addToVoterList(newVote){
   // update the voter list in the DOM
   document.getElementById("voterListHeader").removeAttribute("hidden");
+  document.getElementById("restartVotingButton").removeAttribute("hidden");
+  document.getElementById("endVoteButton").removeAttribute("hidden");
+  document.getElementById("finishBlurb2").innerHTML = "Hit conclude once you see everyone's name on your screen!";
   let currentVoterList = document.getElementById("currentVoters").innerHTML;
   let newVoter = "<li>" + newVote.name + "</li>";
   document.getElementById("currentVoters").innerHTML= currentVoterList + newVoter;
 }
 
 function endVoting() {
-  document.getElementById("endVoteButton").setAttribute("hidden", "");
   document.getElementById("voteForm").setAttribute("hidden", "");
   document.getElementById("decisionButton").removeAttribute("hidden");
-  document.getElementById("restartVotingButton").setAttribute("hidden","");
+  document.getElementById("restartVotingButton").setAttribute("hidden", 1);
+  document.getElementById("endVoteButton").setAttribute("hidden", 1);
+  document.getElementById("finishBlurb2").innerHTML = "";
+  document.getElementById("questionExplanation").setAttribute("hidden", 1);
   if (showVotes == 1) {
     revealVotes();
   }
@@ -496,6 +504,9 @@ function revealVotes() {
 function restartVoting(){
   postResetVoting()
   document.getElementById("voterListHeader").setAttribute("hidden","");
+  document.getElementById("restartVotingButton").setAttribute("hidden","");
+  document.getElementById("endVoteButton").setAttribute("hidden", 1);
+  document.getElementById("finishBlurb2").innerHTML="";
   document.getElementById("currentVoters").innerHTML="";
 }
 
