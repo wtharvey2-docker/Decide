@@ -8,8 +8,12 @@
   </head>
   <body onload="processURL()">
     <h1 id="questionHeading"></h1>
-    <h1 id="answerHeading" hidden></h1>
-    <h3 id="questionExplanation">Add your idea below! </h3>
+    <h1 id="answerHeading" style="color:MediumBlue" hidden></h1>
+    <div>
+      <h3 id="urlShare" style="display:inline;">Copy this url and share it to decide with friends: </h2>
+      <h3 id="displayedURL" style="display:inline;color:ForestGreen;"></h3>
+    </div>
+    <h4 id="questionExplanation">Let's come up with our options first!</h3>
     <form id="ideaForm" method="post">
       <label for="ideaFormIdea">What would you choose if you had to decide?</label>
       <br>
@@ -17,6 +21,9 @@
       <br>
       <button id="ideaButton0" type="button" onclick="postIdea()">Add Idea</button>
       <br>
+      <p id="finishBlurb1" style="color:Red"></p>
+      <button id="refreshIdeaButton" type="button" onclick="window.location.reload()">Check for your friends' ideas!</button>
+      <br><br>
       <button type="button" id="ideaButton1" onclick="postEndIdeation()" hidden> Finish Adding Ideas </button>
     </form>
     <br id="headerToOptionsBR">
@@ -41,9 +48,12 @@
         <option value="No">Nope, all of these will be ok!</option>
       </select><br id="voteNoSpace"><br id="voteNoSpace">
       <button type="button" id="voteButton" onclick="postNewVote()" hidden>Add Your Vote</button>
+      <br>
+      <p id="finishBlurb2" style="color:Red" ></p>
+      <button id="refreshVotesButton" type="button" onclick="window.location.reload()">Check to see who has voted!</button>
       <br><br>
+      <button type="button" id="endVoteButton" onclick="postEndVoting()" hidden> Conclude Voting</button>
     </form>
-    <button type="button" id="endVoteButton" onclick="postEndVoting()" hidden> Conclude Voting</button>
     <br id="headerToOptionsBR">
     <h3 id="listHeader" hidden>Here's what we have come up with so far:</h3>
     <ul id="currentIdeas">
@@ -52,15 +62,15 @@
     <h3 id="voterListHeader" hidden>These people have voted:</h3>
     <ul id="currentVoters" hidden>
     </ul>
-    <br><br><br><br><br><br><br>
+    <br><br>
     <button type="button" id="restartVotingButton" onclick="restartVoting()" hidden>Restart Voting</button>
     <br id="tryAgainBr">
     <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(0)" hidden>Use Same Ideas, but Decide Randomly</button>
     <br id="tryAgainBr">
     <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(1)" hidden>Use Same Ideas, but Everyone Gives Top Vote</button>
-    <br id="tryAgainBr">
+    <br id="tryAgainBr" hidden>
     <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(2)" hidden>Use Same Ideas, but Everyone Ranks Top 3</button>
-    <br ><br>
+    <br id="tryAgainBr" hidden><br id="tryAgainBr" hidden>
     <button type="button" id="resetButton" onclick="postResetIdeation()" hidden>Clear Ideas & Reset</button>
     <br><br>
     <a href="https://wtharvey2.github.io/Decide/" target="_blank">Help! How do I use this?</a>
