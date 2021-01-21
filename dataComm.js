@@ -202,12 +202,12 @@ router.post('/tryNewAlgorithm', function (req,res) {
   let questID = voteJSON["id"];
 
   //
+  console.log(AllSessionDictionary[questID]);
   console.log("Session " + String(questID) + " requested a new algorithm. " +
     "They requested Algorithm " + String(voteJSON["algorithm"]) + ".");
-  console.log(AllSessionDictionary[questID]);
 
   AllSessionDictionary[questID]["Algorithm"] = voteJSON["algorithm"];
-  if (voteJSON["algorithm"] == 0) {
+  if (voteJSON["algorithm"] == "0") {
     calculateDecision(sessionID); // calculates decision since it's just random
     AllSessionDictionary[sessionID]["State"] = "result"
   } else {
@@ -247,6 +247,7 @@ function calculateDecision(sessionID){
       options = ideaArray;
     }
     AllSessionDictionary[sessionID]['Winner'] = options[Math.floor(Math.random() * options.length)];
+    AllSessionDictionary[sessionID]['State'] = "result"; // a redundant state change
   }
 }
 
