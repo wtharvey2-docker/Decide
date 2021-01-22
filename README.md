@@ -1,11 +1,6 @@
-This document starts with a description of the tool and when to use it. The next part is a step-by-step walkthrough. The last part talks about further development in the works and how you can help.
+This document starts a step-by-step walkthrough. The next part is a description of the tool and when you might use it. The last part talks about further development in the works and how you can help.
 
-# 1. Description
-  The idea behind *Decide* is to take the difficulty out of making small group decisions like where to eat, what game to play, or what activity to do. The basic process is that you first state what the question is that you're trying to answer, which is then followed by everyone submitting their ideas. After that, people can optionally vote and/or reject ideas before the program selects an answer for the group. Options are available at the beginning to allow the group to choose whether they want to vote or just have a random decision between the options they come up with. Overall, *Decide* has been made with the intention of making the process as easy as possible while also trying to minimize the number of ways that people can game the system so that the group can get a fair decision.
-  
-  **This tool is not meant to make important decisions** and should not be used for significant decisions, such as how many children to have, what country to move to, or how much to bet on the Pinewood (or Kentucky) Derby. It's **intended for daily use in social situations** like deciding *where to go for lunch* with your friends or which streaming service to buy if you must stay home for months.
-
-# 2. How to Use
+# 1. How to Use
 
 Starting out, you have three tasks:
 ### 1. Input the question you're trying to decide on. Good questions include:
@@ -43,6 +38,11 @@ After clicking "Let's Decide", you will be brought to a page where the actual de
 ### 8. If the group is happy with the choices, but unhappy with the results, click the buttons that start with "Use ..." to try to decide again.
 
 *Please send feedback if you have any issues, want something changed, or like something in particular!*
+  
+# 2. Description
+  The idea behind *Decide* is to take the difficulty out of making small group decisions like where to eat, what game to play, or what activity to do. The basic process is that you first state what the question is that you're trying to answer, which is then followed by everyone submitting their ideas. After that, people can optionally vote and/or reject ideas before the program selects an answer for the group. Options are available at the beginning to allow the group to choose whether they want to vote or just have a random decision between the options they come up with. Overall, *Decide* has been made with the intention of making the process as easy as possible while also trying to minimize the number of ways that people can game the system so that the group can get a fair decision.
+  
+  **This tool is not meant to make important decisions** and should not be used for significant decisions, such as how many children to have, what country to move to, or how much to bet on the Pinewood (or Kentucky) Derby. It's **intended for daily use in social situations** like deciding *where to go for lunch* with your friends or which streaming service to buy if you must stay home for months.
   
 # 3. Development
 
