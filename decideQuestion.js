@@ -27,7 +27,7 @@ function processURL() {
 
   document.getElementById("displayedURL").innerHTML = document.URL;
   // defining indices
-  let questionIDIndex = document.URL.indexOf("questionID=") + ("questionID=").length;
+  let questionIDIndex = document.URL.indexOf("question/") + ("question/").length;
 
   // translating information from URL
   questionID = document.URL.substring(questionIDIndex)

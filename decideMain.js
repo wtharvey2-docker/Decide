@@ -69,7 +69,7 @@ function makeNewURL(){
 
     // set the action to be going to the question page
     var form = document.getElementById('groupForm');
-    form.action = "question";
+    form.action = "question/" + String(id_val);
 }
 
 function postQuestionToServer(newQuestionDict) {
