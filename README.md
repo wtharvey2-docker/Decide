@@ -52,18 +52,6 @@ Any problems, comments, or ideas are greatly appreciated. I made this because I 
 - Duplicates remain for inputting ideas if cases are different (i.e. "A" and "a" do not
   get sorted into the same vote option)
 - In the server, null scores sometimes appear; at the same time, it appears the client doesn't correctly set the screen.
-  
-  
-### 3b. Current To Do List
-[ ] Implement random question numbers
-[ ] Make the question URL cleaner
-[ ] Convert http request to https requests
-[ ] Minimize http requests
-[ ] Move data storage to database or json file
-[ ] Basic CSS styling
-[ ] Handle ties for winner in Alg 2
-[ ] Algorithm refinement
-[ ] Determine unit tests
 
 ### 3c. Future Feature Ideas
 - Presets where you can save options for repeated use.
