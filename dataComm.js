@@ -235,7 +235,7 @@ function calculateDecision(sessionID){
       then removes all votes for rejects and decides between the rest.
       TO DO: - Re-Work algorithm to make random choices among
       non-rejected options */
-      [options, allVotes] = parseTopVotes(allVotes, AllSessionDictionary[sessionID]['Votes']);
+      [options, allVotes] = parseTopVotes(AllSessionDictionary[sessionID]['Votes']);
       if (options[0] == undefined) {
         /*allVotes[0] will not be undefined as long as
         one or more votes weren't rejected.
@@ -259,69 +259,139 @@ function parseVotes(voteArray) {
   let secondVotes = [];
   let thirdVotes = [];
   let ideaArray = AllSessionDictionary[sessionID]['Ideas']
-  // for loop populating the arrays above
+
+  // Loop to populate the noArray
   for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
     if (voteArray[voteInd].noVote != "No") {
       noArray.push(voteArray[voteInd].noVote);
     }
+  }
+  // Loop to populate the votes
+  let randomVotesPerRank = [0,0,0];
+  for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
     if (voteArray[voteInd].firstVote == "random") {
-      firstVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+      randomVotesPerRank[0]++;
     } else {
       firstVotes.push(voteArray[voteInd].firstVote);
     }
     if (voteArray[voteInd].secondVote == "random") {
-      secondVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+      randomVotesPerRank[1]++;
     } else {
       secondVotes.push(voteArray[voteInd].secondVote);
     }
     if (voteArray[voteInd].thirdVote == "random") {
-      thirdVotes.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
+      randomVotesPerRank[2]++;
     } else {
       thirdVotes.push(voteArray[voteInd].thirdVote);
+    }
+  }
+
+  // Determine which options are ok for remainingOptions
+  let randomPossibilities = firstVotes.concat(secondVotes, thirdVotes);
+
+  // remove remove duplicates
+  let uniqueRandomChoices = [...new Set(randomPossibilities)];
+
+  // Remove vetoed options
+  let remainingOptions=removeNoVotesFromList(uniqueRandomChoices, noArray);
+
+  /* if no options are available from votes (everything got vetoed or no one had a preference),
+  use the full ideaArray*/
+  if (remainingOptions.length == 0) {
+     remainingOptions = removeNoVotesFromList(ideaArray, noArray)
+     // if all ideas were rejected at least once, just select from the randoms
+     if (remainingOptions.length == 0){
+       remainingOptions = ideaArray;
+     }
+  }
+
+  // for loop to populate the random votes
+  maxRandomCount = Math.max(randomVotesPerRank);
+  for (let fillInd = 0; fillInd < maxRandomCount; fillInd++){
+    // handle an additional first vote if necessary
+    if (fillInd < randomVotesPerRank[0]){
+      firstVotes.push(selectRandomIdea(remainingOptions));
+    }
+    // handle an additional second vote if necessary
+    if (fillInd < randomVotesPerRank[1]){
+      secondVotes.push(selectRandomIdea(remainingOptions));
+    }
+    // handle an additional third vote if necessary
+    if (fillInd < randomVotesPerRank[2]){
+      thirdVotes.push(selectRandomIdea(remainingOptions));
     }
   }
   return [firstVotes, secondVotes, thirdVotes, noArray];
 }
 
-function parseTopVotes(allVotes, voteArray){
+function parseTopVotes(voteArray){
   let noArray = [];
   let newOptions  =[];
-  let initialOptions = [];
+  let allVotes = [];
+  let randomVoteCount = 0;
   let ideaArray = AllSessionDictionary[sessionID]['Ideas']
+
+  // populate options based on voting
   for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
+    // store a no value if an idea is rejected
     if (voteArray[voteInd].noVote != "No") {
       noArray.push(voteArray[voteInd].noVote);
     }
+    // make note that a random choice needs to be added
     if (voteArray[voteInd].firstVote == "random") {
-      initialOptions.push(assignRandomChoice(ideaArray, voteArray[voteInd].noVote));
-    } else {
-      initialOptions.push(voteArray[voteInd].firstVote);
+      randomVoteCount++;
+    } else { //add a vote to the options list
+      allVotes.push(voteArray[voteInd].firstVote);
     }
   }
-  // allVotes is an array of all the top votes
-  allVotes = allVotes.concat(initialOptions);
-  //loop removing all rejected choices
-  for (let noInd = 0; noInd < initialOptions.length; noInd++) {
-    if (noArray.indexOf(initialOptions[noInd]) == -1) {
-      newOptions = newOptions.concat(initialOptions[noInd]);
+
+  // Handle case where all voters expressed no preference
+  if (allVotes.length == 0) {
+    allVotes = ideaArray;
+  }
+
+  //remove all rejected choices
+  let finalOptions = removeNoVotesFromList(allVotes, noArray);
+
+  // handle if all options were rejected
+  if (finalOptions.length == 0) {
+    if (removeNoVotesFromList(ideaArray, noArray).length == 0) {
+      // the all votes array is used
+      finalOptions = allVotes;
+    } else{
+      finalOptions = ideaArray;
     }
   }
-  return [newOptions, allVotes];
+  // account for random Votes
+  for (let randomInd = 0; randomInd < randomVoteCount; randomInd++ ){
+    finalOptions.push(selectRandomIdea(finalOptions));
+  }
+  return [finalOptions, allVotes];
 }
 
-function assignRandomChoice(ideas, noVote) {
-  let remainingIdeas = [];
-  if (noVote != "No") {
-    let noIndex = ideas.indexOf(noVote);
-    if (noIndex != 0) {
-      remainingIdeas = remainingIdeas.concat(ideas.slice(0,noIndex));
+/* A function to exclude rejected votes from a list
+Inputs:
+  - a list of ideas
+  - a list of no votes.
+Outputs:
+  - a list of ideas excluding the no votes
+*/
+function removeNoVotesFromList(initialOptions, noArray){
+  let updatedOptions = []
+  for (let noInd = 0; noInd < initialOptions.length; noInd++) {
+    if (noArray.indexOf(initialOptions[noInd]) == -1) {
+      updatedOptions = updatedOptions.concat(initialOptions[noInd]);
     }
-    remainingIdeas = remainingIdeas.concat(ideas.slice(noIndex+1))
-  } else {
-    remainingIdeas = remainingIdeas.concat(ideas);
   }
-  return remainingIdeas[Math.floor(Math.random() * remainingIdeas.length)];
+  return updatedOptions;
 }
+
+
+function selectRandomIdea(ideas) {
+  // used to pick a random idea from the given array
+  return ideas[Math.floor(Math.random() * ideas.length)];
+}
+
 
 function scoreVotes(fullVotesArray, allIdeas) {
   // populates scores with all the possible options
@@ -340,9 +410,5 @@ function scoreVotes(fullVotesArray, allIdeas) {
       scores[fullVotesArray[3][scoreInd]] -= 6;
     }
   }
-  // if (allIdeas.length == 2) {
-  //   // This is to make sure an undefined value isn't included
-  //   scores = scores[0,2];
-  // }
   return scores;
 }
