@@ -327,10 +327,11 @@ function parseVotes(voteArray) {
 function parseTopVotes(voteArray){
   let noArray = [];
   let newOptions  =[];
-  let initialOptions = [];
+  let allVotes = [];
   let randomVoteCount = 0;
   let ideaArray = AllSessionDictionary[sessionID]['Ideas']
 
+  // populate options based on voting
   for (let voteInd = 0; voteInd < voteArray.length; voteInd++) {
     // store a no value if an idea is rejected
     if (voteArray[voteInd].noVote != "No") {
@@ -340,24 +341,30 @@ function parseTopVotes(voteArray){
     if (voteArray[voteInd].firstVote == "random") {
       randomVoteCount++;
     } else { //add a vote to the options list
-      initialOptions.push(voteArray[voteInd].firstVote);
+      allVotes.push(voteArray[voteInd].firstVote);
     }
   }
 
   // Handle case where all voters expressed no preference
-  if (randomVoteCount == voteArray.length) {
-    initialOptions = ideaArray;
+  if (allVotes.length == 0) {
+    allVotes = ideaArray;
   }
 
-  // allVotes is an array of all the votes
-  let allVotes = initialOptions;
-
   //remove all rejected choices
-  let finalOptions = removeNoVotesFromList(initialOptions, noArray);
+  let finalOptions = removeNoVotesFromList(allVotes, noArray);
 
+  // handle if all options were rejected
+  if (finalOptions.length == 0) {
+    if (removeNoVotesFromList(ideaArray, noArray).length == 0) {
+      // the all votes array is used
+      finalOptions = allVotes;
+    } else{
+      finalOptions = ideaArray;
+    }
+  }
   // account for random Votes
   for (let randomInd = 0; randomInd < randomVoteCount; randomInd++ ){
-    initialOptions.push(selectRandomIdea(finalOptions));
+    finalOptions.push(selectRandomIdea(finalOptions));
   }
   return [finalOptions, allVotes];
 }
@@ -382,7 +389,7 @@ function removeNoVotesFromList(initialOptions, noArray){
 
 function selectRandomIdea(ideas) {
   // used to pick a random idea from the given array
-  return remainingIdeas[Math.floor(Math.random() * remainingIdeas.length)];
+  return ideas[Math.floor(Math.random() * ideas.length)];
 }
 
 
