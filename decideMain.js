@@ -39,9 +39,9 @@ function makeNewURL(){
 
     // Makes a dictionary for the question request
     let algorithm = 1; // defaults to 'randomVote'
-    if (document.getElementById('randomIdea').value == 1) {
+    if (document.getElementById('randomIdea').checked == true) {
       algorithm = 0;
-    } else if (document.getElementById('rankedVote').value == 1) {
+    } else if (document.getElementById('rankedVote').checked == true) {
       algorithm = 2;
     }
     let rejectState = 0;
@@ -64,8 +64,6 @@ function makeNewURL(){
     // Post data to server for a session
     postQuestionToServer(newQuestionSession)
 
-    // TODO: Delete information from form to prevent extra data
-    clearFormData();
 
     // set the action to be going to the question page
     var form = document.getElementById('groupForm');
@@ -83,11 +81,4 @@ function postQuestionToServer(newQuestionDict) {
   request.setRequestHeader("Content-Type", "application/json");
   requestString = JSON.stringify(newQuestionDict);
   request.send(requestString);
-}
-
-function clearFormData() {
-  questionEntry = document.getElementById('groupQuestion');
-  questionEntry.setAttribute("value", '');
-  /* Other settings are not deemed sensitive data
-    and are thus not cleared */
 }
