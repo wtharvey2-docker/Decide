@@ -286,7 +286,8 @@ function afterIdeationActions(previousState){
     document.getElementById("questionExplanation").setAttribute("hidden", 1);
     document.getElementById("decisionButton").removeAttribute("hidden");
   } else {
-    document.getElementById("questionExplanation").innerHTML = "Now it's time for everyone to pick what they think is best!"
+    // document.getElementById("questionExplanation").innerHTML = "Now it's time for everyone to pick what they think is best!"
+    document.getElementById("questionExplanation").innerHTML = "Pick what you want!"
     document.getElementById("voteForm").removeAttribute("hidden");
     document.getElementById("voteButton").removeAttribute("hidden");
     document.getElementById("currentVoters").removeAttribute("hidden");
