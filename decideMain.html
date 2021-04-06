@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="description" content="decide App Main page">
+    <meta name="author" content="Will Harvey">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>decideMain</title>
     <!-- <link rel="stylesheet" href="mainStyle.css"> -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script type='text/javascript'
             src='decideMainJS'></script>
   </head>
   <body>
+    <div class="w3-row-padding">
     <form id="groupForm" onsubmit="makeNewURL()" method="post">
       <label for="groupQuestion">What are you trying to decide?</label>
       <input type="text" id="groupQuestion" required><br><br>
@@ -27,9 +32,12 @@
       <input type="submit" value="Let's Decide!">
       <input type="reset">
     </form>
+  </div>
+  <div class="w3-row-padding">
     <br><br><br>
     <a href="https://github.com/wtharvey2/Decide" target="_blank">Help! How do I use this?</a>
     <br>
     <a href="mailto:wtharvey2@gmail.com?Subject=Decide%Feedback" target="_top">Send feedback (to make me fix it)</a>
+  </div>
   </body>
 </html>
