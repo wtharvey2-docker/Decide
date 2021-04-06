@@ -16,23 +16,34 @@
 <script type='text/javascript'
 src='/decideQuestionJS'></script>
 </head>
-<body onload="processURL()">
+<body class="w3-ios-background" onload="processURL()">
   <div class="w3-padding w3-ios-deep-blue">
-    <h1 id="questionHeading"></h1>
-    <div>
-      <h3 id="urlShare" style="display:inline;">Here's the URL to share: </h2>
-        <h3 id="displayedURL" style="display:inline;color:Yellow;"></h3>
+    </div>
+    <br>
+    <div class="w3-row-padding">
+      <div class="w3-col s2">
+        <p></p>
+      </div>
+      <div id="QuestionBox" class="w3-col s8 w3-center w3-ios-deep-blue w3-border-black w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+        <h1 id="questionHeading"></h1>
+        <div>
+          <h3 id="urlShare" style="display:inline;">Here's the URL to share: </h2>
+            <h3 id="displayedURL" style="display:inline;color:Plum;"></h3>
+          </div>
+      </div>
+      <div class="w3-col s2">
+        <p></p>
       </div>
     </div>
     <br>
     <div class="w3-row-padding w3-border-color">
-      <div class="w3-col s1">
+      <div class="w3-col s1" style="width:10%">
         <p></p>
       </div>
-      <div id="UserInputsDone" hidden class="w3-col s4 w3-center w3-ios-deep-blue w3-border w3-round-xlarge w3-border-black w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+      <div id="UserInputsDone" hidden class="w3-col w3-center w3-ios-deep-blue w3-border w3-round-xlarge w3-border-black w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding" style="width:37.5%">
         <h1 id="answerHeading" style="color:White" hidden></h1>
       </div>
-      <div id="UserInputs" class="w3-col s4 w3-center w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+      <div id="UserInputs" class="w3-col w3-center w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding" style="width:37.5%">
         <h4 id="questionExplanation">Let's come up with our options first!</h3>
           <form id="ideaForm" method="post">
             <!-- <label for="ideaFormIdea">What would you choose if you had to decide?</label> -->
@@ -77,10 +88,10 @@ src='/decideQuestionJS'></script>
             <button type="button" id="endVoteButton" onclick="postEndVoting()" hidden> Conclude Voting</button>
           </form>
         </div>
-        <div class="w3-col s2">
+        <div class="w3-col" style="width:5%">
           <p></p>
         </div>
-        <div hidden id="GroupNews" class="w3-col s4 w3-center w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+        <div hidden id="GroupNews" class="w3-col w3-center w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding" style="width:37.5%">
           <!-- <h3 id="listHeader">Here's what we have come up with so far:</h3> -->
           <h3 id="listHeader">Current Options:</h3>
           <ul id="currentIdeas">
@@ -101,7 +112,7 @@ src='/decideQuestionJS'></script>
           <br id="tryAgainBr" hidden><br id="tryAgainBr" hidden>
           <button type="button" id="resetButton" onclick="postResetIdeation()" hidden>Clear Ideas & Reset</button>
         </div>
-        <div class="w3-col s1">
+        <div class="w3-col" style="width:10%">
           <p></p>
         </div>
       </div>
