@@ -271,7 +271,7 @@ function addIdea(newValue = ""){
   document.getElementById("ideaFormIdea").value = "";
   document.getElementById("listHeader").removeAttribute("hidden");
   document.getElementById("ideaButton1").removeAttribute("hidden");
-  document.getElementById("finishBlurb1").innerHTML="Hit finish once you can see everyone's ideas on your screen!";
+  // document.getElementById("finishBlurb1").innerHTML="Hit finish once you can see everyone's ideas on your screen!";
   document.getElementById("resetButton").removeAttribute("hidden");
   document.getElementById("currentIdeas").removeAttribute("hidden");
 }
@@ -280,7 +280,7 @@ function afterIdeationActions(previousState){
   // Updates the DOM to be ready for voting
   document.getElementById("ideaForm").setAttribute("hidden", 1);
   document.getElementById("ideaButton1").setAttribute("hidden", 1);
-  document.getElementById("finishBlurb1").innerHTML="";
+  // document.getElementById("finishBlurb1").innerHTML="";
   document.getElementById("listHeader").innerHTML="Our Options Are:";
   if (decisionAlgorithm == 0) {
     document.getElementById("questionExplanation").setAttribute("hidden", 1);
@@ -412,7 +412,7 @@ function addToVoterList(newVote){
   document.getElementById("voterListHeader").removeAttribute("hidden");
   document.getElementById("restartVotingButton").removeAttribute("hidden");
   document.getElementById("endVoteButton").removeAttribute("hidden");
-  document.getElementById("finishBlurb2").innerHTML = "Hit conclude once you see everyone's name on your screen!";
+  // document.getElementById("finishBlurb2").innerHTML = "Hit conclude once you see everyone's name on your screen!";
   let currentVoterList = document.getElementById("currentVoters").innerHTML;
   let newVoter = "<li>" + newVote.name + "</li>";
   document.getElementById("currentVoters").innerHTML= currentVoterList + newVoter;
@@ -423,7 +423,7 @@ function endVoting() {
   document.getElementById("decisionButton").removeAttribute("hidden");
   document.getElementById("restartVotingButton").setAttribute("hidden", 1);
   document.getElementById("endVoteButton").setAttribute("hidden", 1);
-  document.getElementById("finishBlurb2").innerHTML = "";
+  // document.getElementById("finishBlurb2").innerHTML = "";
   document.getElementById("questionExplanation").setAttribute("hidden", 1);
   if (showVotes == 1) {
     revealVotes();
@@ -506,7 +506,7 @@ function restartVoting(){
   document.getElementById("voterListHeader").setAttribute("hidden","");
   document.getElementById("restartVotingButton").setAttribute("hidden","");
   document.getElementById("endVoteButton").setAttribute("hidden", 1);
-  document.getElementById("finishBlurb2").innerHTML="";
+  // document.getElementById("finishBlurb2").innerHTML="";
   document.getElementById("currentVoters").innerHTML="";
 }
 
