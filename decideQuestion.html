@@ -19,7 +19,6 @@ src='/decideQuestionJS'></script>
 <body onload="processURL()">
   <div class="w3-padding w3-ios-deep-blue">
     <h1 id="questionHeading"></h1>
-    <h1 id="answerHeading" style="color:Yellow" hidden></h1>
     <div>
       <h3 id="urlShare" style="display:inline;">Here's the URL to share: </h2>
         <h3 id="displayedURL" style="display:inline;color:Yellow;"></h3>
@@ -30,7 +29,10 @@ src='/decideQuestionJS'></script>
       <div class="w3-col s1">
         <p></p>
       </div>
-      <div class="w3-col s4 w3-center w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+      <div id="UserInputsDone" hidden class="w3-col s4 w3-center w3-ios-deep-blue w3-border w3-round-xlarge w3-border-black w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+        <h1 id="answerHeading" style="color:White" hidden></h1>
+      </div>
+      <div id="UserInputs" class="w3-col s4 w3-center w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
         <h4 id="questionExplanation">Let's come up with our options first!</h3>
           <form id="ideaForm" method="post">
             <label for="ideaFormIdea">What would you choose if you had to decide?</label>
@@ -40,8 +42,9 @@ src='/decideQuestionJS'></script>
             <br>
             <br>
             <!-- <p id="finishBlurb1" style="color:Red"></p> -->
-            <button id="refreshIdeaButton" type="button" onclick="window.location.reload()">Check for your friends' ideas!</button>
-            <br><br>
+            <!-- <button id="refreshIdeaButton" type="button" onclick="window.location.reload()">Check for your friends' ideas!</button>
+            <br> -->
+            <br>
             <button type="button" id="ideaButton1" onclick="postEndIdeation()" hidden> Finish Adding Ideas </button>
           </form>
           <br id="headerToOptionsBR">
@@ -77,8 +80,8 @@ src='/decideQuestionJS'></script>
         <div class="w3-col s2">
           <p></p>
         </div>
-        <div class="w3-col s4 w3-center w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
-          <h3 id="listHeader" hidden>Here's what we have come up with so far:</h3>
+        <div hidden id="GroupNews" class="w3-col s4 w3-center w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+          <h3 id="listHeader">Here's what we have come up with so far:</h3>
           <ul id="currentIdeas">
           </ul>
           <button type="button" id="decisionButton" onclick="postEndVoting()" hidden> Let's Decide! </button>

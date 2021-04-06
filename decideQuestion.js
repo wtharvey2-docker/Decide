@@ -95,7 +95,7 @@ function loadResultState() {
   if (decisionAlgorithm == 2){
     showScores()
   } else {
-    document.getElementById("answerHeading").innerHTML = "The decision is: " + winner;
+    document.getElementById("answerHeading").innerHTML = "The decision is:<br />" + winner;
     document.getElementById("answerHeading").removeAttribute("hidden");
   }
   document.getElementById("decisionButton").setAttribute("hidden", "");
@@ -269,7 +269,7 @@ function addIdea(newValue = ""){
   let newItem = "<li>" + newValue; // + "<li>";
   document.getElementById("currentIdeas").innerHTML= currentList + newItem;
   document.getElementById("ideaFormIdea").value = "";
-  document.getElementById("listHeader").removeAttribute("hidden");
+  document.getElementById("GroupNews").removeAttribute("hidden");
   document.getElementById("ideaButton1").removeAttribute("hidden");
   // document.getElementById("finishBlurb1").innerHTML="Hit finish once you can see everyone's ideas on your screen!";
   document.getElementById("resetButton").removeAttribute("hidden");
@@ -419,12 +419,10 @@ function addToVoterList(newVote){
 }
 
 function endVoting() {
-  document.getElementById("voteForm").setAttribute("hidden", "");
+  document.getElementById("UserInputs").setAttribute("hidden", "");
+  document.getElementById("UserInputsDone").removeAttribute("hidden");
   document.getElementById("decisionButton").removeAttribute("hidden");
   document.getElementById("restartVotingButton").setAttribute("hidden", 1);
-  document.getElementById("endVoteButton").setAttribute("hidden", 1);
-  // document.getElementById("finishBlurb2").innerHTML = "";
-  document.getElementById("questionExplanation").setAttribute("hidden", 1);
   if (showVotes == 1) {
     revealVotes();
   }
@@ -461,7 +459,7 @@ function showScores() {
     }
   }
   // updates the html
-  document.getElementById("answerHeading").innerHTML = "The highest ranked choice is: " + orderedVoteArray[0];
+  document.getElementById("answerHeading").innerHTML = "Highest ranked choice:<br />" + orderedVoteArray[0];
   document.getElementById("answerHeading").removeAttribute("hidden");
   ideaListHTMLWithoutVotes = storeListItems("currentIdeas");
   clearListItems("currentIdeas");
