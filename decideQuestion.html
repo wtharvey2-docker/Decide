@@ -11,6 +11,21 @@
   body, h1, h2, h3, h4, h5, h6  {
     font-family: Verdana, Geneva, sans-serif; word-break: break-word;
   }
+
+  /* For mobile: */
+  [class*="col-"] {
+    width: 100%;
+  }
+
+  @media only screen and (min-width: 768px) {
+    /* For desktop: */
+    .col10 {width: 10%;}
+    .voteCol {width: 75%;}
+    .col37-5 {width: 37.5%;}
+    .col12-5 {width: 12.5%;}
+    .col5 {width: 5%;}
+    .col75 {width: 75%;}
+  }
 </style>
 <script type='text/javascript'
 src='/decideQuestionJS'></script>
@@ -20,128 +35,124 @@ src='/decideQuestionJS'></script>
   </div>
   <br>
   <div class="w3-row-padding">
-    <div class="w3-col s2">
+    <div class="w3-col l2 m1">
       <p></p>
     </div>
-    <div id="QuestionBox" class="w3-col s8 w3-center w3-ios-deep-blue w3-border-black w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+    <div id="QuestionBox" class="w3-col l8 m10 w3-center w3-ios-deep-blue w3-border-black w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
       <h1 id="questionHeading"></h1>
       <div>
         <h4 id="urlShare" style="display:inline;">Here's the URL to share: </h2>
           <h4 id="displayedURL" style="display:inline;color:Plum;"></h3>
+          </div>
         </div>
-      </div>
-      <div class="w3-col s2">
-        <p></p>
-      </div>
-    </div>
-    <br>
-    <div class="w3-row-padding w3-border-color">
-      <div class="w3-col s1" style="width:10%">
-        <p></p>
-      </div>
-      <div id="UserInputsDone" hidden class="w3-col w3-center w3-ios-deep-blue w3-border w3-round-xlarge w3-border-black w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding" style="width:37.5%;">
-        <h2 id="answerHeading" style="color:White" hidden></h1>
-      </div>
-      <div id="UserInputs" class="w3-col w3-center w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding" style="width:37.5%">
-        <h3 id="questionExplanation">Let's come up with our options first!</h3>
-          <form id="ideaForm" method="post">
-            <!-- <label for="ideaFormIdea">What would you choose if you had to decide?</label> -->
-            <br>
-            <input type="text" id="ideaFormIdea" name="userIdea" required>
-            <button id="ideaButton0" type="button" onclick="postIdea()">Add Idea</button>
-            <br>
-            <br>
-            <!-- <p id="finishBlurb1" style="color:Red"></p> -->
-            <!-- <button id="refreshIdeaButton" type="button" onclick="window.location.reload()">Check for your friends' ideas!</button>
-            <br> -->
-            <br>
-            <button type="button" id="ideaButton1" onclick="postEndIdeation()" hidden> Finish Adding Ideas </button>
-          </form>
-          <br id="headerToOptionsBR">
-          <form id="voteForm" method="post" hidden>
-            <label for="voteFormName">What's your name?</label>
-            <input type="text" id="voteFormName" name="userName"><br><br>
-            <label for="voteFirstSelection">What's your top pick?</label>
-            <select id="voteFirstSelection" style="width:53%">
-              <option value="random">I'm happy with all of these!</option>
-            </select>
-            <br><br>
-            <label for="voteSecondSelection" id="secondVoteLabel">What's your 2nd pick?</label>
-            <select id="voteSecondSelection" style="width:53%">
-              <option value="random">The rest are equally good</option>
-            </select>
-            <br id="voteTwoSpace"><br id="voteTwoSpace">
-            <label for="voteThirdSelection" id="thirdVoteLabel">What's your 3rd pick?</label>
-            <select id="voteThirdSelection" style="width:53%">
-              <option value="random">The rest are equally good</option>
-            </select>
-            <br id="voteThreeSpace"><br id="voteThreeSpace">
-            <label id="voteNoLabel" for="voteNo">Veto a choice?</label>
-            <select id="voteNo" style="width:53%">
-              <option value="No">Nope, all of these will be ok!</option>
-            </select><br id="voteNoSpace"><br id="voteNoSpace">
-            <button type="button" id="voteButton" onclick="postNewVote()" hidden>Add Your Vote</button>
-          </form>
-        </div>
-        <div class="w3-col" style="width:5%">
+        <div class="w3-col l2 m1">
           <p></p>
         </div>
-        <div hidden id="GroupNews" class="w3-col w3-center w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding" style="width:37.5%">
-          <!-- <h3 id="listHeader">Here's what we have come up with so far:</h3> -->
-          <div class="w3-row-padding">
-            <h3 id="listHeader">Current Options:</h3>
-            <div class="w3-col" style="width:12.5%">
-              <p></p>
-            </div>
-            <div class="w3-col" style="width:75%">
-              <ul id="currentIdeas" class="w3-ul w3-card">
-              </ul>
-            </div>
-            <div class="w3-col" style="width:12.5%">
-              <p></p>
-            </div>
+      </div>
+      <br>
+      <div class="w3-row-padding w3-border-color">
+        <div class="w3-col col10">
+          <p></p>
+        </div>
+        <div id="UserInputsDone" hidden class="w3-col w3-center col37-5 w3-ios-deep-blue w3-border w3-round-xlarge w3-border-black w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+          <h2 id="answerHeading" style="color:White" hidden></h1>
           </div>
-          <div class="w3-row-padding">
-          <button type="button" id="decisionButton" onclick="postEndVoting()" hidden> Let's Decide! </button>
-          <h3 id="voterListHeader" hidden>Who voted already?</h3>
-          <div class="w3-col" style="width:12.5%">
+          <div id="UserInputs" class="w3-col w3-center col37-5 w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+            <h3 id="questionExplanation">Let's come up with our options first!</h3>
+            <form id="ideaForm" method="post">
+              <!-- <label for="ideaFormIdea">What would you choose if you had to decide?</label> -->
+              <br>
+              <input type="text" id="ideaFormIdea" name="userIdea" required>
+              <button id="ideaButton0" type="button" onclick="postIdea()">Add Idea</button>
+              <br>
+              <br>
+              <br>
+              <button type="button" id="ideaButton1" onclick="postEndIdeation()" hidden> Finish Adding Ideas </button>
+            </form>
+            <br id="headerToOptionsBR">
+            <form id="voteForm" method="post" hidden>
+              <label for="voteFormName">What's your name?</label>
+              <input type="text" id="voteFormName" name="userName" class="voteCol"><br><br>
+              <label for="voteFirstSelection">What's your top pick?</label>
+              <select id="voteFirstSelection" class="voteCol">
+                <option value="random">I'm happy with all of these!</option>
+              </select>
+              <br><br>
+              <label for="voteSecondSelection" id="secondVoteLabel">What's your 2nd pick?</label>
+              <select id="voteSecondSelection" class="voteCol">
+                <option value="random">The rest are equally good</option>
+              </select>
+              <br id="voteTwoSpace"><br id="voteTwoSpace">
+              <label for="voteThirdSelection" id="thirdVoteLabel">What's your 3rd pick?</label>
+              <select id="voteThirdSelection" class="voteCol">
+                <option value="random">The rest are equally good</option>
+              </select>
+              <br id="voteThreeSpace"><br id="voteThreeSpace">
+              <label id="voteNoLabel" for="voteNo">Veto a choice?</label>
+              <select id="voteNo" class="voteCol">
+                <option value="No">Nope, all of these will be ok!</option>
+              </select><br id="voteNoSpace"><br id="voteNoSpace">
+              <button type="button" id="voteButton" onclick="postNewVote()" hidden>Add Your Vote</button>
+            </form>
+          </div>
+          <div class="w3-col col5">
             <p></p>
           </div>
-          <div class="w3-col" style="width:75%">
-            <ul id="currentVoters" hidden class="w3-ul w3-card">
-            </ul>
+          <div hidden id="GroupNews" class="w3-col w3-center col37-5 w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+            <!-- <h3 id="listHeader">Here's what we have come up with so far:</h3> -->
+            <div class="w3-row-padding">
+              <h3 id="listHeader">Current Options:</h3>
+              <div class="w3-col col12-5">
+                <p></p>
+              </div>
+              <div class="w3-col col75">
+                <ul id="currentIdeas" class="w3-ul w3-card">
+                </ul>
+              </div>
+              <div class="w3-col col12-5">
+                <p></p>
+              </div>
+            </div>
+            <div class="w3-row-padding">
+              <button type="button" id="decisionButton" onclick="postEndVoting()" hidden> Let's Decide! </button>
+              <h3 id="voterListHeader" hidden>Who voted already?</h3>
+              <div class="w3-col col12-5">
+                <p></p>
+              </div>
+              <div class="w3-col col75">
+                <ul id="currentVoters" hidden class="w3-ul w3-card">
+                </ul>
+              </div>
+              <div class="w3-col col12-5">
+                <p></p>
+              </div>
+            </div>
+            <div class="w3-row-padding">
+              <h3 id="tryNewMethodButton" hidden>Want to Try Again?</h3>
+              <br>
+              <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(0)" hidden>Random Method</button>
+              <!-- <br id="tryAgainBr" hidden> -->
+              <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(1)" hidden>Top Vote Method</button>
+              <!-- <br id="tryAgainBr" hidden> -->
+              <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(2)" hidden>Ranking Method</button>
+              <br id="tryAgainBr" hidden>
+              <br id="tryAgainBr" hidden>
+              <button type="button" id="endVoteButton" onclick="postEndVoting()" hidden> Conclude Voting</button>
+              <br id="votingBr" hidden><br id="votingBr" hidden>
+              <button type="button" id="restartVotingButton" onclick="restartVoting()" hidden>Restart Voting</button>
+              <!-- <br id="votingBr" hidden><br id="votingBr" hidden> -->
+              <button type="button" id="resetButton" onclick="postResetIdeation()" hidden>Clear Ideas & Reset</button>
+            </div>
           </div>
-          <div class="w3-col" style="width:12.5%">
+          <div class="w3-col col10">
             <p></p>
           </div>
         </div>
-        <div class="w3-row-padding">
-          <h3 id="tryNewMethodButton" hidden>Want to Try Again?</h3>
+        <div class="w3-row-padding w3-center">
+          <br><br>
+          <a href="https://github.com/wtharvey2/Decide" target="_blank">Help! How do I use this?</a>
           <br>
-          <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(0)" hidden>Random Method</button>
-          <!-- <br id="tryAgainBr" hidden> -->
-          <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(1)" hidden>Top Vote Method</button>
-          <!-- <br id="tryAgainBr" hidden> -->
-          <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(2)" hidden>Ranking Method</button>
-          <br id="tryAgainBr" hidden>
-          <br id="tryAgainBr" hidden>
-          <button type="button" id="endVoteButton" onclick="postEndVoting()" hidden> Conclude Voting</button>
-          <br id="votingBr" hidden><br id="votingBr" hidden>
-          <button type="button" id="restartVotingButton" onclick="restartVoting()" hidden>Restart Voting</button>
-          <!-- <br id="votingBr" hidden><br id="votingBr" hidden> -->
-          <button type="button" id="resetButton" onclick="postResetIdeation()" hidden>Clear Ideas & Reset</button>
+          <a href="mailto:wtharvey2@gmail.com?Subject=Decide%Feedback" target="_top">Email to Request Changes</a>
         </div>
-        </div>
-        <div class="w3-col" style="width:10%">
-          <p></p>
-        </div>
-      </div>
-      <div class="w3-row-padding w3-center">
-        <br><br>
-        <a href="https://github.com/wtharvey2/Decide" target="_blank">Help! How do I use this?</a>
-        <br>
-        <a href="mailto:wtharvey2@gmail.com?Subject=Decide%Feedback" target="_top">Email to Request Changes</a>
-      </div>
-    </body>
-
-    </html>
+      </body>
+      </html>
