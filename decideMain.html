@@ -1,35 +1,61 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>decideMain</title>
-    <!-- <link rel="stylesheet" href="mainStyle.css"> -->
-    <script type='text/javascript'
-            src='decideMainJS'></script>
-  </head>
-  <body>
-    <form id="groupForm" onsubmit="makeNewURL()" method="post">
-      <label for="groupQuestion">What are you trying to decide?</label>
-      <input type="text" id="groupQuestion" required><br><br>
-      <label for="decisionAlgorithm">How would you like to decide?</label><br>
-      <input type="radio" name="algo" id="randomIdea" value="0">
-      <label for="randomIdea">Decide via Random Selection</label><br>
-      <input type="radio" name="algo" id="randomVote" value="1" checked>
-      <label for="randomVote">Decide by Voting</label><br>
-      <input type="radio" name="algo" id="rankedVote" value="2">
-      <label for="rankedVote">Decide by Ranking</label><br><br>
-      <!-- VOTES ALWAYS SHOWN FOR NOW; THIS CAN BE REIMPLEMENTED LATER
-      <input type="checkbox" id="showVotes" name="showVotes" value="1" checked>
-      <label for="showVotes"> Do you want to see what everyone voted for?</label>
-      <br><br>-->
-      <input type="checkbox" id="allowRejects" checked>
-      <label for="allowRejects"> Allow voters to reject a single idea when voting or ranking?</label><br><br>
-      <input type="text" id="questionIDNumber" name="questionID" hidden>
-      <input type="submit" value="Let's Decide!">
-      <input type="reset">
-    </form>
+<head>
+  <meta name="description" content="decide App Main page">
+  <meta name="author" content="Will Harvey">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>decideMain</title>
+  <!-- <link rel="stylesheet" href="mainStyle.css"> -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-ios.css">
+  <style>
+  body, h1, h2, h3, h4, h5, h6  {
+    font-family: Verdana, Geneva, sans-serif;
+  }
+</style>
+<script type='text/javascript'
+src='decideMainJS'></script>
+</head>
+<body class="w3-ios-background">
+  <div class="w3-padding w3-ios-deep-blue">
+    <!-- <h1 id="questionHeading"></h1> -->
+    </div>
+    <br>
+  <div class="w3-row-padding">
+    <div class="w3-col s3">
+      <p></p>
+    </div>
+    <div class="w3-col s6 w3-border w3-round-xlarge w3-border-blue w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-padding">
+      <form id="groupForm" onsubmit="makeNewURL()" method="post">
+        <label for="groupQuestion">What are you trying to decide?</label>
+        <input type="text" id="groupQuestion" required><br><br>
+        <label for="decisionAlgorithm">How would you like to decide?</label><br>
+        <input type="radio" name="algo" id="randomIdea" value="0">
+        <label for="randomIdea">Decide via Random Selection</label><br>
+        <input type="radio" name="algo" id="randomVote" value="1" checked>
+        <label for="randomVote">Decide by Voting</label><br>
+        <input type="radio" name="algo" id="rankedVote" value="2">
+        <label for="rankedVote">Decide by Ranking</label><br><br>
+        <!-- VOTES ALWAYS SHOWN FOR NOW; THIS CAN BE REIMPLEMENTED LATER
+        <input type="checkbox" id="showVotes" name="showVotes" value="1" checked>
+        <label for="showVotes"> Do you want to see what everyone voted for?</label>
+        <br><br>-->
+        <input type="checkbox" id="allowRejects" checked>
+        <label for="allowRejects"> Allow voters to reject a single idea when voting or ranking?</label><br><br>
+        <input type="text" id="questionIDNumber" name="questionID" hidden>
+        <input type="submit" value="Let's Decide!">
+        <input type="reset">
+      </form>
+    </div>
+    <div class="w3-col s3">
+      <p></p>
+    </div>
+  </div>
+  <div class="w3-row-padding w3-center">
     <br><br><br>
     <a href="https://github.com/wtharvey2/Decide" target="_blank">Help! How do I use this?</a>
     <br>
     <a href="mailto:wtharvey2@gmail.com?Subject=Decide%Feedback" target="_top">Send feedback (to make me fix it)</a>
-  </body>
+  </div>
+</body>
 </html>
