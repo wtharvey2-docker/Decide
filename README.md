@@ -51,24 +51,7 @@ Any problems, comments, or ideas are greatly appreciated. I made this because I 
 ### 3a. Known Bugs
 - Duplicates remain for inputting ideas if cases are different (i.e. "A" and "a" do not
   get sorted into the same vote option)
-  
-### 3b. Current To Do List
-[ ] Implement random question numbers
-[ ] Make the question URL cleaner
-[ ] Convert http request to https requests
-[ ] Minimize http requests
-[ ] Move data storage to database or json file
-[ ] Basic CSS styling
-[ ] Handle ties for winner in Alg 2
-[ ] Algorithm 1 & 2 better mitigation for when all votes are rejected
-  - Alg 1 currently removes rejects right before selecting among votes
-  - Alg 2 currently rejects by adding -6 points to rejected place
-  - list all votes and all no's
-  - check ideas remaining after all rejects removed
-    - if no ideas remaining, TBD
-    - if some remain, assign one of the remaining to each random vote
-  - output final array
-[ ] Determine unit tests
+- In the server, null scores sometimes appear; at the same time, it appears the client doesn't correctly set the screen.
 
 ### 3c. Future Feature Ideas
 - Presets where you can save options for repeated use.

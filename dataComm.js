@@ -4,59 +4,60 @@ const bodyParser = require('body-parser');
 router.use(bodyParser.json());
 router.use(bodyParser.text());
 let debug = 0;
-var maxIDNumber =  1000
+var maxIDNumber =  244;
+var ruiList = ["Under the couch", "Throwing apples at deer", "Sneaking catnip", "On the phone ordering pizza",
+  "Looking for polymers in Daniel's room", "On Nova", "Sneaking into the girls' room",
+  "Observing the birds outside", "Trying to tell Alexa to turn the music off",
+  "Trying to make more kittens", "Clawing Armon's chair", "Waiting by the door for Granny to bring Cool Whip",
+  "Waiting in the fridge for chicken", "In the cat tree", "In Pennsylvania", "In the Pittsburgh metropolitan area",
+  "The litter box", "Waiting by the window for the next bird to fly in", "In the bathroom with Armon",
+  "Under the kitchen table", "In a Chewy box", "On the scratchy ramp", "In the cat tube", "Behind the TV",
+  "On the rocking chair", "Under the rocking chair", "On the piano bench", "In the kitchen sink",
+  "Washing his hands", "Showering Pants", "Observing Dino from the guest bed"];
+var ruiResult = Math.floor(Math.random()*ruiList.length);
 
 AllSessionDictionary = {
-  22: {Question: "What do you want to do?",
-  Algorithm: '1',
-  Rejects: '1',
-  State: 'ideation',
-  QuestionID: '333',
-  Ideas: [],
-  Votes: [],
-  Scores: {},
-  Winner: ""},
-  21: {Question: "What do you want to do?",
-  Algorithm: '0',
-  Rejects: '1',
-  State: 'ideation',
-  QuestionID: '333',
-  Ideas: [],
-  Votes: [],
-  Scores: {},
-  Winner: ""},
-  23: {Question: "What do you want to do?",
+  'letsdosomething': {Question: "What do you want to do?",
   Algorithm: '2',
   Rejects: '1',
   State: 'ideation',
-  QuestionID: '333',
+  QuestionID: 'letsdosomething',
   Ideas: [],
   Votes: [],
   Scores: {},
   Winner: ""},
-  111: {Question: "What should we have to eat?",
+  'wheresRui': {Question: "Where's Rui?",
+  Algorithm: '0',
+  Rejects: '1',
+  State: 'result',
+  QuestionID: 'wheresRui',
+  Ideas: [""],
+  Votes: [],
+  Scores: {},
+  Winner: ruiList[ruiResult]},
+  "letseat": {Question: "What should we have to eat?",
   Algorithm: '1',
   Rejects: '1',
   State: 'ideation',
-  QuestionID: '111',
+  QuestionID: 'letseat',
   Ideas: [],
   Votes: [],
   Scores: {},
   Winner: ""},
-  222: {Question: "What game should we play?",
-  Algorithm: '1',
+  "letsplay": {Question: "What game should we play?",
+  Algorithm: '2',
   Rejects: '1',
   State: 'ideation',
-  QuestionID: '222',
+  QuestionID: 'letsplay',
   Ideas: [],
   Votes: [],
   Scores: {},
   Winner: ""},
-  333: {Question: "What should we watch?",
+  "letswatch": {Question: "What should we watch?",
   Algorithm: '1',
   Rejects: '1',
   State: 'ideation',
-  QuestionID: '333',
+  QuestionID: 'letswatch',
   Ideas: [],
   Votes: [],
   Scores: {},
@@ -68,7 +69,7 @@ router.get('/newID',(req, res) => {
   // get max id number and add 1
   maxIDNumber += 1;
   // return the id number
-  newIDnumber = String(maxIDNumber);
+  newIDnumber = String(maxIDNumber) + String(Math.floor(Math.random() * 1000001));
   // res.send(newIDnumber);
   // res.json({ 'id_num': String(newIDnumber)});
   res.status(200).send(newIDnumber)
@@ -201,12 +202,15 @@ router.post('/tryNewAlgorithm', function (req,res) {
   let voteJSON = JSON.parse(req.body)
   let questID = voteJSON["id"];
 
-  //
-  console.log(AllSessionDictionary[questID]);
-  console.log("Session " + String(questID) + " requested a new algorithm. " +
-    "They requested Algorithm " + String(voteJSON["algorithm"]) + ".");
+  if (AllSessionDictionary[sessionID]['QuestionID'] == "wheresRui") {
+    AllSessionDictionary[questID]["Algorithm"] = 0; // because it can only be random
+  } else {
+    console.log(AllSessionDictionary[questID]);
+    console.log("Session " + String(questID) + " requested a new algorithm. " +
+      "They requested Algorithm " + String(voteJSON["algorithm"]) + ".");
 
-  AllSessionDictionary[questID]["Algorithm"] = voteJSON["algorithm"];
+    AllSessionDictionary[questID]["Algorithm"] = voteJSON["algorithm"];
+  }
   if (voteJSON["algorithm"] == "0") {
     calculateDecision(sessionID); // calculates decision since it's just random
     AllSessionDictionary[sessionID]["State"] = "result"
@@ -245,6 +249,11 @@ function calculateDecision(sessionID){
       }
     } else { // Algorithm 0
       options = ideaArray;
+
+      // a hard coded Easter Egg
+      if (AllSessionDictionary[sessionID]['QuestionID'] == "wheresRui") {
+        options = ruiList;
+      }
     }
     AllSessionDictionary[sessionID]['Winner'] = options[Math.floor(Math.random() * options.length)];
     AllSessionDictionary[sessionID]['State'] = "result"; // a redundant state change
