@@ -54,6 +54,8 @@ Any problems, comments, or ideas are greatly appreciated. I made this because I 
 - In the server, null scores sometimes appear; at the same time, it appears the client doesn't correctly set the screen.
 
 ### 3c. Future Feature Ideas
+- Live Updating Votes and Ideas
+- Use a database instead of storing info on server instance
 - Presets where you can save options for repeated use.
 - Easier-to-use interface (open to suggestions for what this may look like)
 - Ways to use external files or data to provide options (like if you have a spreadsheet of restaurants you like)
