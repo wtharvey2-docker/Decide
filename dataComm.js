@@ -31,7 +31,7 @@ AllSessionDictionary = {
   Rejects: '1',
   State: 'result',
   QuestionID: 'wheresRui',
-  Ideas: [],
+  Ideas: [""],
   Votes: [],
   Scores: {},
   Winner: ruiList[ruiResult]},
@@ -202,12 +202,15 @@ router.post('/tryNewAlgorithm', function (req,res) {
   let voteJSON = JSON.parse(req.body)
   let questID = voteJSON["id"];
 
-  //
-  console.log(AllSessionDictionary[questID]);
-  console.log("Session " + String(questID) + " requested a new algorithm. " +
-    "They requested Algorithm " + String(voteJSON["algorithm"]) + ".");
+  if (AllSessionDictionary[sessionID]['QuestionID'] == "wheresRui") {
+    AllSessionDictionary[questID]["Algorithm"] = 0; // because it can only be random
+  } else {
+    console.log(AllSessionDictionary[questID]);
+    console.log("Session " + String(questID) + " requested a new algorithm. " +
+      "They requested Algorithm " + String(voteJSON["algorithm"]) + ".");
 
-  AllSessionDictionary[questID]["Algorithm"] = voteJSON["algorithm"];
+    AllSessionDictionary[questID]["Algorithm"] = voteJSON["algorithm"];
+  }
   if (voteJSON["algorithm"] == "0") {
     calculateDecision(sessionID); // calculates decision since it's just random
     AllSessionDictionary[sessionID]["State"] = "result"
@@ -246,7 +249,9 @@ function calculateDecision(sessionID){
       }
     } else { // Algorithm 0
       options = ideaArray;
-      if (AllSessionDictionary[sessionID]['QuestionID'] == "WhereIsRui") {
+
+      // a hard coded Easter Egg
+      if (AllSessionDictionary[sessionID]['QuestionID'] == "wheresRui") {
         options = ruiList;
       }
     }
