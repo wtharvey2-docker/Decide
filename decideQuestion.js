@@ -413,6 +413,7 @@ function addToVoterList(newVote){
   document.getElementById("voterListHeader").removeAttribute("hidden");
   document.getElementById("restartVotingButton").removeAttribute("hidden");
   document.getElementById("endVoteButton").removeAttribute("hidden");
+  showLineBreaks(votingBr);
   // document.getElementById("finishBlurb2").innerHTML = "Hit conclude once you see everyone's name on your screen!";
   let currentVoterList = document.getElementById("currentVoters").innerHTML;
   let newVoter = "<li>" + newVote.name + "</li>";
@@ -423,7 +424,10 @@ function endVoting() {
   document.getElementById("UserInputs").setAttribute("hidden", "");
   document.getElementById("UserInputsDone").removeAttribute("hidden");
   document.getElementById("decisionButton").removeAttribute("hidden");
+  document.getElementById("endVoteButton").setAttribute("hidden", 1);
+  hideLineBreaks(votingBr);
   document.getElementById("restartVotingButton").setAttribute("hidden", 1);
+  // document.getElementById("restartVotingButton").setAttribute("hidden", 1);
   if (showVotes == 1) {
     revealVotes();
   }

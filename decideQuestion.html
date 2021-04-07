@@ -82,12 +82,6 @@ src='/decideQuestionJS'></script>
               <option value="No">Nope, all of these will be ok!</option>
             </select><br id="voteNoSpace"><br id="voteNoSpace">
             <button type="button" id="voteButton" onclick="postNewVote()" hidden>Add Your Vote</button>
-            <!-- <br> -->
-            <!-- <p id="finishBlurb2" style="color:Red" ></p> -->
-            <!-- <button id="refreshVotesButton" type="button" onclick="window.location.reload()">Check to see who has voted!</button> -->
-            <br>
-            <br>
-            <button type="button" id="endVoteButton" onclick="postEndVoting()" hidden> Conclude Voting</button>
           </form>
         </div>
         <div class="w3-col" style="width:5%">
@@ -108,8 +102,8 @@ src='/decideQuestionJS'></script>
               <p></p>
             </div>
           </div>
+          <div class="w3-row-padding">
           <button type="button" id="decisionButton" onclick="postEndVoting()" hidden> Let's Decide! </button>
-          <!-- <h3 id="voterListHeader" hidden>These people have voted:</h3> -->
           <h3 id="voterListHeader" hidden>Who voted already?</h3>
           <div class="w3-col" style="width:12.5%">
             <p></p>
@@ -121,16 +115,23 @@ src='/decideQuestionJS'></script>
           <div class="w3-col" style="width:12.5%">
             <p></p>
           </div>
-          <br><br><br><br>
-          <button type="button" id="restartVotingButton" onclick="restartVoting()" hidden>Restart Voting</button>
-          <br id="tryAgainBr">
-          <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(0)" hidden>Try Again: Random Method</button>
-          <br id="tryAgainBr">
-          <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(1)" hidden>Try Again: Top Vote Method</button>
+        </div>
+        <div class="w3-row-padding">
+          <h3 id="tryNewMethodButton" hidden>Want to Try Again?</h3>
+          <br>
+          <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(0)" hidden>Random Method</button>
+          <!-- <br id="tryAgainBr" hidden> -->
+          <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(1)" hidden>Top Vote Method</button>
+          <!-- <br id="tryAgainBr" hidden> -->
+          <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(2)" hidden>Ranking Method</button>
           <br id="tryAgainBr" hidden>
-          <button type="button" id="tryNewMethodButton" onclick="tryDifferentAlgorithm(2)" hidden>Try Again: Ranking Method</button>
-          <br id="tryAgainBr" hidden><br id="tryAgainBr" hidden>
+          <br id="tryAgainBr" hidden>
+          <button type="button" id="endVoteButton" onclick="postEndVoting()" hidden> Conclude Voting</button>
+          <br id="votingBr" hidden><br id="votingBr" hidden>
+          <button type="button" id="restartVotingButton" onclick="restartVoting()" hidden>Restart Voting</button>
+          <!-- <br id="votingBr" hidden><br id="votingBr" hidden> -->
           <button type="button" id="resetButton" onclick="postResetIdeation()" hidden>Clear Ideas & Reset</button>
+        </div>
         </div>
         <div class="w3-col" style="width:10%">
           <p></p>
