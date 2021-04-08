@@ -13,7 +13,9 @@ var ruiList = ["Under the couch", "Throwing apples at deer", "Sneaking catnip", 
   "The litter box", "Waiting by the window for the next bird to fly in", "In the bathroom with Armon",
   "Under the kitchen table", "In a Chewy box", "On the scratchy ramp", "In the cat tube", "Behind the TV",
   "On the rocking chair", "Under the rocking chair", "On the piano bench", "In the kitchen sink",
-  "Washing his hands", "Showering Pants", "Observing Dino from the guest bed"];
+  "Washing his paws", "Showering Pants", "Observing Dino from the guest bed", "In the butter dish",
+  "In the basement, telling the rats how to loosen the lawnmower belts",
+  "Under the end table", "On the ottoman", "At Granny's during a house swap with Bo", "Pretending to drive the Subaru"];
 var ruiResult = Math.floor(Math.random()*ruiList.length);
 
 AllSessionDictionary = {
